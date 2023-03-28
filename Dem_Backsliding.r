@@ -5,6 +5,11 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 # Pacman
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
+##########
+# VDEM
+##########
+
+
 # import data
 vdem.d <- readRDS("/Users/hectorbahamonde/research/democratic_backsliding/data/vdem.rds")
 
@@ -169,3 +174,158 @@ plot.1 = cowplot::plot_grid(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p
 plot.2 = cowplot::plot_grid(p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, align = "hv",axis = "b", ncol = 4) ; ggsave("2.pdf", plot = plot.2, width = 1400,height = 1400,units = c("px"),dpi = 80)
 plot.3 = cowplot::plot_grid(p33, p34, p35, p36, p37, p38, p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, align = "hv",axis = "b", ncol = 4) ; ggsave("3.pdf", plot = plot.3, width = 1400,height = 1400,units = c("px"),dpi = 80)
 plot.4 = cowplot::plot_grid(p49, p50, p51, p52, p53, p55, p56, p57, p58, p59, p60, p61, p62, p63, p64, p65, align = "hv",axis = "b", ncol = 4) ; ggsave("4.pdf", plot = plot.4, width = 1400,height = 1400,units = c("px"),dpi = 80)
+
+
+
+##########
+# WVS (From "Under the veil of democracy" paper)
+##########
+
+# cat("\014")
+rm(list=ls())
+# setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+
+# import data
+load("/Users/hectorbahamonde/research/democratic_backsliding/data/wvs/WVS_TimeSeries_4_0.rdata")
+wvs.d <- data1
+rm(data1)
+
+# age: X003
+# birth year: X002
+# year of survey = S020
+
+
+# delete labels 
+p_load(labelled)
+wvs.d = remove_val_labels(wvs.d) # was giving me "heaven" crappy problems. 
+
+# 	Variable	Title	WVS7	WVS6	WVS5	WVS4	WVS3	WVS2	WVS1
+# 	E235	Importance of democracy	Q250	V140	V162				
+
+
+# Keep Chile and Estonia
+wvs.d <- wvs.d[which(wvs.d$COW_ALPHA=='CHL'  | wvs.d$COW_ALPHA=='EST'),]
+
+# Transform country var to factor
+wvs.d$COW_ALPHA = as.factor(wvs.d$COW_ALPHA)
+wvs.d$S020 = as.factor(wvs.d$S020)
+
+
+# Dropping missing
+wvs.d$E235 = ifelse(wvs.d$E235<0,NA,wvs.d$E235) # had -4 and other NA cases.
+wvs.d$E224 = ifelse(wvs.d$E224<0,NA,wvs.d$E224) # had -4 and other NA cases.
+
+# Democratization variable (socialized in democracy: YES/NO)
+wvs.d$soc.in.dem = ifelse(
+  wvs.d$COW_ALPHA=='CHL', ifelse(wvs.d$X002>=1989,0,1),ifelse(wvs.d$COW_ALPHA=='EST',ifelse(wvs.d$X002>=1991,0,1),NA))
+
+## Notes: Chile did have dictatorships even before Pinochet (Ibanez del Campo, etc.). Thus, older folks did NOT strictly get socialized during proper democracy. 
+## They did get socialized before a *major* dictatorship with a repressive apparatus and a clear political ideology. Prior dictators were more like "caudillos" WITHOUT a clear ideological agenda (in general).
+
+# Pop-Eleches and Tucker use a continuous measure of number of years the individual has lived under the communist regime
+wvs.d$years.lived.in.dictatorship = ifelse(
+  wvs.d$COW_ALPHA=='CHL', wvs.d$X002-1989, ifelse(wvs.d$COW_ALPHA=='EST',wvs.d$X002-1991,NA)
+)
+  
+# free up memory
+gc()
+
+# re-order dataset
+wvs.d <- wvs.d %>% 
+  dplyr::select(c("S020", "COW_ALPHA", "X002", "X003", "soc.in.dem", "years.lived.in.dictatorship", "E235"), everything()
+                )
+
+# Not so many obs of folks "socialized in dictatorship"
+table(wvs.d[wvs.d$COW_ALPHA=='CHL',]$soc.in.dem)
+table(wvs.d[wvs.d$COW_ALPHA=='EST',]$soc.in.dem)
+
+# Not so many younger folks (especially for Estonia)
+max(wvs.d[wvs.d$COW_ALPHA=="CHL",]$X002)
+max(wvs.d[wvs.d$COW_ALPHA=="EST",]$X002)
+
+# plot
+p_load(ggplot2)
+
+## Importance of democracy
+ggplot(wvs.d, aes(x=years.lived.in.dictatorship, y=E235, colour=COW_ALPHA)) + 
+  geom_smooth() +
+  labs(y = "Importance of democracy", x = "years lived in dictatorship (Year of Birth - Year of Democratization)\nIf you're born before democratization (old), negative values. Positive values otherwise (young)") + 
+  theme(axis.text.y = element_text(size=12), 
+        axis.text.x = element_text(size=12), 
+        axis.title.y = element_text(size=12), 
+        axis.title.x = element_text(size=12), 
+        legend.text=element_text(size=12), 
+        legend.title=element_text(size=12),
+        plot.title = element_text(size=12),
+        strip.text.x = element_text(size = 12))
+
+# Democracy: Governments tax the rich and subsidize the poor (E224)
+ggplot(wvs.d, aes(x=years.lived.in.dictatorship, y=E224, colour=COW_ALPHA)) + 
+  geom_smooth() +
+  labs(y = "Governments tax the rich and subsidize the poor", x = "years lived in dictatorship (Year of Birth - Year of Democratization)\nIf you're born before democratization (old), negative values. Positive values otherwise (young)") + 
+  theme(axis.text.y = element_text(size=12), 
+        axis.text.x = element_text(size=12), 
+        axis.title.y = element_text(size=12), 
+        axis.title.x = element_text(size=12), 
+        legend.text=element_text(size=12), 
+        legend.title=element_text(size=12),
+        plot.title = element_text(size=12),
+        strip.text.x = element_text(size = 12))
+# Comments: This is interesting. First, both trends are similar. Second, in BOTH countries, older cohorts are slightly more supportive of
+## the welfare state. Third, in BOTH countries, younger cohorts are slightly less supportive of the welfare state. 
+## This to me means: we find evidence in favor of age effects: older folks like welfare presumably because they are on pensions. 
+## We DO NOT have enough data to say anything about age effects (not so many younger folks included in the survey).
+
+
+# basic model
+options(scipen=999)
+dem.model = lm(E235 ~ X003 + years.lived.in.dictatorship + S020 + COW_ALPHA-1, data=wvs.d) # Importance of democracy
+welfare.model = lm(E224 ~ X003 + years.lived.in.dictatorship + S020 + COW_ALPHA-1, data=wvs.d) # Governments tax the rich and subsidize the poor
+
+# plots
+p_load(effects,ggpubr)
+
+p1 = plot(effect("years.lived.in.dictatorship", dem.model), as.table=T, ylab="Importance of democracy", xlab="years.lived.in.dictatorship")
+p2 = plot(effect("X003", dem.model), as.table=T, ylab="Importance of democracy", xlab="age")
+ggarrange(p1,p2, ncol = 2, nrow = 1)
+
+p3 = plot(effect("years.lived.in.dictatorship", welfare.model), as.table=T, ylab="Governments tax the rich and subsidize the poor", xlab="years.lived.in.dictatorship")
+p4 = plot(effect("X003", welfare.model), as.table=T, ylab="Governments tax the rich and subsidize the poor", xlab="age")
+ggarrange(p3,p4, ncol = 2, nrow = 1)
+
+
+# Split Data Models
+p_load(dyplr)
+wvs.d.chile = wvs.d %>% dplyr::filter(COW_ALPHA == 'CHL')
+wvs.d.estonia = wvs.d %>% dplyr::filter(COW_ALPHA == 'EST')
+
+
+options(scipen=999)
+dem.model.chile = lm(E235 ~ X003 + years.lived.in.dictatorship + S020-1, data=wvs.d.chile) # Importance of democracy
+dem.model.estonia = lm(E235 ~ X003 + years.lived.in.dictatorship, data=wvs.d.estonia) # Importance of democracy NO FE ONLY TWO YEARS
+
+
+welfare.model.chile = lm(E224 ~ X003 + years.lived.in.dictatorship + S020-1, data=wvs.d.chile) # Governments tax the rich and subsidize the poor
+welfare.model.estonia = lm(E224 ~ X003 + years.lived.in.dictatorship, data=wvs.d.estonia) # Governments tax the rich and subsidize the poor
+
+# plots
+p_load(effects,ggpubr)
+
+p5.chile.1 = plot(effect("years.lived.in.dictatorship", dem.model.chile), as.table=T, ylab="Importance of democracy", xlab="years.lived.in.dictatorship", main = "Chile")
+p5.chile.2 = plot(effect("X003", dem.model.chile), as.table=T, ylab="Importance of democracy", xlab="Age", main = "Chile")
+p6.estonia.1 = plot(effect("years.lived.in.dictatorship", dem.model.estonia), as.table=T, ylab="Importance of democracy", xlab="years.lived.in.dictatorship", main = "Estonia")
+p6.estonia.2 = plot(effect("X003", dem.model.estonia), as.table=T, ylab="Importance of democracy", xlab="Age", main = "Estonia")
+ggarrange(p5.chile.1,p5.chile.2,p6.estonia.1,p6.estonia.2, ncol = 2, nrow = 2)
+
+
+p7.chile.1 = plot(effect("years.lived.in.dictatorship", welfare.model.chile), as.table=T, ylab="Governments tax the rich\nand subsidize the poor", xlab="years.lived.in.dictatorship", main = "Chile")
+p7.chile.2 = plot(effect("X003", welfare.model.chile), as.table=T, ylab="Governments tax the rich\nand subsidize the poor", xlab="Age", main = "Chile")
+p8.estonia.1 = plot(effect("years.lived.in.dictatorship", welfare.model.estonia), as.table=T, ylab="Governments tax the rich\nand subsidize the poor", xlab="years.lived.in.dictatorship", main = "Estonia")
+p8.estonia.2 = plot(effect("X003", welfare.model.estonia), as.table=T, ylab="Governments tax the rich\nand subsidize the poor", xlab="Age", main = "Estonia")
+ggarrange(p7.chile.1,p7.chile.2,p8.estonia.1,p8.estonia.2, ncol = 2, nrow = 2)
+# This last one is interesting: opposite effects in both countries. In Chile older COHORTS and AGES support welfare more. In Estonia, the opposite happens.
+# However, cohort and age effects are correlated in both cases: we CANNOT know if older folks in Chile want more welfare because they
+# do not have one or because they were socialized during the years welfare was more present during their formative years. 
