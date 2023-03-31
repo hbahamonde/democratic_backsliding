@@ -218,33 +218,32 @@ wvs.d$S020 = as.factor(wvs.d$S020)
 wvs.d$E235 = ifelse(wvs.d$E235<0,NA,wvs.d$E235) # had -4 and other NA cases.
 wvs.d$E224 = ifelse(wvs.d$E224<0,NA,wvs.d$E224) # had -4 and other NA cases.
 
-# Democratization variable (socialized in democracy: YES/NO)
-wvs.d$soc.in.dem = ifelse(
-  wvs.d$COW_ALPHA=='CHL', ifelse(wvs.d$X002>=1989,0,1),ifelse(wvs.d$COW_ALPHA=='EST',ifelse(wvs.d$X002>=1991,0,1),NA))
-
-## Notes: Chile did have dictatorships even before Pinochet (Ibanez del Campo, etc.). Thus, older folks did NOT strictly get socialized during proper democracy. 
-## They did get socialized before a *major* dictatorship with a repressive apparatus and a clear political ideology. Prior dictators were more like "caudillos" WITHOUT a clear ideological agenda (in general).
-
 # Pop-Eleches and Tucker use a continuous measure of number of years the individual has lived under the communist regime
 wvs.d$years.lived.in.dictatorship = ifelse(
   wvs.d$COW_ALPHA=='CHL', wvs.d$X002-1989, ifelse(wvs.d$COW_ALPHA=='EST',wvs.d$X002-1991,NA)
 )
-  
+
+## Notes: Chile did have dictatorships even before Pinochet (Ibanez del Campo, etc.). Thus, older folks did NOT strictly get socialized during proper democracy. 
+## They did get socialized before a *major* dictatorship with a repressive apparatus and a clear political ideology. Prior dictators were more like "caudillos" WITHOUT a clear ideological agenda (in general).
+
 # free up memory
 gc()
 
 # re-order dataset
 wvs.d <- wvs.d %>% 
-  dplyr::select(c("S020", "COW_ALPHA", "X002", "X003", "soc.in.dem", "years.lived.in.dictatorship", "E235"), everything()
+  dplyr::select(c("S020", "COW_ALPHA", "X002", "X003", "years.lived.in.dictatorship", "E235"), everything()
                 )
 
-# Not so many obs of folks "socialized in dictatorship"
+# Not so many obs of folks "socialized in democracy"
 table(wvs.d[wvs.d$COW_ALPHA=='CHL',]$soc.in.dem)
 table(wvs.d[wvs.d$COW_ALPHA=='EST',]$soc.in.dem)
 
-# Not so many younger folks (especially for Estonia)
+# Mins and Max years of birth
 max(wvs.d[wvs.d$COW_ALPHA=="CHL",]$X002)
+min(wvs.d[wvs.d$COW_ALPHA=="CHL",]$X002)
+
 max(wvs.d[wvs.d$COW_ALPHA=="EST",]$X002)
+min(wvs.d[wvs.d$COW_ALPHA=="EST",]$X002)
 
 # plot
 p_load(ggplot2)
