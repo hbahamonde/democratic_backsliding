@@ -5,6 +5,30 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 # Pacman
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
+# Import Data
+dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+
+# 
+hist(as.numeric(dat$Duration..in.seconds.)/60, ylab="Freq.", xlab="Minutes")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##########
 # VDEM
 ##########

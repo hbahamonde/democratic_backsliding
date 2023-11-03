@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\begin{document}
+
+Let's import the data.
+
+<<>>=
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+
+cat("\014")
+rm(list=ls())
+setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+
+# Import Data
+dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+@
+
+
+Let's see how long people take to answer the study
+
+<<>>=
+hist(as.numeric(dat$Duration..in.seconds.)/60, ylab="Freq.", xlab="Minutes")
+
+@
+
+Ok, in average that is:
+<<>>=
+round(mean(as.numeric(dat$Duration..in.seconds.), na.rm = T)/60,2)
+@
+
+ok. Almost 6 minutes.
+
+Let's see now some descriptive
+
+
+
+
+p_load("writexl")
+write_xlsx(dat,"/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.xls")
+
+
+
+\end{document}
