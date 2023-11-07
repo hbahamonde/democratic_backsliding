@@ -37,11 +37,46 @@ ok. Almost 6 minutes.
 Let's see now some descriptive
 
 
+<<>>=
+table(dat$Q3) # age
+@
 
+<<>>=
+table(dat$Q4) # gender
+@
 
-p_load("writexl")
-write_xlsx(dat,"/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.xls")
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q8_1)) # left-right
+@
 
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q9_1), aspect="iso") # satisfied w dem
+@
 
+<<>>=
+p_load(lattice)
+table(as.factor(dat$Q10_1)) # dem is better....really worrying.
+@
+
+<<>>=
+p_load(lattice)
+table(as.factor(dat$Q10_2)) # dem is better....really worrying.
+@
+
+<<>>=
+p_load(lattice)
+table(as.factor(dat$Q10_3)) # right to protest
+@
+
+<<>>=
+p_load(lattice)
+table(as.factor(dat$Q10_4)) # free press....wtf.
+@
+
+############################## 
+# CONJOINT Experiment DATA CLEANING
+##############################
 
 \end{document}

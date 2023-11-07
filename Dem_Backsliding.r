@@ -8,17 +8,81 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 # Import Data
 dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
 
-# 
-hist(as.numeric(dat$Duration..in.seconds.)/60, ylab="Freq.", xlab="Minutes")
+##########
+# Conjoint Data Prep
+##########
+
+# rename conjoint attributes
+# TASK_ATTRIBUTE_CANDIDATE
+
+colnames(dat)
 
 
 
-
-
-
-
-
-
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT) <-"C_Task_AttributeGender_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.1.1_CBCONJOINT) <-"C_Task_AttributeAge_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.1_CBCONJOINT) <-"C_Task_AttributeProtest_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.1.1_CBCONJOINT") <-"C_Task_AttributePensions_Candidate"
+ rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.2_CBCONJOINT) <-"C_Task_AttributeGender_Candidate"
+ rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.1.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.1.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.2.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.2.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+ rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.2.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.2.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.3.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.3.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+ rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.3.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.3.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.4.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.4.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+ rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.4.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.4.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.5.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.5.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+ rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.5.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+ rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.5.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.6.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.6.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.6.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.6.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.7.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.7.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.7.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.7.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.8.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.8.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
+rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.8.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
+rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.8.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
 
 
 
