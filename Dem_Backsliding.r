@@ -12,83 +12,154 @@ dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qua
 # Conjoint Data Prep
 ##########
 
-# rename conjoint attributes
-# TASK_ATTRIBUTE_CANDIDATE
+# rename
+p_load("dplyr")
+dat <- dat %>% 
+  rename(
+    "Task1Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT" ,
+    "Task1Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.1_CBCONJOINT" ,
+    "Task1Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.1_CBCONJOINT" ,
+    "Task1Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.1_CBCONJOINT" ,
+    "Task1Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.2_CBCONJOINT" ,
+    "Task1Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.2_CBCONJOINT" ,
+    "Task1Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.2_CBCONJOINT" ,
+    "Task1Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.2_CBCONJOINT" ,
+    "Task2Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.1_CBCONJOINT" ,
+    "Task2Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.1_CBCONJOINT" ,
+    "Task2Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.1_CBCONJOINT" ,
+    "Task2Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.1_CBCONJOINT" ,
+    "Task2Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.2_CBCONJOINT" ,
+    "Task2Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.2_CBCONJOINT" ,
+    "Task2Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.2_CBCONJOINT" ,
+    "Task2Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.2_CBCONJOINT" ,
+    "Task3Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.1_CBCONJOINT" ,
+    "Task3Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.1_CBCONJOINT" ,
+    "Task3Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.1_CBCONJOINT" ,
+    "Task3Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.1_CBCONJOINT" ,
+    "Task3Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.2_CBCONJOINT" ,
+    "Task3Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.2_CBCONJOINT" ,
+    "Task3Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.2_CBCONJOINT" ,
+    "Task3Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.2_CBCONJOINT" ,
+    "Task4Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.1_CBCONJOINT" ,
+    "Task4Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.1_CBCONJOINT" ,
+    "Task4Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.1_CBCONJOINT" ,
+    "Task4Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.1_CBCONJOINT" ,
+    "Task4Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.2_CBCONJOINT" ,
+    "Task4Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.2_CBCONJOINT" ,
+    "Task4Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.2_CBCONJOINT" ,
+    "Task4Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.2_CBCONJOINT" ,
+    "Task5Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.1_CBCONJOINT" ,
+    "Task5Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.1_CBCONJOINT" ,
+    "Task5Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.1_CBCONJOINT" ,
+    "Task5Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.1_CBCONJOINT" ,
+    "Task5Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.2_CBCONJOINT" ,
+    "Task5Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.2_CBCONJOINT" ,
+    "Task5Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.2_CBCONJOINT" ,
+    "Task5Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.2_CBCONJOINT" ,
+    "Task6Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.1_CBCONJOINT" ,
+    "Task6Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.1_CBCONJOINT" ,
+    "Task6Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.1_CBCONJOINT" ,
+    "Task6Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.1_CBCONJOINT" ,
+    "Task6Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.2_CBCONJOINT" ,
+    "Task6Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.2_CBCONJOINT" ,
+    "Task6Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.2_CBCONJOINT" ,
+    "Task6Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.2_CBCONJOINT" ,
+    "Task7Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.1_CBCONJOINT" ,
+    "Task7Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.1_CBCONJOINT" ,
+    "Task7Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.1_CBCONJOINT" ,
+    "Task7Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.1_CBCONJOINT" ,
+    "Task7Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.2_CBCONJOINT" ,
+    "Task7Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.2_CBCONJOINT" ,
+    "Task7Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.2_CBCONJOINT" ,
+    "Task7Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.2_CBCONJOINT" ,
+    "Task8Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.1_CBCONJOINT" ,
+    "Task8Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.1_CBCONJOINT" ,
+    "Task8Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.1_CBCONJOINT" ,
+    "Task8Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.1_CBCONJOINT" ,
+    "Task8Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.2_CBCONJOINT" ,
+    "Task8Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.2_CBCONJOINT" ,
+    "Task8Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.2_CBCONJOINT" ,
+    "Task8Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.2_CBCONJOINT"
+  )
 
-colnames(dat)
+# CREGGG Approach
+# https://thomasleeper.com/cregg/
+p_load(cregg)
+
+f1 <- C1 ~ Gender + Education + LanguageSkills + CountryOfOrigin + Job + JobExperience + JobPlans + ReasonForApplication + 
+  
 
 
+f1 <- ChosenImmigrant ~ Gender + Education + LanguageSkills + CountryOfOrigin + Job + JobExperience + JobPlans + ReasonForApplication + 
+  PriorEntry
+plot(mm(immigration, f1, id = ~CaseID), vline = 0.5)
 
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT) <-"C_Task_AttributeGender_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.1.1_CBCONJOINT) <-"C_Task_AttributeAge_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.1_CBCONJOINT) <-"C_Task_AttributeProtest_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.1.1_CBCONJOINT") <-"C_Task_AttributePensions_Candidate"
- rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.2_CBCONJOINT) <-"C_Task_AttributeGender_Candidate"
- rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.1.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.1.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.2.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.2.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
- rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.2.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.2.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.3.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.3.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
- rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.3.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.3.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.4.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.4.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
- rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.4.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.4.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.5.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.5.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
- rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.5.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
- rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.5.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.6.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.6.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.6.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.6.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.7.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.7.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.7.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.7.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.8.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.1_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.8.1_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-rename(dat$X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X5e2374ad.f827.494e.ae28.c6a2430508ba.8.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.2_CBCONJOINT) <-"C_Task_Attribute_Candidate"
-rename(dat$b1429583.39b1.42fc.8ee2.2559edc4ca94.8.2_CBCONJOINT") <-"C_Task_Attribute_Candidate"
-
-
-
-
-
-
+# https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
+if (FALSE) {
+  data("wide_conjoint")
+  
+  # character string interface
+  ## profile_variables
+  list1 <- list(
+    feature1 = list(
+      names(wide_conjoint)[grep("^feature1.{1}1", names(wide_conjoint))],
+      names(wide_conjoint)[grep("^feature1.{1}2", names(wide_conjoint))]
+    ),
+    feature2 = list(
+      names(wide_conjoint)[grep("^feature2.{1}1", names(wide_conjoint))],
+      names(wide_conjoint)[grep("^feature2.{1}2", names(wide_conjoint))]
+    ),
+    feature3 = list(
+      names(wide_conjoint)[grep("^feature3.{1}1", names(wide_conjoint))],
+      names(wide_conjoint)[grep("^feature3.{1}2", names(wide_conjoint))]
+    ),
+    rating = list(
+      names(wide_conjoint)[grep("^rating.+1", names(wide_conjoint))],
+      names(wide_conjoint)[grep("^rating.+2", names(wide_conjoint))]
+    )
+  )
+  ## task variables
+  list2 <- list(choice = paste0("choice_", letters[1:4]),
+                timing = paste0("timing_", letters[1:4]))
+  
+  # formula interface
+  ## profile_variables
+  list1 <- list(
+    feature1 = list(
+      ~ feature1a1 + feature1b1 + feature1c1 + feature1d1,
+      ~ feature1a2 + feature1b2 + feature1c2 + feature1d2
+    ),
+    feature2 = list(
+      ~ feature2a1 + feature2b1 + feature2c1 + feature2d1,
+      ~ feature2a2 + feature2b2 + feature2c2 + feature2d2
+    ),
+    feature3 = list(
+      ~ feature3a1 + feature3b1 + feature3c1 + feature3d1,
+      ~ feature3a2 + feature3b2 + feature3c2 + feature3d2
+    ),
+    rating = list(
+      ~ rating_a1 + rating_b1 + rating_c1 + rating_d1,
+      ~ rating_a2 + rating_b2 + rating_c2 + rating_d2
+    )
+  )
+  # task variables
+  list2 <- list(choice = ~ choice_a + choice_b + choice_c + choice_d,
+                timing = ~ timing_a + timing_b + timing_c + timing_d)
+  
+  
+  # perform reshape
+  str(long <- cj_tidy(wide_conjoint,
+                      profile_variables = list1,
+                      task_variables = list2,
+                      id = ~ respondent))
+  stopifnot(nrow(long) == nrow(wide_conjoint)*4*2)
+  
+  # recode outcome so it is coded sensibly
+  long$chosen <- ifelse((long$profile == "A" & long$choice == 1) |
+                          (long$profile == "B" & long$choice == 2), 1, 0)
+  # use for analysis
+  cj(long, chosen ~ feature1 + feature2 + feature3, id = ~ respondent)
+}
 
 
 
