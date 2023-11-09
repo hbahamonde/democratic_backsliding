@@ -12,154 +12,231 @@ dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qua
 # Conjoint Data Prep
 ##########
 
+# name structure is = [4 features][h tasks][2 candidates]
+
 # rename
 p_load("dplyr")
 dat <- dat %>% 
   rename(
-    "Task1Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT" ,
-    "Task1Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.1_CBCONJOINT" ,
-    "Task1Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.1_CBCONJOINT" ,
-    "Task1Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.1_CBCONJOINT" ,
-    "Task1Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.2_CBCONJOINT" ,
-    "Task1Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.2_CBCONJOINT" ,
-    "Task1Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.2_CBCONJOINT" ,
-    "Task1Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.2_CBCONJOINT" ,
-    "Task2Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.1_CBCONJOINT" ,
-    "Task2Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.1_CBCONJOINT" ,
-    "Task2Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.1_CBCONJOINT" ,
-    "Task2Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.1_CBCONJOINT" ,
-    "Task2Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.2_CBCONJOINT" ,
-    "Task2Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.2_CBCONJOINT" ,
-    "Task2Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.2_CBCONJOINT" ,
-    "Task2Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.2_CBCONJOINT" ,
-    "Task3Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.1_CBCONJOINT" ,
-    "Task3Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.1_CBCONJOINT" ,
-    "Task3Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.1_CBCONJOINT" ,
-    "Task3Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.1_CBCONJOINT" ,
-    "Task3Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.2_CBCONJOINT" ,
-    "Task3Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.2_CBCONJOINT" ,
-    "Task3Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.2_CBCONJOINT" ,
-    "Task3Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.2_CBCONJOINT" ,
-    "Task4Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.1_CBCONJOINT" ,
-    "Task4Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.1_CBCONJOINT" ,
-    "Task4Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.1_CBCONJOINT" ,
-    "Task4Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.1_CBCONJOINT" ,
-    "Task4Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.2_CBCONJOINT" ,
-    "Task4Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.2_CBCONJOINT" ,
-    "Task4Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.2_CBCONJOINT" ,
-    "Task4Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.2_CBCONJOINT" ,
-    "Task5Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.1_CBCONJOINT" ,
-    "Task5Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.1_CBCONJOINT" ,
-    "Task5Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.1_CBCONJOINT" ,
-    "Task5Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.1_CBCONJOINT" ,
-    "Task5Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.2_CBCONJOINT" ,
-    "Task5Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.2_CBCONJOINT" ,
-    "Task5Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.2_CBCONJOINT" ,
-    "Task5Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.2_CBCONJOINT" ,
-    "Task6Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.1_CBCONJOINT" ,
-    "Task6Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.1_CBCONJOINT" ,
-    "Task6Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.1_CBCONJOINT" ,
-    "Task6Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.1_CBCONJOINT" ,
-    "Task6Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.2_CBCONJOINT" ,
-    "Task6Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.2_CBCONJOINT" ,
-    "Task6Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.2_CBCONJOINT" ,
-    "Task6Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.2_CBCONJOINT" ,
-    "Task7Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.1_CBCONJOINT" ,
-    "Task7Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.1_CBCONJOINT" ,
-    "Task7Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.1_CBCONJOINT" ,
-    "Task7Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.1_CBCONJOINT" ,
-    "Task7Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.2_CBCONJOINT" ,
-    "Task7Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.2_CBCONJOINT" ,
-    "Task7Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.2_CBCONJOINT" ,
-    "Task7Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.2_CBCONJOINT" ,
-    "Task8Cand1AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.1_CBCONJOINT" ,
-    "Task8Cand1AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.1_CBCONJOINT" ,
-    "Task8Cand1AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.1_CBCONJOINT" ,
-    "Task8Cand1AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.1_CBCONJOINT" ,
-    "Task8Cand2AttrGender" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.2_CBCONJOINT" ,
-    "Task8Cand2AttrAge" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.2_CBCONJOINT" ,
-    "Task8Cand2AttrProtest" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.2_CBCONJOINT" ,
-    "Task8Cand2AttrPens" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.2_CBCONJOINT"
-  )
+    # features
+    "feature1a1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT" ,
+    "feature2a1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.1_CBCONJOINT" ,
+    "feature3a1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.1_CBCONJOINT" ,
+    "feature4a1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.1_CBCONJOINT" ,
+    "feature1a2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.2_CBCONJOINT" ,
+    "feature2a2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.2_CBCONJOINT" ,
+    "feature3a2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.2_CBCONJOINT" ,
+    "feature4a2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.2_CBCONJOINT" ,
+    "feature1b1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.1_CBCONJOINT" ,
+    "feature2b1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.1_CBCONJOINT" ,
+    "feature3b1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.1_CBCONJOINT" ,
+    "feature4b1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.1_CBCONJOINT" ,
+    "feature1b2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.2_CBCONJOINT" ,
+    "feature2b2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.2_CBCONJOINT" ,
+    "feature3b2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.2_CBCONJOINT" ,
+    "feature4b2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.2_CBCONJOINT" ,
+    "feature1c1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.1_CBCONJOINT" ,
+    "feature2c1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.1_CBCONJOINT" ,
+    "feature3c1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.1_CBCONJOINT" ,
+    "feature4c1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.1_CBCONJOINT" ,
+    "feature1c2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.2_CBCONJOINT" ,
+    "feature2c2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.2_CBCONJOINT" ,
+    "feature3c2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.2_CBCONJOINT" ,
+    "feature4c2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.2_CBCONJOINT" ,
+    "feature1d1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.1_CBCONJOINT" ,
+    "feature2d1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.1_CBCONJOINT" ,
+    "feature3d1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.1_CBCONJOINT" ,
+    "feature4d1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.1_CBCONJOINT" ,
+    "feature1d2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.2_CBCONJOINT" ,
+    "feature2d2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.2_CBCONJOINT" ,
+    "feature3d2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.2_CBCONJOINT" ,
+    "feature4d2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.2_CBCONJOINT" ,
+    "feature1e1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.1_CBCONJOINT" ,
+    "feature2e1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.1_CBCONJOINT" ,
+    "feature3e1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.1_CBCONJOINT" ,
+    "feature4e1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.1_CBCONJOINT" ,
+    "feature1e2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.2_CBCONJOINT" ,
+    "feature2e2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.2_CBCONJOINT" ,
+    "feature3e2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.2_CBCONJOINT" ,
+    "feature4e2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.2_CBCONJOINT" ,
+    "feature1f1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.1_CBCONJOINT" ,
+    "feature2f1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.1_CBCONJOINT" ,
+    "feature3f1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.1_CBCONJOINT" ,
+    "feature4f1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.1_CBCONJOINT" ,
+    "feature1f2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.2_CBCONJOINT" ,
+    "feature2f2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.2_CBCONJOINT" ,
+    "feature3f2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.2_CBCONJOINT" ,
+    "feature4f2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.2_CBCONJOINT" ,
+    "feature1g1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.1_CBCONJOINT" ,
+    "feature2g1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.1_CBCONJOINT" ,
+    "feature3g1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.1_CBCONJOINT" ,
+    "feature4g1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.1_CBCONJOINT" ,
+    "feature1g2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.2_CBCONJOINT" ,
+    "feature2g2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.2_CBCONJOINT" ,
+    "feature3g2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.2_CBCONJOINT" ,
+    "feature4g2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.2_CBCONJOINT" ,
+    "feature1h1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.1_CBCONJOINT" ,
+    "feature2h1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.1_CBCONJOINT" ,
+    "feature3h1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.1_CBCONJOINT" ,
+    "feature4h1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.1_CBCONJOINT" ,
+    "feature1h2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.2_CBCONJOINT" ,
+    "feature2h2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.2_CBCONJOINT" ,
+    "feature3h2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.2_CBCONJOINT" ,
+    "feature4h2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.2_CBCONJOINT",
+    # choice
+    "choice_a" = "C1" ,
+    "choice_b" = "C2" ,
+    "choice_c" = "C3" ,
+    "choice_d" = "C4" ,
+    "choice_e" = "C5" ,
+    "choice_f" = "C6" ,
+    "choice_g" = "C7" ,
+    "choice_h" = "C8"
+    )
+
+
 
 # CREGGG Approach
+p_load(cregg,dplyr)
 # https://thomasleeper.com/cregg/
-p_load(cregg)
-
-f1 <- C1 ~ Gender + Education + LanguageSkills + CountryOfOrigin + Job + JobExperience + JobPlans + ReasonForApplication + 
-  
-
-
-f1 <- ChosenImmigrant ~ Gender + Education + LanguageSkills + CountryOfOrigin + Job + JobExperience + JobPlans + ReasonForApplication + 
-  PriorEntry
-plot(mm(immigration, f1, id = ~CaseID), vline = 0.5)
-
 # https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
-if (FALSE) {
-  data("wide_conjoint")
-  
-  # character string interface
-  ## profile_variables
-  list1 <- list(
-    feature1 = list(
-      names(wide_conjoint)[grep("^feature1.{1}1", names(wide_conjoint))],
-      names(wide_conjoint)[grep("^feature1.{1}2", names(wide_conjoint))]
-    ),
-    feature2 = list(
-      names(wide_conjoint)[grep("^feature2.{1}1", names(wide_conjoint))],
-      names(wide_conjoint)[grep("^feature2.{1}2", names(wide_conjoint))]
-    ),
-    feature3 = list(
-      names(wide_conjoint)[grep("^feature3.{1}1", names(wide_conjoint))],
-      names(wide_conjoint)[grep("^feature3.{1}2", names(wide_conjoint))]
-    ),
-    rating = list(
-      names(wide_conjoint)[grep("^rating.+1", names(wide_conjoint))],
-      names(wide_conjoint)[grep("^rating.+2", names(wide_conjoint))]
-    )
+
+# "If a variable in the original format records which of the two profiles was chosen (e.g., “left” and “right”), it should go in task_variables"
+
+# delete first three rows
+dat = dat[-c(1, 2, 3), ] 
+
+# generate id variable
+dat$respondent = 1:nrow(dat)
+
+# delete unused columns
+conjoint.d <- dat %>% dplyr:: select(grep("feature", names(dat)), 
+                                     grep("respondent", names(dat)),
+                                     grep("choice", names(dat))
+                                     )
+
+# reorder
+conjoint.d <- conjoint.d %>% select(respondent, everything())
+
+
+## profile_variables
+list1 <- list(
+  feature1 = list( # feature 1
+    names(conjoint.d)[grep("^feature1.{1}1", names(conjoint.d))],
+    names(conjoint.d)[grep("^feature1.{1}2", names(conjoint.d))]
+  ),
+  feature2 = list(# feature 2
+    names(conjoint.d)[grep("^feature2.{1}1", names(conjoint.d))],
+    names(conjoint.d)[grep("^feature2.{1}2", names(conjoint.d))]
+  ),
+  feature3 = list(# feature 3
+    names(conjoint.d)[grep("^feature3.{1}1", names(conjoint.d))],
+    names(conjoint.d)[grep("^feature3.{1}2", names(conjoint.d))]
+  ),
+  feature4 = list(# feature 4
+    names(conjoint.d)[grep("^feature4.{1}1", names(conjoint.d))],
+    names(conjoint.d)[grep("^feature4.{1}2", names(conjoint.d))]
   )
-  ## task variables
-  list2 <- list(choice = paste0("choice_", letters[1:4]),
-                timing = paste0("timing_", letters[1:4]))
+)
+
+# task variables 
+list2 <- list(choice = paste0("choice_", letters[1:8]))
+
+# perform reshape
+str(conjoint.d <- cj_tidy(conjoint.d, 
+                          profile_variables = list1,
+                          task_variables = list2,
+                          id = ~ respondent))
+
+# checking (if nothing happens, it's true)
+stopifnot(nrow(conjoint.d) == nrow(dat)*8*2) # 8 tasks and 2 candidates
   
-  # formula interface
-  ## profile_variables
-  list1 <- list(
-    feature1 = list(
-      ~ feature1a1 + feature1b1 + feature1c1 + feature1d1,
-      ~ feature1a2 + feature1b2 + feature1c2 + feature1d2
-    ),
-    feature2 = list(
-      ~ feature2a1 + feature2b1 + feature2c1 + feature2d1,
-      ~ feature2a2 + feature2b2 + feature2c2 + feature2d2
-    ),
-    feature3 = list(
-      ~ feature3a1 + feature3b1 + feature3c1 + feature3d1,
-      ~ feature3a2 + feature3b2 + feature3c2 + feature3d2
-    ),
-    rating = list(
-      ~ rating_a1 + rating_b1 + rating_c1 + rating_d1,
-      ~ rating_a2 + rating_b2 + rating_c2 + rating_d2
-    )
+# recode outcome so it is coded sensibly
+conjoint.d$chosen <- ifelse((conjoint.d$profile == "A" & conjoint.d$choice == 1) |
+                        (conjoint.d$profile == "B" & conjoint.d$choice == 2), 1, 0)
+
+# rename features
+# p_load("dplyr")
+conjoint.d <- conjoint.d %>% 
+  rename("attr.Gender" = "feature1", "attr.Age" = "feature2","attr.Protest" = "feature3","attr.Pensions" = "feature4")
+
+# features to factor
+conjoint.d$attr.Gender = as.factor(conjoint.d$attr.Gender)
+conjoint.d$attr.Age = as.factor(conjoint.d$attr.Age)
+conjoint.d$attr.Protest = as.factor(conjoint.d$attr.Protest)
+conjoint.d$attr.Pensions = as.factor(conjoint.d$attr.Pensions)
+
+# Translate
+
+## Gender
+conjoint.d$attr.Gender <- recode_factor(conjoint.d$attr.Gender, `Mujer` = "Woman", `Hombre` = "Man")
+
+## Age
+conjoint.d$attr.Age <- recode_factor(conjoint.d$attr.Age, 
+                                     `Entre 35 y 50 años` = "Between 35-50 years old", 
+                                     `Menos de 35 años` = "Younger than 35 years old",
+                                     `Sobre 50 años` = "Over 50 years old"
+                                     )
+## Protest
+conjoint.d$attr.Protest <- recode_factor(
+  conjoint.d$attr.Protest, 
+  `El candidato APOYA protestas que busquen desestabilizar el actual gobierno.` = 
+    "The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government", 
+  `El candidato SE OPONE a protestas que busquen desestabilizar el actual gobierno.` = 
+    "The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government"
   )
-  # task variables
-  list2 <- list(choice = ~ choice_a + choice_b + choice_c + choice_d,
-                timing = ~ timing_a + timing_b + timing_c + timing_d)
-  
-  
-  # perform reshape
-  str(long <- cj_tidy(wide_conjoint,
-                      profile_variables = list1,
-                      task_variables = list2,
-                      id = ~ respondent))
-  stopifnot(nrow(long) == nrow(wide_conjoint)*4*2)
-  
-  # recode outcome so it is coded sensibly
-  long$chosen <- ifelse((long$profile == "A" & long$choice == 1) |
-                          (long$profile == "B" & long$choice == 2), 1, 0)
-  # use for analysis
-  cj(long, chosen ~ feature1 + feature2 + feature3, id = ~ respondent)
-}
+
+## Pensions
+conjoint.d$attr.Pensions <- recode_factor(
+  conjoint.d$attr.Pensions, 
+  `El candidato APOYA un aumento en las pensiones para la tercera edad.` = 
+    "The candidate SUPPORTS increases in pensions for the elderly", 
+  `El candidato SE OPONE a un aumento en las pensiones para la tercera edad.` = 
+    "The candidate OPPOSES increases in pensions for the elderly"
+)
+
+# use for analysis
+# cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent)
+
+
+# descriptive plotting
+plot(mm(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
+
+
+##############################
+# MERGING WITH LARGER DATASET
+##############################
+
+# Recode Original Dataset
+dat$Boric.Kast = as.factor(dat$Q13)
+dat$Education = as.factor(dat$Q5)
+dat$Gender = as.factor(dat$Q4)
+dat$Income = as.factor(dat$Q6)
+
+# Boric.Kast
+dat$Boric.Kast <- recode_factor(dat$Boric.Kast, 
+                                `Blanco/Nulo.` = "Other", 
+                                `GABRIEL BORIC FONT` = "Boric",
+                                `JOSÉ ANTONIO KAST RIST` = "Kast",
+                                `No voté.` = "Other",
+                                `Prefiero no decir.` = "Other")
+
+dat.subset = dat %>% select(respondent, Boric.Kast, Education, Gender, Income)
+
+# Merge
+conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
+
+# descriptive plotting
+mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+            id = ~respondent, 
+            estimate = "mm", 
+            by = ~Boric.Kast)
+plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
+
+
+
+
+
 
 
 
