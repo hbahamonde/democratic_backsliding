@@ -17,6 +17,9 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 
 # Import Data
 dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+
+# delete first three rows
+dat = dat[-c(1, 2, 3), ] 
 @
 
 
@@ -24,7 +27,6 @@ Let's see how long people take to answer the study
 
 <<>>=
 hist(as.numeric(dat$Duration..in.seconds.)/60, ylab="Freq.", xlab="Minutes")
-
 @
 
 Ok, in average that is:
@@ -47,36 +49,158 @@ table(dat$Q4) # gender
 
 <<>>=
 p_load(lattice)
-lattice::histogram(as.numeric(dat$Q8_1)) # left-right
+lattice::histogram(as.numeric(dat$Q8_1), type = "percent") # left-right
 @
 
 <<>>=
 p_load(lattice)
-lattice::histogram(as.numeric(dat$Q9_1), aspect="iso") # satisfied w dem
+lattice::histogram(as.numeric(dat$Q9_1), type = "percent") # satisfied w dem
+@
+
+<<tidy=TRUE>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$Q10_1), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# dem is better....really worrying.
 @
 
 <<>>=
 p_load(lattice)
-table(as.factor(dat$Q10_1)) # dem is better....really worrying.
+lattice::histogram(as.factor(dat$Q10_2), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Democracy is not an effective form of government...better a strong leader.
+@
+
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$Q10_3), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# right to protest
 @
 
 <<>>=
 p_load(lattice)
-table(as.factor(dat$Q10_2)) # dem is better....really worrying.
+lattice::histogram(as.factor(dat$Q10_4), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# free press....wtf.
+@
+
+
+Things that are desirable in a democracy...
+
+1 means \emph{not at all an essential characteristic of democracy} and 10 means it definitely is  \emph{an essential characteristic of democracy}.
+
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_1), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Governments tax the rich and subsidize the poor. 
+@
+
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_2), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Religious authorities ultimately interpret the laws.
 @
 
 <<>>=
 p_load(lattice)
-table(as.factor(dat$Q10_3)) # right to protest
+lattice::histogram(as.numeric(dat$Q12_3), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# People choose their leaders in free elections.
 @
 
 <<>>=
 p_load(lattice)
-table(as.factor(dat$Q10_4)) # free press....wtf.
+lattice::histogram(as.numeric(dat$Q12_4), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# People receive state aid for unemployment.
 @
 
-############################## 
-# CONJOINT Experiment DATA CLEANING
-##############################
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_5), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# The army takes over when government is incompetent.
+@
 
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_6), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Civil rights protect people from state oppression.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_7), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# The state makes people’s incomes equal.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_8), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# People obey their rulers.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.numeric(dat$Q12_9), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Women have the same rights as men.
+@
+
+
+Other questions...
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$Q13), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) # voted for...
+@
+
+The questions below are the post-checks of the conjoint choices. It'd be a problem if most respondents tell us that they would have NOT voted for such a candidate (u.e., a candidate as presented in the conjoint table), casting doubts on external validity.
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC1), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC96), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC55), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC97), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC46), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC98), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC113), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+<<>>=
+p_load(lattice)
+lattice::histogram(as.factor(dat$DC114), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# "si yo hubiera votado..." means "yes, I would have voted for this candidate.
+@
+
+
+Yes, we got over 60 percent of "credibility" (otherwise, subjects would have voted for such a candidate).
 \end{document}

@@ -8,6 +8,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 # Import Data
 dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
 
+
 ##########
 # Conjoint Data Prep
 ##########
@@ -93,8 +94,6 @@ dat <- dat %>%
     "choice_g" = "C7" ,
     "choice_h" = "C8"
     )
-
-
 
 # CREGGG Approach
 p_load(cregg,dplyr)
