@@ -8,10 +8,111 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 # Import Data
 dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
 
+# delete first three rows
+dat = dat[-c(1, 2, 3), ] 
 
-##########
+########################################################
+# Recoding // Descriptives
+########################################################
+
+p_load("dplyr")
+
+##
+dat$Q4  <- recode_factor(as.factor(dat$Q4), `Hombre` = "Man", `Mujer` = "Woman") # gender
+#lattice::histogram(dat$Q4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+##
+dat$Q10_1  <- recode_factor(as.factor(dat$Q10_1),  # Democracy might have problems but it's better...
+                            "Completamente de acuerdo" = "Agree completely", 
+                            "Un poco de acuerdo" = "Agree to some extent",
+                            "Un poco en desacuerdo" = "Somewhat disagree",
+                            "Completamente en desacuerdo" = "Completely disagree"
+                            )
+# lattice::histogram(dat$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+##
+dat$Q10_2  <- recode_factor(as.factor(dat$Q10_2),  # Democracy is not an effective form of government...better a strong leader
+                            "Completamente de acuerdo" = "Agree completely", 
+                            "Un poco de acuerdo" = "Agree to some extent",
+                            "Un poco en desacuerdo" = "Somewhat disagree",
+                            "Completamente en desacuerdo" = "Completely disagree"
+                            )
+# lattice::histogram(dat$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+##
+dat$Q10_3  <- recode_factor(as.factor(dat$Q10_3),  # right to protest
+                            "Completamente de acuerdo" = "Agree completely", 
+                            "Un poco de acuerdo" = "Agree to some extent",
+                            "Un poco en desacuerdo" = "Somewhat disagree",
+                            "Completamente en desacuerdo" = "Completely disagree"
+                            )
+# lattice::histogram(dat$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+##
+dat$Q10_4  <- recode_factor(as.factor(dat$Q10_4),  # free press
+                            "Completamente de acuerdo" = "Agree completely", 
+                            "Un poco de acuerdo" = "Agree to some extent",
+                            "Un poco en desacuerdo" = "Somewhat disagree",
+                            "Completamente en desacuerdo" = "Completely disagree"
+                            )
+# lattice::histogram(dat$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_1 = as.numeric(dat$Q12_1) # Governments tax the rich and subsidize the poor
+# lattice::histogram(dat$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q8_1 = as.numeric(dat$Q8_1) # satisfied w dem
+# lattice::histogram(dat$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_2 = as.numeric(dat$Q12_2) # Religious authorities ultimately interpret the laws
+# lattice::histogram(dat$Q12_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_3 = as.numeric(dat$Q12_3) # People choose their leaders in free elections.
+# lattice::histogram(dat$Q12_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_5 = as.numeric(dat$Q12_5) # The army takes over when government is incompetent
+# lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_7 = as.numeric(dat$Q12_7) # Civil rights protect people from state oppression.
+# lattice::histogram(dat$Q12_7, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_8 = as.numeric(dat$Q12_8) # People obey their rulers.
+# lattice::histogram(dat$Q12_8, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat$Q12_9 = as.numeric(dat$Q12_9) # Women have the same rights as men.
+# lattice::histogram(dat$Q12_9, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
+# Recode Original Dataset
+dat$Boric.Kast = as.factor(dat$Q13)
+dat$Education = as.factor(dat$Q5)
+dat$Gender = as.factor(dat$Q4)
+dat$Income = as.factor(dat$Q6)
+
+# Boric.Kast
+dat$Boric.Kast <- recode_factor(dat$Boric.Kast, 
+                                `Blanco/Nulo.` = "Other", 
+                                `GABRIEL BORIC FONT` = "Boric",
+                                `JOSÉ ANTONIO KAST RIST` = "Kast",
+                                `No voté.` = "Other",
+                                `Prefiero no decir.` = "Other")
+
+# generate id variable
+dat$respondent = 1:nrow(dat)
+dat <- dat %>% select(respondent, everything()) # reorder
+
+
+########################################
 # Conjoint Data Prep
-##########
+########################################
+
 
 # name structure is = [4 features][h tasks][2 candidates]
 
@@ -93,29 +194,20 @@ dat <- dat %>%
     "choice_f" = "C6" ,
     "choice_g" = "C7" ,
     "choice_h" = "C8"
-    )
+  )
+
+
+# keep conjoint columns
+conjoint.d <- dat %>% dplyr:: select(grep("feature", names(dat)), 
+                                     grep("respondent", names(dat)),
+                                     grep("choice", names(dat))
+)
 
 # CREGGG Approach
 p_load(cregg,dplyr)
 # https://thomasleeper.com/cregg/
 # https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
-
 # "If a variable in the original format records which of the two profiles was chosen (e.g., “left” and “right”), it should go in task_variables"
-
-# delete first three rows
-dat = dat[-c(1, 2, 3), ] 
-
-# generate id variable
-dat$respondent = 1:nrow(dat)
-
-# delete unused columns
-conjoint.d <- dat %>% dplyr:: select(grep("feature", names(dat)), 
-                                     grep("respondent", names(dat)),
-                                     grep("choice", names(dat))
-                                     )
-
-# reorder
-conjoint.d <- conjoint.d %>% select(respondent, everything())
 
 
 ## profile_variables
@@ -165,7 +257,7 @@ conjoint.d$attr.Age = as.factor(conjoint.d$attr.Age)
 conjoint.d$attr.Protest = as.factor(conjoint.d$attr.Protest)
 conjoint.d$attr.Pensions = as.factor(conjoint.d$attr.Pensions)
 
-# Translate
+# Translate // Recode
 
 ## Gender
 conjoint.d$attr.Gender <- recode_factor(conjoint.d$attr.Gender, `Mujer` = "Woman", `Hombre` = "Man")
@@ -206,30 +298,22 @@ plot(mm(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensio
 # MERGING WITH LARGER DATASET
 ##############################
 
-# Recode Original Dataset
-dat$Boric.Kast = as.factor(dat$Q13)
-dat$Education = as.factor(dat$Q5)
-dat$Gender = as.factor(dat$Q4)
-dat$Income = as.factor(dat$Q6)
-
-# Boric.Kast
-dat$Boric.Kast <- recode_factor(dat$Boric.Kast, 
-                                `Blanco/Nulo.` = "Other", 
-                                `GABRIEL BORIC FONT` = "Boric",
-                                `JOSÉ ANTONIO KAST RIST` = "Kast",
-                                `No voté.` = "Other",
-                                `Prefiero no decir.` = "Other")
-
-dat.subset = dat %>% select(respondent, Boric.Kast, Education, Gender, Income)
+# subset vars from the big dataset to be merged to the conjoint dataset
+dat.subset = dat %>% select(respondent, Boric.Kast, Education, Gender, Income, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1 , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 
-# descriptive plotting
+##############################
+# CONOINT Data Analyses
+##############################
+
+# Marginal Means // Subgroup Analyses
 mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
             id = ~respondent, 
             estimate = "mm", 
             by = ~Boric.Kast)
+
 plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 
