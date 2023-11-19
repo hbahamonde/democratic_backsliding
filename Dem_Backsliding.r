@@ -6,10 +6,17 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
 # Import Data
-dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+# dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+
+# 2
+dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch2.csv")
+
+
 
 # delete first three rows
-dat = dat[-c(1, 2, 3), ] 
+# dat = dat[-c(1, 2, 3), ] 
+dat = dat[-c(1, 2), ] 
+
 
 ########################################################
 # Recoding // Descriptives
@@ -108,6 +115,36 @@ dat$Boric.Kast <- recode_factor(dat$Boric.Kast,
 dat$respondent = 1:nrow(dat)
 dat <- dat %>% select(respondent, everything()) # reorder
 
+########################################
+# Tax Experiment
+########################################
+
+# Recode Treatment
+dat$block  <- recode_factor(as.factor(dat$block), 
+                            `1` = "Control", 
+                            `2` = "T1: Infra. (Flat Tax).",
+                            `3` = "T2: Infra. (Prog. Tax).",
+                            `4` = "T3: Pensions (Flat Tax).",
+                            `5` = "T4: Pensions (Prog. Tax)."
+                            ) 
+
+lattice::histogram(dat$block, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
+
+# Recode Answer
+dat$Q39_6 = as.numeric(dat$Q39_6)
+
+p_load(ggplot2)
+ggplot(dat, aes(block, Q39_6)) + 
+  geom_boxplot(aes(fill=factor(block))) + 
+  labs(title="Box plot", 
+       subtitle="",
+       caption="",
+       x="Experimental Condition",
+       y="Scale")
+
+
 
 ########################################
 # Conjoint Data Prep
@@ -201,7 +238,7 @@ dat <- dat %>%
 conjoint.d <- dat %>% dplyr:: select(grep("feature", names(dat)), 
                                      grep("respondent", names(dat)),
                                      grep("choice", names(dat))
-)
+                                     )
 
 # CREGGG Approach
 p_load(cregg,dplyr)
