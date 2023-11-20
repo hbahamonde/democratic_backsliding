@@ -13,9 +13,14 @@ dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qua
 
 
 
-# delete first three rows
+# delete first two/three rows
 # dat = dat[-c(1, 2, 3), ] 
 dat = dat[-c(1, 2), ] 
+
+# convert all character columns to factor
+dat[sapply(dat, is.character)] <- lapply(dat[sapply(dat, is.character)], 
+                                         as.factor)
+
 
 
 ########################################################
