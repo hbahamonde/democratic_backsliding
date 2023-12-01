@@ -12,7 +12,7 @@ dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qua
 dat = dat[-c(1, 2, 3), ] 
 
 ########################################################
-# Recoding // Descriptives
+# Re-coding // Descriptive
 ########################################################
 
 p_load("dplyr")
@@ -65,6 +65,10 @@ dat$Q12_1 = as.numeric(dat$Q12_1) # Governments tax the rich and subsidize the p
 dat$Q8_1 = as.numeric(dat$Q8_1) # satisfied w dem
 # lattice::histogram(dat$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
+dat$Q8_1_highlow = ifelse(dat$Q8_1 >= median(dat$Q8_1), 1, 0)
+dat$Q8_1_highlow = as.factor(dat$Q8_1_highlow)
+dat$Q8_1_highlow = recode_factor(dat$Q8_1_highlow, "0"="Low Satisfaction", "1" = "High Satisfaction")
+
 #
 dat$Q12_2 = as.numeric(dat$Q12_2) # Religious authorities ultimately interpret the laws
 # lattice::histogram(dat$Q12_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
@@ -76,6 +80,10 @@ dat$Q12_3 = as.numeric(dat$Q12_3) # People choose their leaders in free election
 #
 dat$Q12_5 = as.numeric(dat$Q12_5) # The army takes over when government is incompetent
 # lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+dat$Q12_5_highlow = ifelse(dat$Q12_5 >= median(dat$Q12_5), 1, 0)
+dat$Q12_5_highlow = as.factor(dat$Q12_5_highlow)
+dat$Q12_5_highlow = recode_factor(dat$Q12_5_highlow, "0"="Army should take over", "1" = "Army should NOT take over")
 
 #
 dat$Q12_7 = as.numeric(dat$Q12_7) # Civil rights protect people from state oppression.
@@ -291,7 +299,7 @@ conjoint.d$attr.Pensions <- recode_factor(
 
 
 # descriptive plotting
-plot(mm(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
+# plot(mm(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
 
 
 ##############################
@@ -299,7 +307,7 @@ plot(mm(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensio
 ##############################
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat %>% select(respondent, Boric.Kast, Education, Gender, Income, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1 , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat %>% select(respondent, Boric.Kast, Education, Gender, Income, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1 , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
@@ -308,7 +316,7 @@ conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 # CONOINT Data Analyses
 ##############################
 
-# Marginal Means // Subgroup Analyses
+# Marginal Means // Subgroup Analyses: Boric and Kast
 mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
             id = ~respondent, 
             estimate = "mm", 
@@ -318,10 +326,22 @@ plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 
 
+# Marginal Means // Subgroup Analyses: High/Low Satisfaction with Democracy
+mm_DemSatis <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                   id = ~respondent, 
+                   estimate = "mm", 
+                   by = ~Q8_1_highlow)
+
+plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
 
 
+# Marginal Means // Subgroup Analyses: Army should take over
+mm_ArmyTakesOver <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                  id = ~respondent, 
+                  estimate = "mm", 
+                  by = ~Q12_5_highlow)
 
-
+plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
 
 
 ##########
