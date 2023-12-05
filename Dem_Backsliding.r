@@ -9,13 +9,15 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 # dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
 
 # 2
-dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch2.csv")
+# dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch2.csv")
 
+# 3
+dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/chile_data.csv")
 
 
 # delete first two/three rows
-# dat = dat[-c(1, 2, 3), ] 
-dat = dat[-c(1, 2), ] 
+# dat = dat[-c(1, 2, 3), ]  # 1
+dat = dat[-c(1, 2), ]  # 2 and 3
 
 # convert all character columns to factor
 dat[sapply(dat, is.character)] <- lapply(dat[sapply(dat, is.character)], 
@@ -116,13 +118,51 @@ dat$Education = as.factor(dat$Q5)
 dat$Gender = as.factor(dat$Q4)
 dat$Income = as.factor(dat$Q6)
 
+# Income Low/Mid/High
+dat$IncomeLowMidHigh <- recode_factor(dat$Income, 
+                                      `Menos de $35.000 mensuales liquidos` = "Low", 
+                                      `De $35.001 a $75.000 mensuales liquidos` = "Low",
+                                      `De $75.001 a $110.000 mensuales liquidos` = "Low",
+                                      `De $110.001 a $150.000 mensuales liquidos ` = "Low",
+                                      `De $150.001 a $225.000 mensuales liquidos` = "Low",
+                                      `De $225.001 a $350.000 mensuales liquidos` = "Low",
+                                      `De $350.001 a $450.000 mensuales liquidos ` = "Mid", 
+                                      `De $450.001 a $550.000 mensuales liquidos` = "Mid",
+                                      `De $550.001 a $700.000 mensuales liquidos` = "Mid",
+                                      `De $700.001 a $1.000.000 mensuales liquidos` = "Mid",
+                                      `De $1000.001 a $2.000.000 mensuales liquidos`   = "Mid",
+                                      `De $2.000.001 a $3.000.000 mensuales liquidos` = "High",
+                                      `De $3.000.001 a $4.500.000 mensuales liquidos` = "High",
+                                      `Más de $4.500.000 mensuales liquidos` = "High",
+                                      `No sabe / No contesta` = "Don't know")
+
+
+
+
+
 # Boric.Kast
 dat$Boric.Kast <- recode_factor(dat$Boric.Kast, 
-                                `Blanco/Nulo.` = "Other", 
+                                `Blanco/Nulo.` = "Other", # "Other", "Null"
                                 `GABRIEL BORIC FONT` = "Boric",
                                 `JOSÉ ANTONIO KAST RIST` = "Kast",
-                                `No voté.` = "Other",
-                                `Prefiero no decir.` = "Other")
+                                `No voté.` = "Other", # "Other", "Didn't vote"
+                                `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
+                                )
+
+# dat <- dat[ which(dat$Boric.Kast=="Boric" | dat$Boric.Kast == "Kast"), ]
+# dat$Boric.Kast <- droplevels(dat$Boric.Kast)
+
+# Education High/Low
+dat$Educ.HighLow <- recode_factor(dat$Education, 
+                                  `Menos que educación básica (menos que octavo básico).` = "Low", 
+                                  `Educación básica completa (hasta octavo básico).` = "Low",
+                                  `Educación media completa.` = "Low",
+                                  `Educación técnico-profesional completa.` = "Mid.",
+                                  `Educación universitaria completa.` = "High", 
+                                  `Magister o Doctorado completo.` = "High", 
+                                  `Otro/Prefiero no decir` = "Other"
+                                  )
+
 
 # generate id variable
 dat$respondent = 1:nrow(dat)
@@ -349,7 +389,7 @@ conjoint.d$attr.Pensions <- recode_factor(
 ##############################
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat %>% select(respondent, Boric.Kast, Education, Gender, Income, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1 , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat %>% select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1 , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
@@ -360,7 +400,7 @@ conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 
 # Marginal Means // Subgroup Analyses: Boric and Kast
 mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-            id = ~respondent, 
+            id = ~ respondent, 
             estimate = "mm", 
             by = ~Boric.Kast)
 
@@ -384,6 +424,58 @@ mm_ArmyTakesOver <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protes
                   by = ~Q12_5_highlow)
 
 plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
+
+
+# Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
+mm_StrongLeader <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                       id = ~respondent, 
+                       estimate = "mm", 
+                       by = ~Q10_2)
+
+plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
+
+
+# Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
+mm_DemIsBetter <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                      id = ~respondent, 
+                      estimate = "mm", 
+                      by = ~Q10_1)
+
+plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
+
+
+# Marginal Means // Subgroup Analyses: right to protest
+mm_RightToProtest <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                     id = ~respondent, 
+                     estimate = "mm", 
+                     by = ~Q10_3)
+
+plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
+
+# Marginal Means // Subgroup Analyses: education
+mm_Educ <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                        id = ~respondent, 
+                        estimate = "mm", 
+                        by = ~Education)
+
+plot(mm_Educ, group = "Education", vline = 0.5)
+
+# Marginal Means // Subgroup Analyses: education High/Low
+mm_EducHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+              id = ~respondent, 
+              estimate = "mm", 
+              by = ~Educ.HighLow)
+
+plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
+
+# Marginal Means // Subgroup Analyses: income Low/Mid/High
+mm_IncomeHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                     id = ~respondent, 
+                     estimate = "mm", 
+                     by = ~IncomeLowMidHigh)
+
+plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
+
 
 
 ##########
