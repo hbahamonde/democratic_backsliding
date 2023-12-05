@@ -74,11 +74,20 @@ dat$Q10_4  <- recode_factor(as.factor(dat$Q10_4),  # free press
 #
 dat$Q12_1 = as.numeric(dat$Q12_1) # Governments tax the rich and subsidize the poor
 # lattice::histogram(dat$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat$Q12_1_highlow = ifelse(dat$Q12_1 >= median(dat$Q12_1), 1, 0)
+dat$Q12_1_highlow = as.factor(dat$Q12_1_highlow)
+
+dat$Q12_1_highlow = recode_factor(as.factor(dat$Q12_1_highlow),  # Governments tax the rich and subsidize the poor
+              "0" = "Not an essential characteristic", 
+              "1" = "An essential characteristic"
+              )
+
 
 #
 dat$Q8_1 = as.numeric(dat$Q8_1) # satisfied w dem
 # lattice::histogram(dat$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
+# satisfied w dem high/low
 dat$Q8_1_highlow = ifelse(dat$Q8_1 >= median(dat$Q8_1), 1, 0)
 dat$Q8_1_highlow = as.factor(dat$Q8_1_highlow)
 dat$Q8_1_highlow = recode_factor(dat$Q8_1_highlow, "0"="Low Satisfaction", "1" = "High Satisfaction")
@@ -93,11 +102,16 @@ dat$Q12_3 = as.numeric(dat$Q12_3) # People choose their leaders in free election
 
 #
 dat$Q12_5 = as.numeric(dat$Q12_5) # The army takes over when government is incompetent
-# lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
+# The army takes over when government is incompetent / (high/low)
 dat$Q12_5_highlow = ifelse(dat$Q12_5 >= median(dat$Q12_5), 1, 0)
 dat$Q12_5_highlow = as.factor(dat$Q12_5_highlow)
-dat$Q12_5_highlow = recode_factor(dat$Q12_5_highlow, "0"="Army should take over", "1" = "Army should NOT take over")
+
+dat$Q12_5_highlow = recode_factor(as.factor(dat$Q12_5_highlow),  # the army takes over when government is incompetent
+                                  "0" = "Not an essential characteristic", 
+                                  "1" = "An essential characteristic"
+                                  )
 
 #
 dat$Q12_7 = as.numeric(dat$Q12_7) # Civil rights protect people from state oppression.
@@ -389,7 +403,7 @@ conjoint.d$attr.Pensions <- recode_factor(
 ##############################
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat %>% select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1 , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat %>% select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
@@ -476,7 +490,15 @@ mm_IncomeHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protes
 
 plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
 
+# Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
+mm_TaxRichHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                       id = ~respondent, 
+                       estimate = "mm", 
+                       by = ~Q12_1_highlow)
 
+plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
+
+                              
 
 ##########
 # VDEM
