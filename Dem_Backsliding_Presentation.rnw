@@ -232,13 +232,13 @@
 \title{\input{title.txt}\unskip} % 
 
 
-\author[shortname]{Hector Bahamonde \inst{1}}
-\author[shortname]{Inga Saikkonen \inst{2}}
-\author[shortname]{Mart Trasberg \inst{3}}
+\author[hb]{Hector Bahamonde \inst{1}}
+\author[is]{Inga Saikkonen \inst{2}}
+\author[mt]{Mart Trasberg \inst{3}}
 
-\institute[shortinst]{\inst{1} University of Turku, Finland}
-\institute[shortinst]{\inst{2} \A Abo Akademi, Finland}
-\institute[shortinst]{\inst{3} Monterrey Tec, Mexico}
+\institute[hb]{\inst{1} University of Turku, Finland}
+\institute[is]{\inst{2} \A Abo Akademi, Finland}
+\institute[mt]{\inst{3} Monterrey Tec, Mexico}
 
 
 \date{\today}
@@ -252,8 +252,8 @@
 
 \begin{document}
 
-<<echo=FALSE, cache=FALSE, warning = FALSE, message = F>>=
-read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backsliding.r') # Hector path // MAC
+<<echo=FALSE, cache=FALSE, warning = FALSE, message = F, eval=TRUE>>=
+knitr::read_chunk('../democratic_backsliding/Dem_Backsliding.r')
 
 @
 
@@ -266,7 +266,7 @@ options(scipen = 99999999999)
 
 @
 
-<<loadings:d, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
+<<loadings, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
 @
 
@@ -279,6 +279,9 @@ options(scipen = 99999999999)
 
 @
 
+<<sum:table, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = T, cache=FALSE, eval=TRUE, results = "asis">>=
+
+@
 
 % % % % % % % % % % % % % % %
 %           CONTENT
@@ -309,13 +312,6 @@ Test.
 \begin{frame}[c]{Title}
 Test.
 \end{frame} 
-
-
-
-
-
-\end{document}
-
 
 
 
@@ -461,10 +457,16 @@ test
 
 \section{Appendix}
 
+\miniframeson
+\begin{frame}[plain]{\hypertarget{sum:table:slide}{{\tiny Summary Stats}}}
+\center
+Test \Sexpr{sumtable(dat,labels=labs, vars = vars,out='latex')}
+\end{frame}
 
-%\miniframesoff
-%\begin{frame}[plain]{\hypertarget{sum:table:slide}{{\tiny Summary Stats}}}
-%\center
-%test.
-%\end{frame}
+
+\end{document}
+
+
+
+
                                                                                                                                                                                

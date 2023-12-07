@@ -1,8 +1,8 @@
+## ---- loadings ----
 cat("\014")
 rm(list=ls())
 setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 
-## ---- loadings ----
 # Pacman
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
@@ -203,7 +203,7 @@ labs <- c('Age',
 
 
 ## ---- sum:table ----
-sumtable(dat,labels=labs, vars = vars,out='latex')
+sumtable <- sumtable(dat,labels=labs, vars = vars,out='latex')
 ## ---- 
 
 ########################################
@@ -362,10 +362,10 @@ list1 <- list(
 list2 <- list(choice = paste0("choice_", letters[1:8]))
 
 # perform reshape
-str(conjoint.d <- cj_tidy(conjoint.d, 
-                          profile_variables = list1,
-                          task_variables = list2,
-                          id = ~ respondent))
+conjoint.d <- cj_tidy(conjoint.d, 
+                      profile_variables = list1,
+                      task_variables = list2,
+                      id = ~ respondent)
 
 # checking (if nothing happens, it's true)
 # stopifnot(nrow(conjoint.d) == nrow(dat)*8*2) # 8 tasks and 2 candidates
@@ -427,7 +427,8 @@ conjoint.d$attr.Pensions <- recode_factor(
 ##############################
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat %>% select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+
+dat.subset = dat %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
@@ -442,90 +443,90 @@ conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 ## ---- conjoint:data:analyses ----
 
 # Marginal Means // Subgroup Analyses: Boric and Kast
-mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
             id = ~ respondent, 
             estimate = "mm", 
-            by = ~Boric.Kast)
+            by = ~Boric.Kast))
 
-BoricKast.p = plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
+# BoricKast.p = plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 
 
 # Marginal Means // Subgroup Analyses: High/Low Satisfaction with Democracy
-mm_DemSatis <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_DemSatis <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                    id = ~respondent, 
                    estimate = "mm", 
-                   by = ~Q8_1_highlow)
+                   by = ~Q8_1_highlow))
 
-DemSatis.p = plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
+# DemSatis.p = plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Army should take over
-mm_ArmyTakesOver <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_ArmyTakesOver <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                   id = ~respondent, 
                   estimate = "mm", 
-                  by = ~Q12_5_highlow)
+                  by = ~Q12_5_highlow))
 
-ArmyTakesOver.p = plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
+# ArmyTakesOver.p = plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
-mm_StrongLeader <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_StrongLeader <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                        id = ~respondent, 
                        estimate = "mm", 
-                       by = ~Q10_2)
+                       by = ~Q10_2))
 
-StrongLeader.p = plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
+# StrongLeader.p = plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
-mm_DemIsBetter <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_DemIsBetter <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                       id = ~respondent, 
                       estimate = "mm", 
-                      by = ~Q10_1)
+                      by = ~Q10_1))
 
-DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
+# DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: right to protest
-mm_RightToProtest <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_RightToProtest <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                      id = ~respondent, 
                      estimate = "mm", 
-                     by = ~Q10_3)
+                     by = ~Q10_3))
 
-RightToProtest.p = plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
+# RightToProtest.p = plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: education
-mm_Educ <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_Educ <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                         id = ~respondent, 
                         estimate = "mm", 
-                        by = ~Education)
+                        by = ~Education))
 
-Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
+# Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: education High/Low
-mm_EducHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_EducHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
               id = ~respondent, 
               estimate = "mm", 
-              by = ~Educ.HighLow)
+              by = ~Educ.HighLow))
 
-EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
+# EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: income Low/Mid/High
-mm_IncomeHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_IncomeHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                      id = ~respondent, 
                      estimate = "mm", 
-                     by = ~IncomeLowMidHigh)
+                     by = ~IncomeLowMidHigh))
 
-IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
+# IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
-mm_TaxRichHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_TaxRichHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                        id = ~respondent, 
                        estimate = "mm", 
-                       by = ~Q12_1_highlow)
+                       by = ~Q12_1_highlow))
 
-TaxRichHighLow.p = plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
+# TaxRichHighLow.p = plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
 ## ----
                
 
