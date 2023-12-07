@@ -232,13 +232,22 @@
 \title{\input{title.txt}\unskip} % 
 
 
-\author[hb]{Hector Bahamonde \inst{1}}
-\author[is]{Inga Saikkonen \inst{2}}
-\author[mt]{Mart Trasberg \inst{3}}
 
-\institute[hb]{\inst{1} University of Turku, Finland}
-\institute[is]{\inst{2} \A Abo Akademi, Finland}
-\institute[mt]{\inst{3} Monterrey Tec, Mexico}
+
+\author[shortname]{
+Hector Bahamonde \inst{1} \and 
+Inga Saikkonen \inst{2} \and 
+Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphabetical order. All contributed equally to this project.}
+}
+
+\institute[shortinst]{\inst{1} University of Turku, Finland \and %
+                      \inst{2} \textnormal{Åbo Akademi}, Finland \and
+                      \inst{3} Monterrey Tec, Mexico}
+
+
+
+
+
 
 
 \date{\today}
@@ -279,7 +288,7 @@ options(scipen = 99999999999)
 
 @
 
-<<sum:table, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = T, cache=FALSE, eval=TRUE, results = "asis">>=
+<<sum:table, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = F, cache=FALSE, eval=TRUE, results = "asis">>=
 
 @
 
