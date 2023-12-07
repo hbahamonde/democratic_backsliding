@@ -2,6 +2,7 @@ cat("\014")
 rm(list=ls())
 setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 
+## ---- loadings ----
 # Pacman
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
@@ -19,11 +20,13 @@ dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qua
 # dat = dat[-c(1, 2, 3), ]  # 1
 dat = dat[-c(1, 2), ]  # 2 and 3
 
+# Chile data
+dat.chile = dat
+chile.sample.size = as.numeric(nrow(dat.chile))
+
 # convert all character columns to factor
 dat[sapply(dat, is.character)] <- lapply(dat[sapply(dat, is.character)], 
                                          as.factor)
-
-
 
 ########################################################
 # Re-coding // Descriptive
@@ -102,7 +105,7 @@ dat$Q12_3 = as.numeric(dat$Q12_3) # People choose their leaders in free election
 
 #
 dat$Q12_5 = as.numeric(dat$Q12_5) # The army takes over when government is incompetent
-lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 # The army takes over when government is incompetent / (high/low)
 dat$Q12_5_highlow = ifelse(dat$Q12_5 >= median(dat$Q12_5), 1, 0)
@@ -182,6 +185,27 @@ dat$Educ.HighLow <- recode_factor(dat$Education,
 dat$respondent = 1:nrow(dat)
 dat <- dat %>% select(respondent, everything()) # reorder
 
+# summary stats demographics
+p_load(vtable,kableExtra)
+
+vars = c('Q3', # Age
+         'Q4', # Gender
+         'Q5', # Educ
+         'Q6' # Income
+)
+
+labs <- c('Age',
+          'Gender',
+          'Education',
+          'Income'
+)
+## ----
+
+
+## ---- sum:table ----
+sumtable(dat,labels=labs, vars = vars,out='latex')
+## ---- 
+
 ########################################
 # Tax Experiment
 ########################################
@@ -217,7 +241,7 @@ ggplot(dat, aes(block, Q39_6)) +
 # Conjoint Data Prep
 ########################################
 
-
+## ---- conjoint:prep ----
 # name structure is = [4 features][h tasks][2 candidates]
 
 # rename
@@ -344,7 +368,7 @@ str(conjoint.d <- cj_tidy(conjoint.d,
                           id = ~ respondent))
 
 # checking (if nothing happens, it's true)
-stopifnot(nrow(conjoint.d) == nrow(dat)*8*2) # 8 tasks and 2 candidates
+# stopifnot(nrow(conjoint.d) == nrow(dat)*8*2) # 8 tasks and 2 candidates
   
 # recode outcome so it is coded sensibly
 conjoint.d$chosen <- ifelse((conjoint.d$profile == "A" & conjoint.d$choice == 1) |
@@ -407,10 +431,15 @@ dat.subset = dat %>% select(respondent, Boric.Kast, Education, Educ.HighLow, Gen
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
+## ----
+
+
 
 ##############################
 # CONOINT Data Analyses
 ##############################
+
+## ---- conjoint:data:analyses ----
 
 # Marginal Means // Subgroup Analyses: Boric and Kast
 mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -418,7 +447,7 @@ mm_BoricKast <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + 
             estimate = "mm", 
             by = ~Boric.Kast)
 
-plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
+BoricKast.p = plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 
 
@@ -428,7 +457,7 @@ mm_DemSatis <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + a
                    estimate = "mm", 
                    by = ~Q8_1_highlow)
 
-plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
+DemSatis.p = plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Army should take over
@@ -437,7 +466,7 @@ mm_ArmyTakesOver <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protes
                   estimate = "mm", 
                   by = ~Q12_5_highlow)
 
-plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
+ArmyTakesOver.p = plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
@@ -446,7 +475,7 @@ mm_StrongLeader <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest
                        estimate = "mm", 
                        by = ~Q10_2)
 
-plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
+StrongLeader.p = plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
@@ -455,7 +484,7 @@ mm_DemIsBetter <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest 
                       estimate = "mm", 
                       by = ~Q10_1)
 
-plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
+DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: right to protest
@@ -464,7 +493,7 @@ mm_RightToProtest <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Prote
                      estimate = "mm", 
                      by = ~Q10_3)
 
-plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
+RightToProtest.p = plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: education
 mm_Educ <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -472,7 +501,7 @@ mm_Educ <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.
                         estimate = "mm", 
                         by = ~Education)
 
-plot(mm_Educ, group = "Education", vline = 0.5)
+Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: education High/Low
 mm_EducHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -480,7 +509,7 @@ mm_EducHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest 
               estimate = "mm", 
               by = ~Educ.HighLow)
 
-plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
+EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: income Low/Mid/High
 mm_IncomeHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -488,7 +517,7 @@ mm_IncomeHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protes
                      estimate = "mm", 
                      by = ~IncomeLowMidHigh)
 
-plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
+IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
 mm_TaxRichHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -496,9 +525,30 @@ mm_TaxRichHighLow <- cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Prote
                        estimate = "mm", 
                        by = ~Q12_1_highlow)
 
-plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
+TaxRichHighLow.p = plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
+## ----
+               
 
-                              
+
+
+
+
+
+################
+#### ABSTRACT
+################
+
+## ---- abstract ----
+fileConn <- file ("abstract.txt")
+writeLines(paste("Citizen's support for democracy is central for democratic stability, yet recent research has begun to question the depth of this commitment in both new and established democracies. Contrary to most research that concentrates on potential breaches of democratic values by the 'winners,' we turn our attention to the 'losers.' In particular, we seek to understand if individuals who sided with the losing candidate are more open to supporting anti-systemic actions against the government, and whether their stance is influenced by their country's regime type. To do this, we carried out a novel survey experiment in two new democracies, Estonia and Chile (n=", chile.sample.size, ")", ", probing into the willingness of these 'losers' to tolerate transgressions against democratic principles", sep=""), fileConn)
+close(fileConn)
+## ----
+
+
+
+
+
+               
 
 ##########
 # VDEM
@@ -822,4 +872,6 @@ p8.estonia.2 = plot(effect("X003", welfare.model.estonia), as.table=T, ylab="Gov
 ggarrange(p7.chile.1,p7.chile.2,p8.estonia.1,p8.estonia.2, ncol = 2, nrow = 2)
 # This last one is interesting: opposite effects in both countries. In Chile older COHORTS and AGES support welfare more. In Estonia, the opposite happens.
 # However, cohort and age effects are correlated in both cases: we CANNOT know if older folks in Chile want more welfare because they
-# do not have one or because they were socialized during the years welfare was more present during their formative years. 
+# do not have one or because they were socialized during the years welfare was more present during their formative years.
+
+
