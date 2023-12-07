@@ -154,7 +154,14 @@ dat$IncomeLowMidHigh <- recode_factor(dat$Income,
                                       `No sabe / No contesta` = "Don't know")
 
 
-
+# Age young/old
+dat$Q3_young_old <- recode_factor(dat$Q3, 
+                                      `18-24` = "Young", 
+                                      `25-34` = "Old",
+                                      `35-44` = "Old",
+                                      `45-54` = "Old",
+                                      `Más de 55` = "Old"
+                                  )
 
 
 # Boric.Kast
@@ -428,7 +435,7 @@ conjoint.d$attr.Pensions <- recode_factor(
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 
-dat.subset = dat %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
@@ -440,6 +447,12 @@ conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 # CONOINT Data Analyses
 ##############################
 
+
+# conjoint.d$BoricKast_Age <- interaction(conjoint.d$Boric.Kast, conjoint.d$Q3_young_old, sep = "_")
+# plot(cj(conjoint.d, chosen ~ BoricKast_Age + attr.Gender + attr.Age + attr.Protest + attr.Pensions,id = ~respondent, estimate = "mm", h0 = 0.5))
+
+
+
 ## ---- conjoint:data:analyses ----
 
 # Marginal Means // Subgroup Analyses: Boric and Kast
@@ -448,7 +461,7 @@ mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age 
             estimate = "mm", 
             by = ~Boric.Kast))
 
-# BoricKast.p = plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
+BoricKast.p = plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 
 
