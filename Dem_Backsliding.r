@@ -447,9 +447,9 @@ conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 # CONOINT Data Analyses
 ##############################
 
-
+# options(scipen=999)
 # conjoint.d$BoricKast_Age <- interaction(conjoint.d$Boric.Kast, conjoint.d$Q3_young_old, sep = "_")
-# plot(cj(conjoint.d, chosen ~ BoricKast_Age + attr.Gender + attr.Age + attr.Protest + attr.Pensions,id = ~respondent, estimate = "mm", h0 = 0.5))
+# cj(conjoint.d, chosen ~ BoricKast_Age,id = ~respondent, estimate = "mm", h0 = 0.5)
 
 
 
