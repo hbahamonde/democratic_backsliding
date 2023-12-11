@@ -38,7 +38,36 @@
 \newcommand{\xmark}{\ding{55}}%
 
 %\usepackage{marvosym} %faces
+
 \usepackage{hyperref}
+\hypersetup{
+    %bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=true,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1} {key2} {key3}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links (change box color with linkbordercolor)
+    citecolor=blue,        % color of links to bibliography
+    filecolor=blue,      % color of file links
+    urlcolor=blue           % color of external links
+}
+
+\hypersetup{
+  colorlinks = true,
+  urlcolor = blue,
+  pdfpagemode = UseNone
+}
+
+
 \usepackage{multirow}
 
 \usepackage{tikz}
@@ -156,7 +185,13 @@
 
 
 %%% bib begin
-\usepackage[backend=biber,style=numeric, citestyle=ieee]{biblatex}
+\usepackage[authordate,isbn=false,doi=false,url=false,eprint=false]{biblatex-chicago}
+\DeclareFieldFormat[article]{title}{\mkbibquote{#1}} % make article titles in quotes
+\DeclareFieldFormat[thesis]{title}{\mkbibemph{#1}} % make theses italics
+
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+
 \addbibresource{/Users/hectorbahamonde/Bibliografia_PoliSci/library.bib} 
 
 
@@ -307,45 +342,66 @@ options(scipen = 99999999999)
 
 \subsection{Motivation}
 
-
-% motiv 1
 \miniframeson
-\begin{frame}[c]{Title}
-Test.
+\begin{frame}[c]{Democratic Backsliding}
+  \begin{itemize}
+    \item Parece existir un consenso en que algunas democracias est\'an en riesgo de retroceder, acerc\'andose m\'as a sistemas autoritarios.
+
+    \item Estos retrocesos han sido estudiados en un sinn\'umero de casos.
+
+        \begin{itemize}
+          \item \textcite{Kaufman2019} explican que ``a transition to competitive authoritarianism in the United States is unlikely, although not impossible.''
+
+          \item {\bf {\color{red}Caso 2}.}
+          \item {\bf {\color{red}Caso 3}.}
+
+        \end{itemize}
+
+  \end{itemize}
 \end{frame} 
 
+\miniframeson
+\begin{frame}[c]{Democratic Backsliding: A ``Winners Bias''}
 
-\subsection{Motivation}
+Desafortunadamente, la major\'ia ha concentrado sus esfuerzos en c\'omo el ejecutivo agranda sus poderes. 
 
-\miniframesoff
-\begin{frame}[c]{Title}
-Test.
-\end{frame} 
+    \begin{itemize}
+      \item \textcite[p. 2]{Perez-Linan2018} explica que ``most threats to democracy originate in the {\bf \emph{executive}}, not in congress.''
 
+      \item ``Democratic backsliding is the incremental erosion of institutions [...] that results from the actions of [...] {\bf \emph{elected} governments} \parencite[p. 27]{Haggard2021}.''
 
+      \item \textcite[p. 41]{Corrales2020} explica que ``electoral irregularities contributed to democratic backsliding in Venezuela under {\bf \emph{chavista} rule}.''
 
-\subsection{Our paper}
+    \end{itemize}
+
+%\begin{alertblock}{Voters}
+%Y aunque los votantes tambi\'en han sido estudiados (e.g., \cite{Svolik2019}), los incumbentes siempre son los protagonistas de estos retrocesos.
+%\end{alertblock}
+    
+\end{frame}
+
 
 \miniframeson
-\begin{frame}[c]{Title.}
+\begin{frame}[c]{Our paper}
 
   \begin{itemize}
-    \item {\bf Identify} 
+    \item Unlike most research that concentrates on potential breaches of democratic values by the ``winners,'' we turn our attention to electoral ``losers.''
+    
+    \item We seek to understand if voters who sided with the losing candidate are more open to supporting anti-systemic actions against the incumbent.]
+
+    \item We carried out a novel, fully pre-registered survey experiment in two new democracies, Chile (and Estonia), probing into the willingness of these ``losers'' to tolerate transgressions against democratic principles.
+
   \end{itemize}
+
 \end{frame}
 
 
 
 \section{Theory}
 
-\subsection{Political Psychology}
+\subsection{Title}
 
-\miniframeson
-\begin{frame}[c]{Title}
-    \begin{itemize}
-      \item Test.
-    \end{itemize}
-\end{frame}
+
 
 
 
@@ -471,6 +527,14 @@ test
 \center
 Test \Sexpr{sumtable(dat,labels=labs, vars = vars,out='latex')}
 \end{frame}
+
+
+\section{Bibliography}
+
+
+\begin{frame}[c]
+\printbibliography
+\end{frame} 
 
 
 \end{document}
