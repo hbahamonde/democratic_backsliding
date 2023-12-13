@@ -315,15 +315,19 @@ options(scipen = 99999999999)
 @
 
 
-<<conjoint:prep, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = TRUE, eval=TRUE>>=
+<<conjoint:prep, echo=FALSE, cache=FALSE, comment=NA, warning=FALSE, message=FALSE, include = TRUE, eval=TRUE>>=
 
 @
 
-<<conjoint:data:analyses, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = TRUE, cache=FALSE, eval=TRUE>>=
+<<conjoint:data:analyses, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = TRUE, cache=FALSE, eval=FALSE>>=
 
 @
 
-<<sum:table, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = F, cache=FALSE, eval=TRUE, results = "asis">>=
+<<conjoint:data:plot, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = TRUE, cache=FALSE, eval=FALSE>>=
+
+@
+
+<<descriptive:data:plot, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = TRUE, cache=FALSE, eval=FALSE>>=
 
 @
 
@@ -345,7 +349,7 @@ options(scipen = 99999999999)
 \miniframeson
 \begin{frame}[c]{Democratic Backsliding}
   \begin{itemize}
-    \item Parece existir un consenso en que algunas democracias est\'an en riesgo de retroceder, acerc\'andose m\'as a sistemas autoritarios.
+    \item Parece existir un consenso en que algunas democracias est\'an en riesgo de retroceder (\emph{democratic backsliding}).
 
     \item Estos retrocesos han sido estudiados en un sinn\'umero de casos.
 
@@ -366,15 +370,15 @@ options(scipen = 99999999999)
 Desafortunadamente, la major\'ia ha concentrado sus esfuerzos en c\'omo el {\bf ejecutivo} \emph{agranda} sus poderes. 
 
     \begin{itemize}
-      \item \textcite[p. 2]{Perez-Linan2018} explica que ``most threats to democracy originate in the {\bf \emph{executive}}, not in congress.''
+      \item \textcite[p. 27]{Haggard2021} definen ``[d]emocratic backsliding is the incremental erosion of institutions [...] that results from the actions of [...] {\bf \emph{elected} governments}.''
 
-      \item ``Democratic backsliding is the incremental erosion of institutions [...] that results from the actions of [...] {\bf \emph{elected} governments} \parencite[p. 27]{Haggard2021}.''
+      \item \textcite[p. 2]{Perez-Linan2018} explica que ``most threats to democracy originate in the {\bf \emph{executive}}, not in congress.''
 
       \item \textcite[p. 41]{Corrales2020} explica que ``electoral irregularities contributed to democratic backsliding in Venezuela under {\bf \emph{chavista} rule}.''
 
     \end{itemize}
 
-\begin{alertblock}{What about the lossers?}
+\begin{alertblock}{What about the \underline{electoral lossers}?}
 Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'aticas en cuanto la tolerancia de acciones no democr\'aticas entre ``ganadores'' y ``perdedores''?
 \end{alertblock}
     
@@ -383,22 +387,22 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 \subsection{Our Paper}
 
 \miniframeson
-\begin{frame}[c]{Nuestro Paper}
+\begin{frame}[c]{Nuestro Paper: ``El baile de los que sobran''}
 
   \begin{itemize}
-    \item A diferencia de la mayoría de las investigaciones que se concentran en posibles violaciones de los valores democr\'aticos por parte de los ``ganadores,'' nosotros dirigimos nuestra atenci\'on hacia los ``{\bf perdedores}'' electorales.
+    \item A diferencia de la mayoría de quienes estudian posibles violaciones de los principios democr\'aticos por parte de los ``ganadores,'' nosotros estudiamos a los ``{\bf perdedores}'' electorales.
 
     \item Hicimos un survey experiment (pre-registrado) en dos democracias recientes, Chile (y Estonia).
 
-    \item {\color{blue} Entender si los votantes que apoyaron al {\bf candidato perdedor} est\'an más abiertos a respaldar acciones anti-sist\'emicas {\bf contra el incumbente}}.
+    \item {\color{blue} Entender si los votantes que apoyaron al {\bf candidato perdedor} est\'an más abiertos a respaldar acciones anti-sist\'emicas {\bf contra el ganador}}.
 
-    \item Para esto, incluimos una teor\'ia enfocada en \emph{pérdidas} y \emph{loss aversion} (\emph{prospect theory}, e.g., \cite{Kahneman1979}).
+    \item Para esto, incluimos una teor\'ia enfocada en \emph{pérdidas} y \emph{loss aversion} (``\emph{prospect theory},'' e.g., \cite{Kahneman1979}).
 
     %\item {\bf Pre-registered findings}: encontramos que los votantes de {\bf Kast} \emph{no} son mas proclives que los votantes de {\bf Boric} a apoyar acciones antisist\'emicas (protestas). 
 
   \end{itemize}
 
-      \begin{exampleblock}{Pre-registered findings} 
+      \begin{exampleblock}{Findings} 
       Encontramos que los votantes de {\bf Kast} \emph{no} son mas proclives que los votantes de {\bf Boric} a apoyar acciones antisist\'emicas (protestas) que pongan en peligro el status quo. 
       \end{exampleblock}
   
@@ -420,11 +424,21 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 
 \subsection{Prospect Theory}
 
+
+
 \miniframeson
 \begin{frame}[c]{Prospect Theory}
 
   \begin{itemize}
-    \item Test
+
+    \item {\bf Losses loom larger than gains}: individuals ``give more weight to losses than to comparable gains'' \scriptsize{\parencite[p. 171]{Levy1992a}}.
+
+    \normalsize{\item{\bf Loss aversion}: individuals ``are more concerned with preventing a decline than increasing gains'' \scriptsize{\parencite[p. 89]{Levy1997}}}.
+    
+    %\item Utilities are defined with regard to \emph{changes} in outcomes with respect to a reference point.
+    
+    \item {\bf Asymmetric decision making}: ``[I]ndividuals tend to be risk averse in a domain of gains, and relatively risk seeking in a domain of losses'' \scriptsize{\parencite[p. 18]{McDermott1998}}.
+    
   \end{itemize}
 
 \end{frame}
@@ -434,46 +448,45 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 
 \subsection{Argument}
 
-
 \miniframeson
-\begin{frame}
+\begin{frame}[c]{Pre-Registered Hypothesis}
 
-
-\begin{alertblock}{Argument}
-Test.
-\end{alertblock}
-
-%\begin{exampleblock}{}%In simple...
-%\end{exampleblock}
-
+\begin{exampleblock}{Argument}
+Respondents who voted for the candidate/party that lost the the last election (Kast) would be more likely to choose a candidate who supports anti-systemic actions (protests) against the current government than respondents in the ``winning side.'' 
+\end{exampleblock}
 
 \end{frame}
 
-
-\miniframeson
-\begin{frame}<presentation:0>%{Argument}
-Test. %\centering\includegraphics[scale=1.2]{argument.pdf}
-\end{frame}
 
 \section{Empirics}
 
-\subsection{Case}
+\subsection{Experimental Design}
 
 \miniframeson
-\begin{frame}[c]{Chilean Case}
+\begin{frame}[c]{Conjoint Experiment}
+
   \begin{itemize}
-    \item We follow a ``{\bf least-likely case design}'' {\color{gray}\tiny(Levy 2008).} Finland has been consistently considered as:
-      \begin{itemize}
-        \item[-] A `democratic' {\color{gray}\tiny (Polity-V)}.
-        \item[-] An `economic egalitarian' {\color{gray}\tiny (Waltl 2022)}.
-        \item[-] A `gender egalitarian.'
-        \item[-] A `social-mobility prone' country {\color{gray}\tiny (Erola 2009)}.
-        %\item[-] Having low-information Municipal Elections {\color{gray}\tiny(Berggren et al. 2010 and 2017)}.
-      \end{itemize}
-      \item Thus, it should be {\bf hard to find} any {\bf correlation} between {\color{blue}class-congruent use of status symbols} and {\bf voting}.
-    \end{itemize}
-\vspace{0.5cm}
-...and yet, we \emph{do}.
+    \item Disenamos un conjoint experiment {\scriptsize\parencite{Hainmueller2014}}.
+    \item La muestra es representativa a nivel pais ($n=\Sexpr{chile.sample.size}$).
+    \item Fully randomized design (no constrains).
+    \item Representatividad estad\'istica de g\'enero y partido.
+    \item Bater\'ia de socio-demogr\'aficos, intenci\'on pol\'itica (Kast, Boric), evaluaci\'on de la democracia.
+  \end{itemize}
+
+\begin{table}[h]
+%\begin{footnotesize}
+\scalebox{0.7}{
+\begin{tabular}{  c |  p{0.6\linewidth} }
+\toprule
+\textbf{Dimension} & \textbf{Attribute Set} \\
+\midrule
+{\only<1,2>{\leavevmode\color{blue}}Gender} & {\only<1>{\leavevmode\color{red}}Male}, {\only<2>{\leavevmode\color{red}}Female}. \\
+{\only<3,4,5>{\leavevmode\color{blue}}Age} & {\only<3>{\leavevmode\color{red}}Younger than 35}, {\only<4>{\leavevmode\color{red}}Between 35-50}, {\only<5>{\leavevmode\color{red}}Over 50}. \\
+{\only<6,7>{\leavevmode\color{blue}}Protest} & {\only<6>{\leavevmode\color{red}}The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government}, {\only<7>{\leavevmode\color{red}}The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government} \\
+\bottomrule
+\end{tabular}}
+%\end{footnotesize}
+\end{table}
 \end{frame}
 
 
@@ -483,27 +496,60 @@ Test. %\centering\includegraphics[scale=1.2]{argument.pdf}
 
 
 \miniframeson
-\begin{frame}[c]{\hypertarget{reg:table:slide}{Functional Form and Model}}
+\begin{frame}[c]{Subgroup Marginal Means (MM)}
 
- \begin{align*}
- Y_{i}=\text{Votes}_{i}\sim\;&\text{\texttt{Poisson}}\\
- \text{log(Votes}_{i})  = \;
- & \beta_{1}\text{{\only<2,12>{\color{red}}Occupation-Appearance Congruence}}_{i}\times\text{{\only<2,12>{\color{red}}Social Class}}_{i} + \\
- & \beta_{2}\text{{\only<3>{\color{red}}Age}}_{i} + \\
- & \gamma{1}\text{{\only<4>{\color{blue}}Party}}_{i} + \\
- & \gamma{2}\text{{\only<5>{\color{blue}}City}}_{i} + \\
- & \mathbf{\Theta}_{i}
- \end{align*}
- \begin{itemize}
-  \item In  $\mathbf{\Theta}$ we {\bf also control for}: ${\only<6>{\color{red}}\text{Attractiveness}_{i}}$, ${\only<7>{\color{red}}\text{Masculinity}_{i}}$ and ${\only<8>{\color{red}}\text{Femininity}_{i}}$.
- \item {\only<9>{\color{red}}Full}, but also {\bf partition the data} ({\only<10>{\color{red}}male} \& {\only<11>{\color{red}}female}).
- \item We focus on the {\only<12>{\color{red}}{\bf marginal effects}}  of the {\only<12>{\color{red}}interaction term}.
- \\
- \hspace{10.7cm} \hyperlink{reg:table}{\beamergotobutton{show regression table}}
-\end{itemize}
+  \begin{itemize}
+    \item We depart from standard AMCE analyses {\scriptsize\parencite{Hainmueller2014}} and instead compute {\bf subgroup marginal means} {\scriptsize\parencite{Leeper2020a}}.
+    \item In practice, when using marginal means, there's no need to set a reference category.
+    \item ``In a forced-choice conjoint design, the grand mean is by definition 0.5'' {\scriptsize\parencite[p. 209]{Leeper2020a}}.
+  \end{itemize}
+
 \end{frame}
 
 
+
+\subsection{Results}
+
+
+\miniframeson
+\begin{frame}[c]{Subgroup Marginal Means (MM): Boric, Kast}
+
+\begin{center}
+          \includegraphics[scale=0.5, center]{/Users/hectorbahamonde/research/democratic_backsliding/Boric_Kast.pdf}
+\end{center}
+\end{frame}
+
+%\miniframesoff
+%\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
+%
+%\begin{center}
+%          \includegraphics[scale=0.65, center]{/Users/hectorbahamonde/research/democratic_backsliding/left_right.pdf}
+%\end{center}
+%\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
+
+\begin{center}
+          \includegraphics[scale=0.35, center]{/Users/hectorbahamonde/research/democratic_backsliding/dem_better.pdf}
+\end{center}
+\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
+
+\begin{center}
+          \includegraphics[scale=0.35, center]{/Users/hectorbahamonde/research/democratic_backsliding/strong_leader.pdf}
+\end{center}
+\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
+
+\begin{center}
+          \includegraphics[scale=0.35, center]{/Users/hectorbahamonde/research/democratic_backsliding/free_press.pdf}
+\end{center}
+\end{frame}
 
 
 
@@ -547,8 +593,14 @@ test
 
 \miniframeson
 \begin{frame}[plain]{\hypertarget{sum:table:slide}{{\tiny Summary Stats}}}
-\center
-Test \Sexpr{sumtable(dat,labels=labs, vars = vars,out='latex')}
+
+<<sum:table, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = F, cache=FALSE, eval=TRUE, results = "asis">>=
+
+sumtable(dat,labels=labs, vars = vars,out='latex')
+
+@
+
+
 \end{frame}
 
 
@@ -556,7 +608,7 @@ Test \Sexpr{sumtable(dat,labels=labs, vars = vars,out='latex')}
 
 
 \begin{frame}[c]
-\printbibliography
+{\scriptsize\printbibliography}
 \end{frame} 
 
 

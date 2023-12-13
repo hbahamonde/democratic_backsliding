@@ -43,7 +43,8 @@ dat$Q10_1  <- recode_factor(as.factor(dat$Q10_1),  # Democracy might have proble
                             "Completamente de acuerdo" = "Agree completely", 
                             "Un poco de acuerdo" = "Agree to some extent",
                             "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree"
+                            "Completamente en desacuerdo" = "Completely disagree",
+                            .ordered = TRUE
                             )
 # lattice::histogram(dat$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
@@ -52,7 +53,8 @@ dat$Q10_2  <- recode_factor(as.factor(dat$Q10_2),  # Democracy is not an effecti
                             "Completamente de acuerdo" = "Agree completely", 
                             "Un poco de acuerdo" = "Agree to some extent",
                             "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree"
+                            "Completamente en desacuerdo" = "Completely disagree",
+                            .ordered = TRUE
                             )
 # lattice::histogram(dat$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
@@ -70,7 +72,8 @@ dat$Q10_4  <- recode_factor(as.factor(dat$Q10_4),  # free press
                             "Completamente de acuerdo" = "Agree completely", 
                             "Un poco de acuerdo" = "Agree to some extent",
                             "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree"
+                            "Completamente en desacuerdo" = "Completely disagree",
+                            .ordered = TRUE
                             )
 # lattice::histogram(dat$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
@@ -208,10 +211,6 @@ labs <- c('Age',
 )
 ## ----
 
-
-## ---- sum:table ----
-sumtable <- sumtable(dat,labels=labs, vars = vars,out='latex')
-## ---- 
 
 ########################################
 # Tax Experiment
@@ -434,7 +433,6 @@ conjoint.d$attr.Pensions <- recode_factor(
 ##############################
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-
 dat.subset = dat %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
@@ -453,98 +451,151 @@ conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
 
 
 
-## ---- conjoint:data:analyses ----
-
-# Marginal Means // Subgroup Analyses: Boric and Kast
-mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-            id = ~ respondent, 
-            estimate = "mm", 
-            by = ~Boric.Kast))
-
-BoricKast.p = plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
-
-
-
 # Marginal Means // Subgroup Analyses: High/Low Satisfaction with Democracy
 mm_DemSatis <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                   id = ~respondent, 
-                   estimate = "mm", 
-                   by = ~Q8_1_highlow))
+                                   id = ~respondent, 
+                                   estimate = "mm", 
+                                   by = ~Q8_1_highlow))
 
 # DemSatis.p = plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Army should take over
 mm_ArmyTakesOver <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                  id = ~respondent, 
-                  estimate = "mm", 
-                  by = ~Q12_5_highlow))
+                                        id = ~respondent, 
+                                        estimate = "mm", 
+                                        by = ~Q12_5_highlow))
 
 # ArmyTakesOver.p = plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
 mm_StrongLeader <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                       id = ~respondent, 
-                       estimate = "mm", 
-                       by = ~Q10_2))
+                                       id = ~respondent, 
+                                       estimate = "mm", 
+                                       by = ~Q10_2))
 
 # StrongLeader.p = plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
 mm_DemIsBetter <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                      id = ~respondent, 
-                      estimate = "mm", 
-                      by = ~Q10_1))
+                                      id = ~respondent, 
+                                      estimate = "mm", 
+                                      by = ~Q10_1))
 
 # DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
 
 
 # Marginal Means // Subgroup Analyses: right to protest
 mm_RightToProtest <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                     id = ~respondent, 
-                     estimate = "mm", 
-                     by = ~Q10_3))
+                                         id = ~respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q10_3))
 
 # RightToProtest.p = plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: education
 mm_Educ <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                        id = ~respondent, 
-                        estimate = "mm", 
-                        by = ~Education))
+                               id = ~respondent, 
+                               estimate = "mm", 
+                               by = ~Education))
 
 # Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: education High/Low
 mm_EducHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-              id = ~respondent, 
-              estimate = "mm", 
-              by = ~Educ.HighLow))
+                                      id = ~respondent, 
+                                      estimate = "mm", 
+                                      by = ~Educ.HighLow))
 
 # EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: income Low/Mid/High
 mm_IncomeHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                     id = ~respondent, 
-                     estimate = "mm", 
-                     by = ~IncomeLowMidHigh))
+                                        id = ~respondent, 
+                                        estimate = "mm", 
+                                        by = ~IncomeLowMidHigh))
 
 # IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
 
 # Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
 mm_TaxRichHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                       id = ~respondent, 
-                       estimate = "mm", 
-                       by = ~Q12_1_highlow))
+                                         id = ~respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q12_1_highlow))
 
 # TaxRichHighLow.p = plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
+
+
+## ---- conjoint:data:analyses ----
+# Marginal Means // Subgroup Analyses: Boric and Kast
+
+# mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+
+mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest, 
+            id = ~ respondent, 
+            estimate = "mm", 
+            by = ~Boric.Kast))
+
+## ----
+
+
+## ---- conjoint:data:plot ----
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Boric_Kast.pdf",   # The directory you want to save the file in
+    width = 12, # The width of the plot in inches
+    height = 4) # The height of the plot in inches
+
+plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
+
+dev.off();dev.off()
 ## ----
                
 
+## ---- descriptive:data:plot ----
+p_load(lattice)
+
+# left-right
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/left_right.pdf") # The height of the plot in inches
+lattice::histogram(as.numeric(dat$Q8_1), 
+                   type = "percent", 
+                   breaks=seq(from=1,to=10,by=1),
+                   xlab="Left-Right",
+                   aspect.ratio=1) # left-right
+dev.off()
+
+# Dem might have problems but it's better than other forms of government
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/dem_better.pdf") # The height of the plot in inches
+
+lattice::histogram(as.factor(dat$Q10_1), 
+                   type = "percent", 
+                   scales=list(y=list(rot=45), x=list(rot=45),
+                               type = "percent"),
+                   xlab="Dem might have problems but\nit's better than other\nforms of government",
+                   aspect.ratio=1)
+dev.off()
+
+# Democracy is not an effective form of government...better a strong leader.
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/strong_leader.pdf") # The height of the plot in inches
+
+lattice::histogram(as.factor(dat$Q10_2), 
+                   type = "percent", 
+                   scales=list(y=list(rot=45), x=list(rot=45)),
+                   xlab="Democracy is not an effective form\nof government...better a strong leader",
+                   aspect.ratio=1) 
 
 
+dev.off()
+
+# free press...
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/free_press.pdf") # The height of the plot in inches
+
+lattice::histogram(as.factor(dat$Q10_4), type = "percent", scales=list(y=list(rot=45), x=list(rot=45)),
+                   xlab="It is important to have a free press",
+                   aspect.ratio=1)
+
+dev.off()
+## ----
 
 
 

@@ -16,10 +16,13 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
 # Import Data
-dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+#dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
+dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/chile_data.csv")
 
-# delete first three rows
-dat = dat[-c(1, 2, 3), ] 
+
+# delete first three/two rows
+# dat = dat[-c(1, 2, 3), ] 
+dat = dat[-c(1, 2), ] 
 @
 
 
@@ -27,6 +30,9 @@ Let's see how long people take to answer the study
 
 <<>>=
 hist(as.numeric(dat$Duration..in.seconds.)/60, ylab="Freq.", xlab="Minutes")
+
+dat$minutes = as.numeric(dat$Duration..in.seconds.)/60
+
 @
 
 Ok, in average that is:
@@ -34,9 +40,7 @@ Ok, in average that is:
 round(mean(as.numeric(dat$Duration..in.seconds.), na.rm = T)/60,2)
 @
 
-ok. Almost 6 minutes.
-
-Let's see now some descriptive
+Let's see now some descriptives
 
 
 <<>>=
@@ -49,7 +53,10 @@ table(dat$Q4) # gender
 
 <<>>=
 p_load(lattice)
-lattice::histogram(as.numeric(dat$Q8_1), type = "percent") # left-right
+lattice::histogram(as.numeric(dat$Q8_1), 
+                   type = "percent", 
+                   breaks=seq(from=1,to=10,by=1),
+                   xlab="Left-Right") # left-right
 @
 
 <<>>=
