@@ -402,8 +402,8 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 
   \end{itemize}
 
-      \begin{exampleblock}{Findings} 
-      Encontramos que los votantes de {\bf Kast} \emph{no} son mas proclives que los votantes de {\bf Boric} a apoyar acciones antisist\'emicas (protestas) que pongan en peligro el status quo. 
+      \begin{exampleblock}{Findings no conforman con nuestras espectativas iniciales} 
+      Encontramos que los votantes de {\bf Kast} (perdedores) \emph{no} son mas proclives que los votantes de {\bf Boric} (ganadores) a apoyar acciones no democraticas (protestas antisist\'emicas) que pongan en peligro el \emph{status quo}. 
       \end{exampleblock}
   
 \end{frame}
