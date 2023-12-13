@@ -595,6 +595,7 @@ lattice::histogram(as.factor(dat$Q10_4), type = "percent", scales=list(y=list(ro
                    aspect.ratio=1)
 
 dev.off()
+
 ## ----
 
 
