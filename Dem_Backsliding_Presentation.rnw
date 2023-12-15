@@ -392,7 +392,7 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
   \begin{itemize}
     \item A diferencia de la mayoría de quienes estudian posibles violaciones de los principios democr\'aticos por parte de los ``ganadores,'' nosotros estudiamos a los ``{\bf perdedores}'' electorales.
 
-    \item Hicimos un survey experiment (pre-registrado) en dos democracias recientes, Chile (y Estonia).
+    \item Hicimos un conjoin experiment (pre-registrado) en dos democracias recientes, Chile (y Estonia).
 
     \item {\color{blue} Entender si los votantes que apoyaron al {\bf candidato perdedor} est\'an más abiertos a respaldar acciones anti-sist\'emicas {\bf contra el ganador}}.
 
@@ -403,7 +403,7 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
   \end{itemize}
 
       \begin{exampleblock}{Findings no conforman con nuestras espectativas iniciales} 
-      Encontramos que los votantes de {\bf Kast} (perdedores) \emph{no} son mas proclives que los votantes de {\bf Boric} (ganadores) a apoyar acciones no democraticas (protestas antisist\'emicas) que pongan en peligro el \emph{status quo}. 
+      Encontramos que los votantes de {\bf Kast} (perdedores) \emph{no} son mas proclives que los votantes de {\bf Boric} (ganadores) a apoyar acciones no democraticas que pongan en peligro el \emph{status quo} (protestas antisist\'emicas). 
       \end{exampleblock}
   
 \end{frame}
@@ -439,7 +439,7 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
     
     %\item Utilities are defined with regard to \emph{changes} in outcomes with respect to a reference point.
     
-    \item {\bf Asymmetric decision making}: ``[I]ndividuals tend to be risk averse in a domain of gains, and relatively risk seeking in a domain of losses'' \scriptsize{\parencite[p. 18]{McDermott1998}}.
+    %\item {\bf Asymmetric decision making}: ``[I]ndividuals tend to be risk averse in a domain of gains, and relatively risk seeking in a domain of losses'' \scriptsize{\parencite[p. 18]{McDermott1998}}.
     
   \end{itemize}
 
@@ -454,7 +454,7 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 \begin{frame}[c]{Pre-Registered Hypothesis}
 
 \begin{exampleblock}{Argument}
-Respondents who voted for the candidate/party that lost the the last election (Kast) would be more likely to choose a candidate who supports anti-systemic actions (protests) against the current government than respondents in the ``winning side.'' 
+Respondents who voted for the candidate/party that lost the the last election (Kast) would be more likely to choose a candidate who supports anti-systemic actions (protests) against the current government than respondents in the ``winning side'' (Boric). 
 \end{exampleblock}
 
 \end{frame}
