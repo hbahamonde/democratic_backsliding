@@ -7,194 +7,210 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
 # Import Data
-# dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch.csv")
-
-# 2
-# dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/Chile_Soft_Launch2.csv")
-
-# 3
-dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/chile_data.csv")
+dat.chile <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/chile_data.csv")
+dat.estonia <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/estonia_data.csv")
 
 
 # delete first two/three rows
-# dat = dat[-c(1, 2, 3), ]  # 1
-dat = dat[-c(1, 2), ]  # 2 and 3
+dat.chile = dat.chile[-c(1, 2), ]
+dat.estonia = dat.estonia[-c(1, 2), ]
 
 # Chile data
-dat.chile = dat
 chile.sample.size = as.numeric(nrow(dat.chile))
+estonia.sample.size = as.numeric(nrow(dat.estonia))
 
 # convert all character columns to factor
-#### FIX THIS BELOW IT WAS CONVERTING TIME IN A WEIRD WAY
-dat[sapply(dat, is.character)] <- lapply(dat[sapply(dat, is.character)], 
-                                         as.factor)
+#### THIS BELOW WAS CONVERTING TIME IN A WEIRD WAY
+# dat.chile[sapply(dat.chile, is.character)] <- lapply(dat.chile[sapply(dat.chile, is.character)], as.factor)
 
 ########################################################
-# Re-coding // Descriptive
+# Re-coding // Descriptive [Chile]
 ########################################################
 
 p_load("dplyr")
 
 ##
-dat$Q4  <- recode_factor(as.factor(dat$Q4), `Hombre` = "Man", `Mujer` = "Woman") # gender
-#lattice::histogram(dat$Q4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman") # gender
+#lattice::histogram(dat.chile$Q4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+dat.estonia$Q4  <- recode_factor(as.factor(dat.estonia$Q4), `Mees` = "Man", `Naine` = "Woman", `Ei tea` = "Do not know", `Muu` = "Muu" ) # gender
+# lattice::histogram(dat.estonia$Q4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
 
 ##
-dat$Q10_1  <- recode_factor(as.factor(dat$Q10_1),  # Democracy might have problems but it's better...
-                            "Completamente de acuerdo" = "Agree completely", 
-                            "Un poco de acuerdo" = "Agree to some extent",
-                            "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree",
-                            .ordered = TRUE
-                            )
-# lattice::histogram(dat$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  # Democracy might have problems but it's better...
+                                  "Completamente de acuerdo" = "Agree completely", 
+                                  "Un poco de acuerdo" = "Agree to some extent",
+                                  "Un poco en desacuerdo" = "Somewhat disagree",
+                                  "Completamente en desacuerdo" = "Completely disagree",
+                                  .ordered = TRUE
+                                  )
+# lattice::histogram(dat.chile$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
+dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy might have problems but it's better...
+                                    "Täiesti nõus" = "Agree completely",
+                                    "Nõus" = "Agree to some extent",
+                                    "Ei ole nõus" = "Somewhat disagree",
+                                    "Üldse ei ole nõus" = "Completely disagree",
+                                    .ordered = TRUE
+                                    )
+# lattice::histogram(dat.estonia$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
+# HERE keep translating from here till the end.
+
 
 ##
-dat$Q10_2  <- recode_factor(as.factor(dat$Q10_2),  # Democracy is not an effective form of government...better a strong leader
-                            "Completamente de acuerdo" = "Agree completely", 
-                            "Un poco de acuerdo" = "Agree to some extent",
-                            "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree",
-                            .ordered = TRUE
-                            )
-# lattice::histogram(dat$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  # Democracy is not an effective form of government...better a strong leader
+                                  "Completamente de acuerdo" = "Agree completely", 
+                                  "Un poco de acuerdo" = "Agree to some extent",
+                                  "Un poco en desacuerdo" = "Somewhat disagree",
+                                  "Completamente en desacuerdo" = "Completely disagree",
+                                  .ordered = TRUE
+)
+# lattice::histogram(dat.chile$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 ##
-dat$Q10_3  <- recode_factor(as.factor(dat$Q10_3),  # right to protest
-                            "Completamente de acuerdo" = "Agree completely", 
-                            "Un poco de acuerdo" = "Agree to some extent",
-                            "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree"
-                            )
-# lattice::histogram(dat$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
+                                  "Completamente de acuerdo" = "Agree completely", 
+                                  "Un poco de acuerdo" = "Agree to some extent",
+                                  "Un poco en desacuerdo" = "Somewhat disagree",
+                                  "Completamente en desacuerdo" = "Completely disagree"
+)
+# lattice::histogram(dat.chile$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 ##
-dat$Q10_4  <- recode_factor(as.factor(dat$Q10_4),  # free press
-                            "Completamente de acuerdo" = "Agree completely", 
-                            "Un poco de acuerdo" = "Agree to some extent",
-                            "Un poco en desacuerdo" = "Somewhat disagree",
-                            "Completamente en desacuerdo" = "Completely disagree",
-                            .ordered = TRUE
-                            )
-# lattice::histogram(dat$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),  # free press
+                                  "Completamente de acuerdo" = "Agree completely", 
+                                  "Un poco de acuerdo" = "Agree to some extent",
+                                  "Un poco en desacuerdo" = "Somewhat disagree",
+                                  "Completamente en desacuerdo" = "Completely disagree",
+                                  .ordered = TRUE
+)
+# lattice::histogram(dat.chile$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 #
-dat$Q12_1 = as.numeric(dat$Q12_1) # Governments tax the rich and subsidize the poor
-# lattice::histogram(dat$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
-dat$Q12_1_highlow = ifelse(dat$Q12_1 >= median(dat$Q12_1), 1, 0)
-dat$Q12_1_highlow = as.factor(dat$Q12_1_highlow)
+dat.chile$Q12_1 = as.numeric(dat.chile$Q12_1) # Governments tax the rich and subsidize the poor
+# lattice::histogram(dat.chile$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_1_highlow = ifelse(dat.chile$Q12_1 >= median(dat.chile$Q12_1), 1, 0)
+dat.chile$Q12_1_highlow = as.factor(dat.chile$Q12_1_highlow)
 
-dat$Q12_1_highlow = recode_factor(as.factor(dat$Q12_1_highlow),  # Governments tax the rich and subsidize the poor
-              "0" = "Not an essential characteristic", 
-              "1" = "An essential characteristic"
-              )
+dat.chile$Q12_1_highlow = recode_factor(as.factor(dat.chile$Q12_1_highlow),  # Governments tax the rich and subsidize the poor
+                                        "0" = "Not an essential characteristic", 
+                                        "1" = "An essential characteristic"
+)
 
 
 #
-dat$Q8_1 = as.numeric(dat$Q8_1) # satisfied w dem
-# lattice::histogram(dat$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q8_1 = as.numeric(dat.chile$Q8_1) # satisfied w dem
+# lattice::histogram(dat.chile$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 # satisfied w dem high/low
-dat$Q8_1_highlow = ifelse(dat$Q8_1 >= median(dat$Q8_1), 1, 0)
-dat$Q8_1_highlow = as.factor(dat$Q8_1_highlow)
-dat$Q8_1_highlow = recode_factor(dat$Q8_1_highlow, "0"="Low Satisfaction", "1" = "High Satisfaction")
+dat.chile$Q8_1_highlow = ifelse(dat.chile$Q8_1 >= median(dat.chile$Q8_1), 1, 0)
+dat.chile$Q8_1_highlow = as.factor(dat.chile$Q8_1_highlow)
+dat.chile$Q8_1_highlow = recode_factor(dat.chile$Q8_1_highlow, "0"="Low Satisfaction", "1" = "High Satisfaction")
 
 #
-dat$Q12_2 = as.numeric(dat$Q12_2) # Religious authorities ultimately interpret the laws
-# lattice::histogram(dat$Q12_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_2 = as.numeric(dat.chile$Q12_2) # Religious authorities ultimately interpret the laws
+lattice::histogram(as.factor(dat.chile$Q12_2), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 #
-dat$Q12_3 = as.numeric(dat$Q12_3) # People choose their leaders in free elections.
-# lattice::histogram(dat$Q12_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_3 = as.numeric(dat.chile$Q12_3) # People choose their leaders in free elections.
+# lattice::histogram(as.factor(dat.chile$Q12_3), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 #
-dat$Q12_5 = as.numeric(dat$Q12_5) # The army takes over when government is incompetent
-# lattice::histogram(dat$Q12_5, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_5 = as.numeric(dat.chile$Q12_5) # The army takes over when government is incompetent
+# lattice::histogram(as.factor(dat.chile$Q12_5), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 # The army takes over when government is incompetent / (high/low)
-dat$Q12_5_highlow = ifelse(dat$Q12_5 >= median(dat$Q12_5), 1, 0)
-dat$Q12_5_highlow = as.factor(dat$Q12_5_highlow)
+dat.chile$Q12_5_highlow = ifelse(dat.chile$Q12_5 >= median(dat.chile$Q12_5), 1, 0)
+dat.chile$Q12_5_highlow = as.factor(dat.chile$Q12_5_highlow)
 
-dat$Q12_5_highlow = recode_factor(as.factor(dat$Q12_5_highlow),  # the army takes over when government is incompetent
-                                  "0" = "Not an essential characteristic", 
-                                  "1" = "An essential characteristic"
-                                  )
 
-#
-dat$Q12_7 = as.numeric(dat$Q12_7) # Civil rights protect people from state oppression.
-# lattice::histogram(dat$Q12_7, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_5_highlow = recode_factor(as.factor(dat.chile$Q12_5_highlow),  # the army takes over when government is incompetent
+                                        "0" = "Not an essential characteristic", 
+                                        "1" = "An essential characteristic"
+)
 
 #
-dat$Q12_8 = as.numeric(dat$Q12_8) # People obey their rulers.
-# lattice::histogram(dat$Q12_8, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_7 = as.numeric(dat.chile$Q12_7) # Civil rights protect people from state oppression.
+# lattice::histogram(as.factor(dat.chile$Q12_7), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 #
-dat$Q12_9 = as.numeric(dat$Q12_9) # Women have the same rights as men.
-# lattice::histogram(dat$Q12_9, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.chile$Q12_8 = as.numeric(dat.chile$Q12_8) # People obey their rulers.
+# lattice::histogram(as.factor(dat.chile$Q12_8), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+#
+dat.chile$Q12_9 = as.numeric(dat.chile$Q12_9) # Women have the same rights as men.
+# lattice::histogram(as.factor(dat.chile$Q12_9), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 
 # Recode Original Dataset
-dat$Boric.Kast = as.factor(dat$Q13)
-dat$Education = as.factor(dat$Q5)
-dat$Gender = as.factor(dat$Q4)
-dat$Income = as.factor(dat$Q6)
+dat.chile$Boric.Kast = as.factor(dat.chile$Q13)
+dat.chile$Education = as.factor(dat.chile$Q5)
+dat.chile$Gender = as.factor(dat.chile$Q4)
+dat.chile$Income = as.factor(dat.chile$Q6)
 
 # Income Low/Mid/High
-dat$IncomeLowMidHigh <- recode_factor(dat$Income, 
-                                      `Menos de $35.000 mensuales liquidos` = "Low", 
-                                      `De $35.001 a $75.000 mensuales liquidos` = "Low",
-                                      `De $75.001 a $110.000 mensuales liquidos` = "Low",
-                                      `De $110.001 a $150.000 mensuales liquidos ` = "Low",
-                                      `De $150.001 a $225.000 mensuales liquidos` = "Low",
-                                      `De $225.001 a $350.000 mensuales liquidos` = "Low",
-                                      `De $350.001 a $450.000 mensuales liquidos ` = "Mid", 
-                                      `De $450.001 a $550.000 mensuales liquidos` = "Mid",
-                                      `De $550.001 a $700.000 mensuales liquidos` = "Mid",
-                                      `De $700.001 a $1.000.000 mensuales liquidos` = "Mid",
-                                      `De $1000.001 a $2.000.000 mensuales liquidos`   = "Mid",
-                                      `De $2.000.001 a $3.000.000 mensuales liquidos` = "High",
-                                      `De $3.000.001 a $4.500.000 mensuales liquidos` = "High",
-                                      `Más de $4.500.000 mensuales liquidos` = "High",
-                                      `No sabe / No contesta` = "Don't know")
+dat.chile$IncomeLowMidHigh <- recode_factor(dat.chile$Income, 
+                                            `Menos de $35.000 mensuales liquidos` = "Low", 
+                                            `De $35.001 a $75.000 mensuales liquidos` = "Low",
+                                            `De $75.001 a $110.000 mensuales liquidos` = "Low",
+                                            `De $110.001 a $150.000 mensuales liquidos ` = "Low",
+                                            `De $150.001 a $225.000 mensuales liquidos` = "Low",
+                                            `De $225.001 a $350.000 mensuales liquidos` = "Low",
+                                            `De $350.001 a $450.000 mensuales liquidos ` = "Mid", 
+                                            `De $450.001 a $550.000 mensuales liquidos` = "Mid",
+                                            `De $550.001 a $700.000 mensuales liquidos` = "Mid",
+                                            `De $700.001 a $1.000.000 mensuales liquidos` = "Mid",
+                                            `De $1000.001 a $2.000.000 mensuales liquidos`   = "Mid",
+                                            `De $2.000.001 a $3.000.000 mensuales liquidos` = "High",
+                                            `De $3.000.001 a $4.500.000 mensuales liquidos` = "High",
+                                            `Más de $4.500.000 mensuales liquidos` = "High",
+                                            `No sabe / No contesta` = "Don't know")
 
 
 # Age young/old
-dat$Q3_young_old <- recode_factor(dat$Q3, 
-                                      `18-24` = "Young", 
-                                      `25-34` = "Old",
-                                      `35-44` = "Old",
-                                      `45-54` = "Old",
-                                      `Más de 55` = "Old"
-                                  )
+dat.chile$Q3_young_old <- recode_factor(dat.chile$Q3, 
+                                        `18-24` = "Young", 
+                                        `25-34` = "Old",
+                                        `35-44` = "Old",
+                                        `45-54` = "Old",
+                                        `Más de 55` = "Old"
+)
 
 
 # Boric.Kast
-dat$Boric.Kast <- recode_factor(dat$Boric.Kast, 
-                                `Blanco/Nulo.` = "Other", # "Other", "Null"
-                                `GABRIEL BORIC FONT` = "Boric",
-                                `JOSÉ ANTONIO KAST RIST` = "Kast",
-                                `No voté.` = "Other", # "Other", "Didn't vote"
-                                `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
-                                )
+dat.chile$Boric.Kast <- recode_factor(dat.chile$Boric.Kast, 
+                                      `Blanco/Nulo.` = "Other", # "Other", "Null"
+                                      `GABRIEL BORIC FONT` = "Boric",
+                                      `JOSÉ ANTONIO KAST RIST` = "Kast",
+                                      `No voté.` = "Other", # "Other", "Didn't vote"
+                                      `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
+)
 
-# dat <- dat[ which(dat$Boric.Kast=="Boric" | dat$Boric.Kast == "Kast"), ]
-# dat$Boric.Kast <- droplevels(dat$Boric.Kast)
+# dat.chile <- dat.chile[ which(dat.chile$Boric.Kast=="Boric" | dat.chile$Boric.Kast == "Kast"), ]
+# dat.chile$Boric.Kast <- droplevels(dat.chile$Boric.Kast)
 
 # Education High/Low
-dat$Educ.HighLow <- recode_factor(dat$Education, 
-                                  `Menos que educación básica (menos que octavo básico).` = "Low", 
-                                  `Educación básica completa (hasta octavo básico).` = "Low",
-                                  `Educación media completa.` = "Low",
-                                  `Educación técnico-profesional completa.` = "Mid.",
-                                  `Educación universitaria completa.` = "High", 
-                                  `Magister o Doctorado completo.` = "High", 
-                                  `Otro/Prefiero no decir` = "Other"
-                                  )
+dat.chile$Educ.HighLow <- recode_factor(dat.chile$Education, 
+                                        `Menos que educación básica (menos que octavo básico).` = "Low", 
+                                        `Educación básica completa (hasta octavo básico).` = "Low",
+                                        `Educación media completa.` = "Low",
+                                        `Educación técnico-profesional completa.` = "Mid.",
+                                        `Educación universitaria completa.` = "High", 
+                                        `Magister o Doctorado completo.` = "High", 
+                                        `Otro/Prefiero no decir` = "Other"
+)
 
 
 # generate id variable
-dat$respondent = 1:nrow(dat)
-dat <- dat %>% select(respondent, everything()) # reorder
+dat.chile$respondent = 1:nrow(dat.chile)
+dat.chile <- dat.chile %>% select(respondent, everything()) # reorder
+
+dat.estonia$respondent = 1:nrow(dat.estonia)
+dat.estonia <- dat.estonia %>% select(respondent, everything()) # reorder
 
 # summary stats demographics
 p_load(vtable,kableExtra)
@@ -210,6 +226,11 @@ labs <- c('Age',
           'Education',
           'Income'
 )
+
+# save dataset
+save(dat.chile, file = "/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData")
+save(dat.estonia, file = "/Users/hectorbahamonde/research/democratic_backsliding/estonia_data.RData")
+
 ## ----
 
 
@@ -242,10 +263,95 @@ ggplot(dat, aes(block, Q39_6)) +
        x="Experimental Condition",
        y="Scale")
 
+########################################
+# Conjoint Data Prep [Estonia] # HERE
+########################################
+
+# name structure is = [4 features][h tasks][2 candidates]
+
+# rename
+p_load("dplyr")
+dat.estonia <- dat.estonia %>% 
+  rename(
+    # features
+    
+    # choice
+    "choice_a" = "C1" ,
+    "choice_b" = "C2" ,
+    "choice_c" = "C3" ,
+    "choice_d" = "C4" ,
+    "choice_e" = "C5" ,
+    "choice_f" = "C6" ,
+    "choice_g" = "C7" ,
+    "choice_h" = "C8"
+  )
+
+
+# keep conjoint columns
+conjoint.d.estonia <- dat.estonia %>% dplyr:: select(grep("feature", names(dat.estonia)), 
+                                                     grep("respondent", names(dat.estonia)),
+                                                     grep("choice", names(dat.estonia))
+)
+
+# CREGGG Approach
+p_load(cregg,dplyr)
+# https://thomasleeper.com/cregg/
+# https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
+# "If a variable in the original format records which of the two profiles was chosen (e.g., “left” and “right”), it should go in task_variables"
+
+
+## profile_variables
+list1 <- list(
+  feature1 = list( # feature 1
+    names(conjoint.d.estonia)[grep("^feature1.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature1.{1}2", names(conjoint.d.estonia))]
+  ),
+  feature2 = list(# feature 2
+    names(conjoint.d.estonia)[grep("^feature2.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature2.{1}2", names(conjoint.d.estonia))]
+  ),
+  feature3 = list(# feature 3
+    names(conjoint.d.estonia)[grep("^feature3.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature3.{1}2", names(conjoint.d.estonia))]
+  ),
+  feature4 = list(# feature 4
+    names(conjoint.d.estonia)[grep("^feature4.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature4.{1}2", names(conjoint.d.estonia))]
+  )
+)
+
+# task variables 
+list2 <- list(choice = paste0("choice_", letters[1:8]))
+
+# perform reshape
+conjoint.d.estonia <- cj_tidy(conjoint.d.estonia, 
+                              profile_variables = list1,
+                              task_variables = list2,
+                              id = ~ respondent)
+
+# checking (if nothing happens, it's true)
+# stopifnot(nrow(conjoint.d.estonia) == nrow(dat)*8*2) # 8 tasks and 2 candidates
+
+# recode outcome so it is coded sensibly
+conjoint.d.estonia$chosen <- ifelse((conjoint.d.estonia$profile == "A" & conjoint.d.estonia$choice == 1) |
+                                      (conjoint.d.estonia$profile == "B" & conjoint.d.estonia$choice == 2), 1, 0)
+
+# rename features
+# p_load("dplyr")
+conjoint.d.estonia <- conjoint.d.estonia %>% 
+  rename("attr.Gender" = "feature1", "attr.Age" = "feature2","attr.Protest" = "feature3","attr.Pensions" = "feature4")
+
+# features to factor
+conjoint.d.estonia$attr.Gender = as.factor(conjoint.d.estonia$attr.Gender)
+conjoint.d.estonia$attr.Age = as.factor(conjoint.d.estonia$attr.Age)
+conjoint.d.estonia$attr.Protest = as.factor(conjoint.d.estonia$attr.Protest)
+conjoint.d.estonia$attr.Pensions = as.factor(conjoint.d.estonia$attr.Pensions)
+
+
 
 
 ########################################
-# Conjoint Data Prep
+# Conjoint Data Prep [Chile]
 ########################################
 
 ## ---- conjoint:prep ----
@@ -253,7 +359,7 @@ ggplot(dat, aes(block, Q39_6)) +
 
 # rename
 p_load("dplyr")
-dat <- dat %>% 
+dat.chile <- dat.chile %>% 
   rename(
     # features
     "feature1a1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT" ,
@@ -333,10 +439,10 @@ dat <- dat %>%
 
 
 # keep conjoint columns
-conjoint.d <- dat %>% dplyr:: select(grep("feature", names(dat)), 
-                                     grep("respondent", names(dat)),
-                                     grep("choice", names(dat))
-                                     )
+conjoint.d.chile <- dat.chile %>% dplyr:: select(grep("feature", names(dat.chile)), 
+                                                 grep("respondent", names(dat.chile)),
+                                                 grep("choice", names(dat.chile))
+)
 
 # CREGGG Approach
 p_load(cregg,dplyr)
@@ -348,20 +454,20 @@ p_load(cregg,dplyr)
 ## profile_variables
 list1 <- list(
   feature1 = list( # feature 1
-    names(conjoint.d)[grep("^feature1.{1}1", names(conjoint.d))],
-    names(conjoint.d)[grep("^feature1.{1}2", names(conjoint.d))]
+    names(conjoint.d.chile)[grep("^feature1.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature1.{1}2", names(conjoint.d.chile))]
   ),
   feature2 = list(# feature 2
-    names(conjoint.d)[grep("^feature2.{1}1", names(conjoint.d))],
-    names(conjoint.d)[grep("^feature2.{1}2", names(conjoint.d))]
+    names(conjoint.d.chile)[grep("^feature2.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature2.{1}2", names(conjoint.d.chile))]
   ),
   feature3 = list(# feature 3
-    names(conjoint.d)[grep("^feature3.{1}1", names(conjoint.d))],
-    names(conjoint.d)[grep("^feature3.{1}2", names(conjoint.d))]
+    names(conjoint.d.chile)[grep("^feature3.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature3.{1}2", names(conjoint.d.chile))]
   ),
   feature4 = list(# feature 4
-    names(conjoint.d)[grep("^feature4.{1}1", names(conjoint.d))],
-    names(conjoint.d)[grep("^feature4.{1}2", names(conjoint.d))]
+    names(conjoint.d.chile)[grep("^feature4.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature4.{1}2", names(conjoint.d.chile))]
   )
 )
 
@@ -369,52 +475,52 @@ list1 <- list(
 list2 <- list(choice = paste0("choice_", letters[1:8]))
 
 # perform reshape
-conjoint.d <- cj_tidy(conjoint.d, 
-                      profile_variables = list1,
-                      task_variables = list2,
-                      id = ~ respondent)
+conjoint.d.chile <- cj_tidy(conjoint.d.chile, 
+                            profile_variables = list1,
+                            task_variables = list2,
+                            id = ~ respondent)
 
 # checking (if nothing happens, it's true)
-# stopifnot(nrow(conjoint.d) == nrow(dat)*8*2) # 8 tasks and 2 candidates
-  
+# stopifnot(nrow(conjoint.d.chile) == nrow(dat)*8*2) # 8 tasks and 2 candidates
+
 # recode outcome so it is coded sensibly
-conjoint.d$chosen <- ifelse((conjoint.d$profile == "A" & conjoint.d$choice == 1) |
-                        (conjoint.d$profile == "B" & conjoint.d$choice == 2), 1, 0)
+conjoint.d.chile$chosen <- ifelse((conjoint.d.chile$profile == "A" & conjoint.d.chile$choice == 1) |
+                                    (conjoint.d.chile$profile == "B" & conjoint.d.chile$choice == 2), 1, 0)
 
 # rename features
 # p_load("dplyr")
-conjoint.d <- conjoint.d %>% 
+conjoint.d.chile <- conjoint.d.chile %>% 
   rename("attr.Gender" = "feature1", "attr.Age" = "feature2","attr.Protest" = "feature3","attr.Pensions" = "feature4")
 
 # features to factor
-conjoint.d$attr.Gender = as.factor(conjoint.d$attr.Gender)
-conjoint.d$attr.Age = as.factor(conjoint.d$attr.Age)
-conjoint.d$attr.Protest = as.factor(conjoint.d$attr.Protest)
-conjoint.d$attr.Pensions = as.factor(conjoint.d$attr.Pensions)
+conjoint.d.chile$attr.Gender = as.factor(conjoint.d.chile$attr.Gender)
+conjoint.d.chile$attr.Age = as.factor(conjoint.d.chile$attr.Age)
+conjoint.d.chile$attr.Protest = as.factor(conjoint.d.chile$attr.Protest)
+conjoint.d.chile$attr.Pensions = as.factor(conjoint.d.chile$attr.Pensions)
 
 # Translate // Recode
 
 ## Gender
-conjoint.d$attr.Gender <- recode_factor(conjoint.d$attr.Gender, `Mujer` = "Woman", `Hombre` = "Man")
+conjoint.d.chile$attr.Gender <- recode_factor(conjoint.d.chile$attr.Gender, `Mujer` = "Woman", `Hombre` = "Man")
 
 ## Age
-conjoint.d$attr.Age <- recode_factor(conjoint.d$attr.Age, 
-                                     `Entre 35 y 50 años` = "Between 35-50 years old", 
-                                     `Menos de 35 años` = "Younger than 35 years old",
-                                     `Sobre 50 años` = "Over 50 years old"
-                                     )
+conjoint.d.chile$attr.Age <- recode_factor(conjoint.d.chile$attr.Age, 
+                                           `Menos de 35 años` = "Younger than 35 years old",
+                                           `Entre 35 y 50 años` = "Between 35-50 years old", 
+                                           `Sobre 50 años` = "Over 50 years old"
+                                           )
 ## Protest
-conjoint.d$attr.Protest <- recode_factor(
-  conjoint.d$attr.Protest, 
+conjoint.d.chile$attr.Protest <- recode_factor(
+  conjoint.d.chile$attr.Protest, 
   `El candidato APOYA protestas que busquen desestabilizar el actual gobierno.` = 
     "The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government", 
   `El candidato SE OPONE a protestas que busquen desestabilizar el actual gobierno.` = 
     "The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government"
-  )
+)
 
 ## Pensions
-conjoint.d$attr.Pensions <- recode_factor(
-  conjoint.d$attr.Pensions, 
+conjoint.d.chile$attr.Pensions <- recode_factor(
+  conjoint.d.chile$attr.Pensions, 
   `El candidato APOYA un aumento en las pensiones para la tercera edad.` = 
     "The candidate SUPPORTS increases in pensions for the elderly", 
   `El candidato SE OPONE a un aumento en las pensiones para la tercera edad.` = 
@@ -422,11 +528,11 @@ conjoint.d$attr.Pensions <- recode_factor(
 )
 
 # use for analysis
-# cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent)
+# cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent)
 
 
 # descriptive plotting
-# plot(mm(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
+# plot(mm(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
 
 
 ##############################
@@ -437,107 +543,36 @@ conjoint.d$attr.Pensions <- recode_factor(
 dat.subset = dat %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
-conjoint.d = merge(dat.subset, conjoint.d, by.x = "respondent")
+conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
 ## ----
 
 
 
+
+
+
+
+
+
+
+
+
+
 ##############################
-# CONOINT Data Analyses
+# CONOINT Data Analyses [CHILE]
 ##############################
 
 # options(scipen=999)
-# conjoint.d$BoricKast_Age <- interaction(conjoint.d$Boric.Kast, conjoint.d$Q3_young_old, sep = "_")
-# cj(conjoint.d, chosen ~ BoricKast_Age,id = ~respondent, estimate = "mm", h0 = 0.5)
-
-
-
-# Marginal Means // Subgroup Analyses: High/Low Satisfaction with Democracy
-mm_DemSatis <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                   id = ~respondent, 
-                                   estimate = "mm", 
-                                   by = ~Q8_1_highlow))
-
-# DemSatis.p = plot(mm_DemSatis, group = "Q8_1_highlow", vline = 0.5)
-
-
-# Marginal Means // Subgroup Analyses: Army should take over
-mm_ArmyTakesOver <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                        id = ~respondent, 
-                                        estimate = "mm", 
-                                        by = ~Q12_5_highlow))
-
-# ArmyTakesOver.p = plot(mm_ArmyTakesOver, group = "Q12_5_highlow", vline = 0.5)
-
-
-# Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
-mm_StrongLeader <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                       id = ~respondent, 
-                                       estimate = "mm", 
-                                       by = ~Q10_2))
-
-# StrongLeader.p = plot(mm_StrongLeader, group = "Q10_2", vline = 0.5)
-
-
-# Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
-mm_DemIsBetter <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                      id = ~respondent, 
-                                      estimate = "mm", 
-                                      by = ~Q10_1))
-
-# DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
-
-
-# Marginal Means // Subgroup Analyses: right to protest
-mm_RightToProtest <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                         id = ~respondent, 
-                                         estimate = "mm", 
-                                         by = ~Q10_3))
-
-# RightToProtest.p = plot(mm_RightToProtest, group = "Q10_3", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: education
-mm_Educ <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                               id = ~respondent, 
-                               estimate = "mm", 
-                               by = ~Education))
-
-# Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: education High/Low
-mm_EducHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                      id = ~respondent, 
-                                      estimate = "mm", 
-                                      by = ~Educ.HighLow))
-
-# EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: income Low/Mid/High
-mm_IncomeHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                        id = ~respondent, 
-                                        estimate = "mm", 
-                                        by = ~IncomeLowMidHigh))
-
-# IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
-mm_TaxRichHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                         id = ~respondent, 
-                                         estimate = "mm", 
-                                         by = ~Q12_1_highlow))
-
-# TaxRichHighLow.p = plot(mm_TaxRichHighLow, group = "Q12_1_highlow", vline = 0.5)
+# conjoint.d.chile$BoricKast_Age <- interaction(conjoint.d.chile$Boric.Kast, conjoint.d.chile$Q3_young_old, sep = "_")
+# cj(conjoint.d.chile, chosen ~ BoricKast_Age,id = ~respondent, estimate = "mm", h0 = 0.5)
 
 
 ## ---- conjoint:data:analyses ----
 # Marginal Means // Subgroup Analyses: Boric and Kast
-
-# mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-
-mm_BoricKast <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest, 
-            id = ~ respondent, 
-            estimate = "mm", 
-            by = ~Boric.Kast))
+mm_BoricKast <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest, 
+                                    id = ~ respondent, 
+                                    estimate = "mm", 
+                                    by = ~Boric.Kast))
 
 ## ----
 
@@ -551,7 +586,15 @@ plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 dev.off();dev.off()
 ## ----
-               
+          
+
+
+
+
+
+
+
+     
 
 ## ---- descriptive:data:plot ----
 p_load(lattice)
