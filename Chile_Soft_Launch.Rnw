@@ -32,6 +32,7 @@ Let's see how long people take to answer the study
 hist(as.numeric(dat$Duration..in.seconds.)/60, ylab="Freq.", xlab="Minutes")
 
 dat$minutes = as.numeric(dat$Duration..in.seconds.)/60
+dat$seconds = as.numeric(dat$Duration..in.seconds.)
 
 @
 

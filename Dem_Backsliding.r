@@ -25,6 +25,7 @@ dat.chile = dat
 chile.sample.size = as.numeric(nrow(dat.chile))
 
 # convert all character columns to factor
+#### FIX THIS BELOW IT WAS CONVERTING TIME IN A WEIRD WAY
 dat[sapply(dat, is.character)] <- lapply(dat[sapply(dat, is.character)], 
                                          as.factor)
 
