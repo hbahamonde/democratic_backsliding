@@ -24,7 +24,7 @@ estonia.sample.size = as.numeric(nrow(dat.estonia))
 # dat.chile[sapply(dat.chile, is.character)] <- lapply(dat.chile[sapply(dat.chile, is.character)], as.factor)
 
 ########################################################
-# Re-coding // Descriptive [Chile]
+# Re-coding // Descriptive [Chile and Estonia]
 ########################################################
 
 p_load("dplyr")
@@ -44,7 +44,7 @@ dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  # Democracy might
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
-                                  )
+)
 # lattice::histogram(dat.chile$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 
@@ -54,7 +54,7 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy m
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE
-                                    )
+)
 # lattice::histogram(dat.estonia$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 
@@ -184,8 +184,8 @@ dat.chile$Q3_young_old <- recode_factor(dat.chile$Q3,
 # Boric.Kast
 dat.chile$Boric.Kast <- recode_factor(dat.chile$Boric.Kast, 
                                       `Blanco/Nulo.` = "Other", # "Other", "Null"
-                                      `GABRIEL BORIC FONT` = "Boric",
-                                      `JOSÉ ANTONIO KAST RIST` = "Kast",
+                                      `GABRIEL BORIC FONT` = "Winner", #"Boric",
+                                      `JOSÉ ANTONIO KAST RIST` = "Loser", # "Kast",
                                       `No voté.` = "Other", # "Other", "Didn't vote"
                                       `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
 )
@@ -235,37 +235,19 @@ save(dat.estonia, file = "/Users/hectorbahamonde/research/democratic_backsliding
 
 
 ########################################
-# Tax Experiment
+# Conjoint Data Prep [Estonia]
 ########################################
 
-# Recode Treatment
-dat$block  <- recode_factor(as.factor(dat$block), 
-                            `1` = "Control", 
-                            `2` = "T1: Infra. (Flat Tax).",
-                            `3` = "T2: Infra. (Prog. Tax).",
-                            `4` = "T3: Pensions (Flat Tax).",
-                            `5` = "T4: Pensions (Prog. Tax)."
-                            ) 
+cat("\014")
+rm(list=ls())
+setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 
-lattice::histogram(dat$block, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
+# Load Data
+load("/Users/hectorbahamonde/research/democratic_backsliding/estonia_data.RData") # Load data
 
-
-# Recode Answer
-dat$Q39_6 = as.numeric(dat$Q39_6)
-
-p_load(ggplot2)
-ggplot(dat, aes(block, Q39_6)) + 
-  geom_boxplot(aes(fill=factor(block))) + 
-  labs(title="Box plot", 
-       subtitle="",
-       caption="",
-       x="Experimental Condition",
-       y="Scale")
-
-########################################
-# Conjoint Data Prep [Estonia] # HERE
-########################################
 
 # name structure is = [4 features][h tasks][2 candidates]
 
@@ -274,7 +256,70 @@ p_load("dplyr")
 dat.estonia <- dat.estonia %>% 
   rename(
     # features
-    
+    "feature1a1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.1.1_CBCONJOINT",
+    "feature2a1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.1.1_CBCONJOINT",
+    "feature3a1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.1.1_CBCONJOINT",
+    "feature4a1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.1.1_CBCONJOINT",
+    "feature1a2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.1.2_CBCONJOINT",
+    "feature2a2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.1.2_CBCONJOINT",
+    "feature3a2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.1.2_CBCONJOINT",
+    "feature4a2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.1.2_CBCONJOINT",
+    "feature1b1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.2.1_CBCONJOINT",
+    "feature2b1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.2.1_CBCONJOINT",
+    "feature3b1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.2.1_CBCONJOINT",
+    "feature4b1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.2.1_CBCONJOINT",
+    "feature1b2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.2.2_CBCONJOINT",
+    "feature2b2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.2.2_CBCONJOINT",
+    "feature3b2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.2.2_CBCONJOINT",
+    "feature4b2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.2.2_CBCONJOINT",
+    "feature1c1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.3.1_CBCONJOINT",
+    "feature2c1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.3.1_CBCONJOINT",
+    "feature3c1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.3.1_CBCONJOINT",
+    "feature4c1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.3.1_CBCONJOINT",
+    "feature1c2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.3.2_CBCONJOINT",
+    "feature2c2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.3.2_CBCONJOINT",
+    "feature3c2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.3.2_CBCONJOINT",
+    "feature4c2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.3.2_CBCONJOINT",
+    "feature1d1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.4.1_CBCONJOINT",
+    "feature2d1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.4.1_CBCONJOINT",
+    "feature3d1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.4.1_CBCONJOINT",
+    "feature4d1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.4.1_CBCONJOINT",
+    "feature1d2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.4.2_CBCONJOINT",
+    "feature2d2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.4.2_CBCONJOINT",
+    "feature3d2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.4.2_CBCONJOINT",
+    "feature4d2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.4.2_CBCONJOINT",
+    "feature1e1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.5.1_CBCONJOINT",
+    "feature2e1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.5.1_CBCONJOINT",
+    "feature3e1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.5.1_CBCONJOINT",
+    "feature4e1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.5.1_CBCONJOINT",
+    "feature1e2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.5.2_CBCONJOINT",
+    "feature2e2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.5.2_CBCONJOINT",
+    "feature3e2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.5.2_CBCONJOINT",
+    "feature4e2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.5.2_CBCONJOINT",
+    "feature1f1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.6.1_CBCONJOINT",
+    "feature2f1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.6.1_CBCONJOINT",
+    "feature3f1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.6.1_CBCONJOINT",
+    "feature4f1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.6.1_CBCONJOINT",
+    "feature1f2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.6.2_CBCONJOINT",
+    "feature2f2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.6.2_CBCONJOINT",
+    "feature3f2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.6.2_CBCONJOINT",
+    "feature4f2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.6.2_CBCONJOINT",
+    "feature1g1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.7.1_CBCONJOINT",
+    "feature2g1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.7.1_CBCONJOINT",
+    "feature3g1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.7.1_CBCONJOINT",
+    "feature4g1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.7.1_CBCONJOINT",
+    "feature1g2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.7.2_CBCONJOINT",
+    "feature2g2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.7.2_CBCONJOINT",
+    "feature3g2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.7.2_CBCONJOINT",
+    "feature4g2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.7.2_CBCONJOINT",
+    "feature1h1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.8.1_CBCONJOINT",
+    "feature2h1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.8.1_CBCONJOINT",
+    "feature3h1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.8.1_CBCONJOINT",
+    "feature4h1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.8.1_CBCONJOINT",
+    "feature1h2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.8.2_CBCONJOINT",
+    "feature2h2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.8.2_CBCONJOINT",
+    "feature3h2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.8.2_CBCONJOINT",
+    "feature4h2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.8.2_CBCONJOINT",
     # choice
     "choice_a" = "C1" ,
     "choice_b" = "C2" ,
@@ -330,7 +375,7 @@ conjoint.d.estonia <- cj_tidy(conjoint.d.estonia,
                               id = ~ respondent)
 
 # checking (if nothing happens, it's true)
-# stopifnot(nrow(conjoint.d.estonia) == nrow(dat)*8*2) # 8 tasks and 2 candidates
+# stopifnot(nrow(conjoint.d.estonia) == nrow(dat.estonia)*8*2) # 8 tasks and 2 candidates
 
 # recode outcome so it is coded sensibly
 conjoint.d.estonia$chosen <- ifelse((conjoint.d.estonia$profile == "A" & conjoint.d.estonia$choice == 1) |
@@ -348,11 +393,115 @@ conjoint.d.estonia$attr.Protest = as.factor(conjoint.d.estonia$attr.Protest)
 conjoint.d.estonia$attr.Pensions = as.factor(conjoint.d.estonia$attr.Pensions)
 
 
+## Gender
+conjoint.d.estonia$attr.Gender <- recode_factor(conjoint.d.estonia$attr.Gender, `Mees` = "Man", `Naine` = "Woman")
+
+## Age
+conjoint.d.estonia$attr.Age <- recode_factor(conjoint.d.estonia$attr.Age, 
+                                             `Alla 35` = "Younger than 35 years old",
+                                             `35-50` = "Between 35-50 years old", 
+                                             `Üle 50` = "Over 50 years old"
+)
+
+## Protest
+conjoint.d.estonia$attr.Protest <- recode_factor(
+  conjoint.d.estonia$attr.Protest, 
+  `Kandidaat TOETAB meeleavaldusi tänavatel praeguse valitsuse destabiliseerimiseks.` = 
+    "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government", 
+  `Kandidaat ON VASTU meeleavaldustele tänavatel praeguse valitsuse destabiliseerimiseks.` = 
+    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government"
+)
+
+## Pensions
+conjoint.d.estonia$attr.Pensions <- recode_factor(
+  conjoint.d.estonia$attr.Pensions, 
+  `Kandidaat TOETAB pensionite tõstmist.` = 
+    "The candidate SUPPORTS increases in pensions for the elderly", 
+  `Kandidaat ON VASTU pensionite tõstmisele.` = 
+    "The candidate OPPOSES increases in pensions for the elderly"
+)
+
+# Losers / Winners (Q13)
+dat.estonia$winners.losers <- recode_factor(dat.estonia$Q13,
+                                            # winners
+                                            `Eesti Reformierakond` = "Winner", #  113  
+                                            `Eesti 200` = "Winner", # 55
+                                            `Sotsiaaldemokraatlik Erakond` = "Winner", # 95
+                                            # losers
+                                            `Eesti Keskerakond` = "Loser", # 53
+                                            `Eesti Konservatiivne Rahvaerakond` = "Loser", # 89
+                                            `Isamaa Erakond` = "Loser", # 41
+                                            # other
+                                            `Eestimaa Ühendatud Vasakpartei` = "Other",
+                                            `Erakond Eestimaa Rohelised` = "Other",
+                                            `Erakond Parempoolsed` = "Other",
+                                            `Ma ei käinud valimas` = "Other",
+                                            `Ma ei taha öelda` = "Other",
+                                            `Muu` = "Other",
+                                            `Sotsiaaldemokraatlik Erakond` = "Other"
+                                            )
+
+## From Mart (2024)
+# Winners (currently in governing coalition):  
+# 1. Eesti Reformierakond. 
+# 4. Eesti 200, 
+# 5. Sotsiaaldemokraatlik Erakond. 
+#
+# Losers (in opposition):  
+# 2. Eesti Keskerakond 
+# 3. Eesti Konservatiivne Rahvaerakond 
+# 6. Isamaa Erakond
+
+##############################
+# MERGING WITH LARGER DATASET [Estonia]
+##############################
+
+# subset vars from the big dataset to be merged to the conjoint dataset
+dat.subset.estonia = dat.estonia %>% dplyr::select(respondent, winners.losers)
+
+# Merge
+conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respondent")
+
+
+
+##############################
+# CONOINT Data Analyses [Estonia]
+##############################
+
+# options(scipen=999)
+
+# Marginal Means // Subgroup Analyses: Boric and Kast
+mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~winners.losers))
+
+
+
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
+#    width = 12, # The width of the plot in inches
+#    height = 4) # The height of the plot in inches
+
+plot(mm_Winner_Loser_Estonia, group = "winners.losers", vline = 0.5)
+
+#dev.off();dev.off()
+
 
 
 ########################################
 # Conjoint Data Prep [Chile]
 ########################################
+
+# cat("\014")
+# rm(list=ls())
+# setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+
+# Pacman
+# if (!require("pacman")) install.packages("pacman"); library(pacman) 
+
+# Load Data
+# load("/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData") # Load data
+
 
 ## ---- conjoint:prep ----
 # name structure is = [4 features][h tasks][2 candidates]
@@ -481,7 +630,7 @@ conjoint.d.chile <- cj_tidy(conjoint.d.chile,
                             id = ~ respondent)
 
 # checking (if nothing happens, it's true)
-# stopifnot(nrow(conjoint.d.chile) == nrow(dat)*8*2) # 8 tasks and 2 candidates
+# stopifnot(nrow(conjoint.d.chile) == nrow(dat.chile)*8*2) # 8 tasks and 2 candidates
 
 # recode outcome so it is coded sensibly
 conjoint.d.chile$chosen <- ifelse((conjoint.d.chile$profile == "A" & conjoint.d.chile$choice == 1) |
@@ -508,14 +657,14 @@ conjoint.d.chile$attr.Age <- recode_factor(conjoint.d.chile$attr.Age,
                                            `Menos de 35 años` = "Younger than 35 years old",
                                            `Entre 35 y 50 años` = "Between 35-50 years old", 
                                            `Sobre 50 años` = "Over 50 years old"
-                                           )
+)
 ## Protest
 conjoint.d.chile$attr.Protest <- recode_factor(
   conjoint.d.chile$attr.Protest, 
   `El candidato APOYA protestas que busquen desestabilizar el actual gobierno.` = 
-    "The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government", 
+    "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government", 
   `El candidato SE OPONE a protestas que busquen desestabilizar el actual gobierno.` = 
-    "The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government"
+    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government"
 )
 
 ## Pensions
@@ -551,13 +700,6 @@ conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
 
 
 
-
-
-
-
-
-
-
 ##############################
 # CONOINT Data Analyses [CHILE]
 ##############################
@@ -586,7 +728,6 @@ plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 dev.off();dev.off()
 ## ----
-          
 
 
 
@@ -594,7 +735,8 @@ dev.off();dev.off()
 
 
 
-     
+
+
 
 ## ---- descriptive:data:plot ----
 p_load(lattice)
@@ -656,9 +798,37 @@ close(fileConn)
 
 
 
+########################################
+# Tax Experiment
+########################################
+
+# Recode Treatment
+dat$block  <- recode_factor(as.factor(dat$block), 
+                            `1` = "Control", 
+                            `2` = "T1: Infra. (Flat Tax).",
+                            `3` = "T2: Infra. (Prog. Tax).",
+                            `4` = "T3: Pensions (Flat Tax).",
+                            `5` = "T4: Pensions (Prog. Tax)."
+) 
+
+lattice::histogram(dat$block, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 
-               
+
+# Recode Answer
+dat$Q39_6 = as.numeric(dat$Q39_6)
+
+p_load(ggplot2)
+ggplot(dat, aes(block, Q39_6)) + 
+  geom_boxplot(aes(fill=factor(block))) + 
+  labs(title="Box plot", 
+       subtitle="",
+       caption="",
+       x="Experimental Condition",
+       y="Scale")
+
+
+
 
 ##########
 # VDEM
@@ -887,7 +1057,7 @@ gc()
 # re-order dataset
 wvs.d <- wvs.d %>% 
   dplyr::select(c("S020", "COW_ALPHA", "X002", "X003", "years.lived.in.dictatorship", "E235"), everything()
-                )
+  )
 
 # Not so many obs of folks "socialized in democracy"
 table(wvs.d[wvs.d$COW_ALPHA=='CHL',]$soc.in.dem)
