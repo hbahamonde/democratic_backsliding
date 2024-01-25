@@ -431,14 +431,13 @@ dat.estonia$winners.losers <- recode_factor(dat.estonia$Q13,
                                             `Eesti Keskerakond` = "Loser", # 53
                                             `Eesti Konservatiivne Rahvaerakond` = "Loser", # 89
                                             `Isamaa Erakond` = "Loser", # 41
+                                            `Eestimaa Ühendatud Vasakpartei` = "Loser", 
+                                            `Erakond Eestimaa Rohelised` = "Loser", 
+                                            `Erakond Parempoolsed` = "Loser", 
+                                            `Muu` = "Loser", 
                                             # other
-                                            `Eestimaa Ühendatud Vasakpartei` = "Other",
-                                            `Erakond Eestimaa Rohelised` = "Other",
-                                            `Erakond Parempoolsed` = "Other",
-                                            `Ma ei käinud valimas` = "Other",
-                                            `Ma ei taha öelda` = "Other",
-                                            `Muu` = "Other",
-                                            `Sotsiaaldemokraatlik Erakond` = "Other"
+                                            `Ma ei käinud valimas` = "Other", # "Other",
+                                            `Ma ei taha öelda` = "Other" # "Other"
                                             )
 
 ## From Mart (2024)
