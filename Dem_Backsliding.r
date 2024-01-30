@@ -462,7 +462,6 @@ dat.subset.estonia = dat.estonia %>% dplyr::select(respondent, winners.losers)
 conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respondent")
 
 
-
 ##############################
 # CONOINT Data Analyses [Estonia]
 ##############################
@@ -491,15 +490,15 @@ plot(mm_Winner_Loser_Estonia, group = "winners.losers", vline = 0.5)
 # Conjoint Data Prep [Chile]
 ########################################
 
-# cat("\014")
-# rm(list=ls())
-# setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+cat("\014")
+rm(list=ls())
+setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 
 # Pacman
-# if (!require("pacman")) install.packages("pacman"); library(pacman) 
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
 # Load Data
-# load("/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData") # Load data
+load("/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData") # Load data
 
 
 ## ---- conjoint:prep ----
@@ -688,7 +687,7 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 ##############################
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat.chile %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
@@ -710,7 +709,7 @@ conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
 
 ## ---- conjoint:data:analyses ----
 # Marginal Means // Subgroup Analyses: Boric and Kast
-mm_BoricKast <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest, 
+mm_BoricKast <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                                     id = ~ respondent, 
                                     estimate = "mm", 
                                     by = ~Boric.Kast))
@@ -727,6 +726,128 @@ plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
 
 dev.off();dev.off()
 ## ----
+
+
+##############################
+# CONOINT Data Analyses
+##############################
+
+# We explore sub-group differences in the propensity to support anti-systemic action by 
+# -respondents' partisanship, 
+# -democratic satisfaction and 
+# -support for democratic norms
+
+########################################################
+# Marginal Means // Subgroup Analyses: High/Low Satisfaction with Democracy
+########################################################
+mm_DemSatis.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                   id = ~respondent, 
+                                   estimate = "mm", 
+                                   by = ~Q8_1_highlow))
+
+#p_load(dplyr)
+#mm_DemSatis.chile <- mm_DemSatis.chile %>% rename("Satisfaction With Democracy" = "Q8_1_highlow")
+
+
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Dem_Support_Chile.pdf",   # The directory you want to save the file in
+    width = 12, # The width of the plot in inches
+    height = 4) # The height of the plot in inches
+dev.off();dev.off()
+plot(mm_DemSatis.chile, group = "Q8_1_highlow", vline = 0.5)
+
+########################################################
+# Marginal Means // Subgroup Analyses: Army should take over
+########################################################
+mm_ArmyTakesOver.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                        id = ~respondent, 
+                                        estimate = "mm", 
+                                        by = ~Q12_5_highlow))
+
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_Takes_Over_Chile.pdf",   # The directory you want to save the file in
+    width = 12, # The width of the plot in inches
+    height = 4) # The height of the plot in inches
+dev.off();dev.off()
+plot(mm_ArmyTakesOver.chile, group = "Q12_5_highlow", vline = 0.5)
+
+
+########################################################
+# Marginal Means // Subgroup Analyses: right to protest
+########################################################
+mm_RightToProtest.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q10_3))
+
+
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Right_to_Protest_Chile.pdf",   # The directory you want to save the file in
+    width = 12, # The width of the plot in inches
+    height = 4) # The height of the plot in inches
+dev.off();dev.off()
+plot(mm_RightToProtest.chile, group = "Q10_3", vline = 0.5)
+
+
+########################################################
+# Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
+########################################################
+mm_StrongLeader.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                       id = ~respondent, 
+                                       estimate = "mm", 
+                                       by = ~Q10_2))
+
+pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Democracy_Strong_Leader_Chile.pdf",   # The directory you want to save the file in
+    width = 12, # The width of the plot in inches
+    height = 4) # The height of the plot in inches
+dev.off();dev.off()
+plot(mm_StrongLeader.chile, group = "Q10_2", vline = 0.5)
+
+
+########################################################
+
+
+# Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
+mm_DemIsBetter <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                      id = ~respondent, 
+                                      estimate = "mm", 
+                                      by = ~Q10_1))
+
+# DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
+
+
+# Marginal Means // Subgroup Analyses: education
+mm_Educ <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                               id = ~respondent, 
+                               estimate = "mm", 
+                               by = ~Education))
+
+# Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
+
+# Marginal Means // Subgroup Analyses: education High/Low
+mm_EducHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                      id = ~respondent, 
+                                      estimate = "mm", 
+                                      by = ~Educ.HighLow))
+
+# EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
+
+# Marginal Means // Subgroup Analyses: income Low/Mid/High
+mm_IncomeHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                        id = ~respondent, 
+                                        estimate = "mm", 
+                                        by = ~IncomeLowMidHigh))
+
+# IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
+
+# Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
+mm_TaxRichHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q12_1_highlow))
+
+
+
+
+
+
 
 
 
