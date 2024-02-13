@@ -50,7 +50,7 @@ Q4.chile <- dat.chile %>% select(Q4, Country)
 Q4.estonia <- dat.estonia %>% select(Q4, Country)
 Q4.d <- rbind(Q4.chile, Q4.estonia)
 
-lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=45), x=list(rot=45)), aspect=1, xlab = "Gender") 
+lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Gender") 
 
 
 # Democracy might have problems but it's better...
@@ -73,7 +73,7 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy m
 Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
 Q10_1.estonia <- dat.estonia %>% select(Q10_1, Country)
 Q10_1.d <- rbind(Q10_1.chile, Q10_1.estonia)
-lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=45), x=list(rot=45)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government") 
+lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government") 
 
 
 
@@ -97,18 +97,17 @@ dat.estonia$Q10_2  <- recode_factor(as.factor(dat.estonia$Q10_2),
 Q10_2.chile <- dat.chile %>% select(Q10_2, Country)
 Q10_2.estonia <- dat.estonia %>% select(Q10_2, Country)
 Q10_2.d <- rbind(Q10_2.chile, Q10_2.estonia)
-lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=45), x=list(rot=45)), aspect=1, 
+lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections") 
 
 
-##
+## Civil rights that guarantee political protest should not be restricted
 dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree"
                                   )
-# lattice::histogram(dat.chile$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 dat.estonia$Q10_3  <- recode_factor(as.factor(dat.estonia$Q10_3),  # right to protest
                                     "Täiesti nõus" = "Agree completely",
@@ -118,11 +117,15 @@ dat.estonia$Q10_3  <- recode_factor(as.factor(dat.estonia$Q10_3),  # right to pr
                                     .ordered = TRUE
                                     )
 
-# lattice::histogram(dat.estonia$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+Q10_3.chile <- dat.chile %>% select(Q10_3, Country)
+Q10_3.estonia <- dat.estonia %>% select(Q10_3, Country)
+Q10_3.d <- rbind(Q10_3.chile, Q10_3.estonia)
+lattice::histogram(~ Q10_3.d$Q10_3 | Q10_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
+                   xlab = "Civil rights that guarantee political protest should not be restricted") 
 
 
 
-##
+## It is important that there are free and politically independent media in [country]
 dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),  # free press
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
@@ -130,8 +133,6 @@ dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),  # free press
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
                                   )
-# lattice::histogram(dat.chile$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
-
 dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),  # free press
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
@@ -139,25 +140,35 @@ dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),  # free press
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE
                                     )
-# lattice::histogram(dat.estonia$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+Q10_4.chile <- dat.chile %>% select(Q10_4, Country)
+Q10_4.estonia <- dat.estonia %>% select(Q10_4, Country)
+Q10_4.d <- rbind(Q10_4.chile, Q10_4.estonia)
+lattice::histogram(~ Q10_4.d$Q10_4 | Q10_4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
+                   xlab = "It is important that there are free and politically independent media in [country]") 
 
 
 
-#
-dat.chile$Q12_1 = as.numeric(dat.chile$Q12_1) # Governments tax the rich and subsidize the poor
-# lattice::histogram(dat.chile$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# Governments should tax the rich to help the poor
+dat.chile$Q12_1 = recode_factor(as.factor(dat.chile$Q12_1),  
+              "1" = "Not at all",
+              "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
+              "10" = "Definitely essential",
+              .ordered = TRUE
+              )
 
-dat.estonia$Q12_1 = as.numeric(dat.estonia$Q12_1) # Governments tax the rich and subsidize the poor
-# lattice::histogram(dat.estonia$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.estonia$Q12_1 = recode_factor(as.factor(dat.estonia$Q12_1),  
+                                  "1" = "Not at all",
+                                  "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
+                                  "10" = "Definitely essential",
+                                  .ordered = TRUE
+                                  )
 
 
-dat.chile$Q12_1_highlow = ifelse(dat.chile$Q12_1 >= median(dat.chile$Q12_1), 1, 0)
-dat.chile$Q12_1_highlow = as.factor(dat.chile$Q12_1_highlow)
-
-dat.chile$Q12_1_highlow = recode_factor(as.factor(dat.chile$Q12_1_highlow),  # Governments tax the rich and subsidize the poor
-                                        "0" = "Not an essential characteristic", 
-                                        "1" = "An essential characteristic"
-)
+Q12_1.chile <- dat.chile %>% select(Q12_1, Country)
+Q12_1.estonia <- dat.estonia %>% select(Q12_1, Country)
+Q12_1.d <- rbind(Q12_1.chile, Q12_1.estonia)
+lattice::histogram(~ Q12_1.d$Q12_1 | Q12_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
+                   xlab = "Governments should tax the rich to help the poor\nAn essential characteristic of democracy...") 
 
 
 #
@@ -168,10 +179,8 @@ dat.estonia$Q8_1 = as.numeric(dat.estonia$Q8_1) # satisfied w dem
 # lattice::histogram(dat.estonia$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 
-# satisfied w dem high/low
-dat.chile$Q8_1_highlow = ifelse(dat.chile$Q8_1 >= median(dat.chile$Q8_1), 1, 0)
-dat.chile$Q8_1_highlow = as.factor(dat.chile$Q8_1_highlow)
-dat.chile$Q8_1_highlow = recode_factor(dat.chile$Q8_1_highlow, "0"="Low Satisfaction", "1" = "High Satisfaction")
+# HERE KEEP WORKING FROM HERE BELOW
+
 
 #
 dat.chile$Q12_2 = as.numeric(dat.chile$Q12_2) # Religious authorities ultimately interpret the laws
