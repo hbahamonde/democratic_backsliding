@@ -11,13 +11,27 @@ dat.chile <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/da
 dat.estonia <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/estonia_data.csv")
 
 
+# var names
+chile.d.var.names = data.frame(
+  variable.number = c(colnames(dat.chile)),
+  variable.name = c(dat.chile[1,])
+  )
+estonia.d.var.names = data.frame(
+  variable.number = c(colnames(dat.estonia)),
+  variable.name = c(dat.estonia[1,])
+)
+
 # delete first two/three rows
 dat.chile = dat.chile[-c(1, 2), ]
 dat.estonia = dat.estonia[-c(1, 2), ]
 
-# Chile data
+# sample size data
 chile.sample.size = as.numeric(nrow(dat.chile))
 estonia.sample.size = as.numeric(nrow(dat.estonia))
+
+# insert country name
+dat.chile$Country <- "Chile"
+dat.estonia$Country <- "Estonia"
 
 # convert all character columns to factor
 #### THIS BELOW WAS CONVERTING TIME IN A WEIRD WAY
@@ -29,24 +43,24 @@ estonia.sample.size = as.numeric(nrow(dat.estonia))
 
 p_load("dplyr")
 
-##
-dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman") # gender
-#lattice::histogram(dat.chile$Q4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+# gender
+dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman", "Otro/Prefiero no decir"= "Other") # gender
+dat.estonia$Q4  <- recode_factor(as.factor(dat.estonia$Q4), `Mees` = "Man", `Naine` = "Woman", `Ei tea` = "Do not know", `Muu` = "Other" ) # gender
+Q4.chile <- dat.chile %>% select(Q4, Country)
+Q4.estonia <- dat.estonia %>% select(Q4, Country)
+Q4.d <- rbind(Q4.chile, Q4.estonia)
 
-dat.estonia$Q4  <- recode_factor(as.factor(dat.estonia$Q4), `Mees` = "Man", `Naine` = "Woman", `Ei tea` = "Do not know", `Muu` = "Muu" ) # gender
-# lattice::histogram(dat.estonia$Q4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=45), x=list(rot=45)), aspect=1, xlab = "Gender") 
 
 
-##
+# Democracy might have problems but it's better...
 dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  # Democracy might have problems but it's better...
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
-)
-# lattice::histogram(dat.chile$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
-
+                                  )
 
 dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy might have problems but it's better...
                                     "Täiesti nõus" = "Agree completely",
@@ -54,28 +68,38 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy m
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE
-)
-# lattice::histogram(dat.estonia$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+                                    )
+
+Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
+Q10_1.estonia <- dat.estonia %>% select(Q10_1, Country)
+Q10_1.d <- rbind(Q10_1.chile, Q10_1.estonia)
+lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=45), x=list(rot=45)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government") 
 
 
-##
-dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  # Democracy is not an effective form of government...better a strong leader
+
+# Democracy is not an effective form of government...better a strong leader
+dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
                                   )
-# lattice::histogram(dat.chile$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
-dat.estonia$Q10_2  <- recode_factor(as.factor(dat.estonia$Q10_2),  # Democracy is not an effective form of government...better a strong leader
+dat.estonia$Q10_2  <- recode_factor(as.factor(dat.estonia$Q10_2),
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE
                                     )
-# lattice::histogram(dat.estonia$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+Q10_2.chile <- dat.chile %>% select(Q10_2, Country)
+Q10_2.estonia <- dat.estonia %>% select(Q10_2, Country)
+Q10_2.d <- rbind(Q10_2.chile, Q10_2.estonia)
+lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=45), x=list(rot=45)), aspect=1, 
+                   xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections") 
+
 
 ##
 dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
