@@ -58,9 +58,6 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy m
 # lattice::histogram(dat.estonia$Q10_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 
-# HERE keep translating from here till the end.
-
-
 ##
 dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  # Democracy is not an effective form of government...better a strong leader
                                   "Completamente de acuerdo" = "Agree completely", 
@@ -68,8 +65,17 @@ dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  # Democracy is no
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
-)
+                                  )
 # lattice::histogram(dat.chile$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+dat.estonia$Q10_2  <- recode_factor(as.factor(dat.estonia$Q10_2),  # Democracy is not an effective form of government...better a strong leader
+                                    "Täiesti nõus" = "Agree completely",
+                                    "Nõus" = "Agree to some extent",
+                                    "Ei ole nõus" = "Somewhat disagree",
+                                    "Üldse ei ole nõus" = "Completely disagree",
+                                    .ordered = TRUE
+                                    )
+# lattice::histogram(dat.estonia$Q10_2, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 ##
 dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
@@ -77,8 +83,20 @@ dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protes
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree"
-)
+                                  )
 # lattice::histogram(dat.chile$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+dat.estonia$Q10_3  <- recode_factor(as.factor(dat.estonia$Q10_3),  # right to protest
+                                    "Täiesti nõus" = "Agree completely",
+                                    "Nõus" = "Agree to some extent",
+                                    "Ei ole nõus" = "Somewhat disagree",
+                                    "Üldse ei ole nõus" = "Completely disagree",
+                                    .ordered = TRUE
+                                    )
+
+# lattice::histogram(dat.estonia$Q10_3, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
 
 ##
 dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),  # free press
@@ -87,12 +105,28 @@ dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),  # free press
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
-)
+                                  )
 # lattice::histogram(dat.chile$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),  # free press
+                                    "Täiesti nõus" = "Agree completely",
+                                    "Nõus" = "Agree to some extent",
+                                    "Ei ole nõus" = "Somewhat disagree",
+                                    "Üldse ei ole nõus" = "Completely disagree",
+                                    .ordered = TRUE
+                                    )
+# lattice::histogram(dat.estonia$Q10_4, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
 
 #
 dat.chile$Q12_1 = as.numeric(dat.chile$Q12_1) # Governments tax the rich and subsidize the poor
 # lattice::histogram(dat.chile$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+dat.estonia$Q12_1 = as.numeric(dat.estonia$Q12_1) # Governments tax the rich and subsidize the poor
+# lattice::histogram(dat.estonia$Q12_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
 dat.chile$Q12_1_highlow = ifelse(dat.chile$Q12_1 >= median(dat.chile$Q12_1), 1, 0)
 dat.chile$Q12_1_highlow = as.factor(dat.chile$Q12_1_highlow)
 
@@ -106,6 +140,10 @@ dat.chile$Q12_1_highlow = recode_factor(as.factor(dat.chile$Q12_1_highlow),  # G
 dat.chile$Q8_1 = as.numeric(dat.chile$Q8_1) # satisfied w dem
 # lattice::histogram(dat.chile$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
+dat.estonia$Q8_1 = as.numeric(dat.estonia$Q8_1) # satisfied w dem
+# lattice::histogram(dat.estonia$Q8_1, type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
 # satisfied w dem high/low
 dat.chile$Q8_1_highlow = ifelse(dat.chile$Q8_1 >= median(dat.chile$Q8_1), 1, 0)
 dat.chile$Q8_1_highlow = as.factor(dat.chile$Q8_1_highlow)
@@ -116,8 +154,19 @@ dat.chile$Q12_2 = as.numeric(dat.chile$Q12_2) # Religious authorities ultimately
 lattice::histogram(as.factor(dat.chile$Q12_2), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
 
 #
-dat.chile$Q12_3 = as.numeric(dat.chile$Q12_3) # People choose their leaders in free elections.
-# lattice::histogram(as.factor(dat.chile$Q12_3), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+dat.estonia$Q12_2 = as.numeric(dat.estonia$Q12_2) # Religious authorities ultimately interpret the laws
+lattice::histogram(as.factor(dat.estonia$Q12_2), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
+# People choose their leaders in free elections.
+dat.chile$Q12_3 = as.numeric(dat.chile$Q12_3) # Chile
+dat.estonia$Q12_3 = as.numeric(dat.estonia$Q12_3) # People choose their leaders in free elections.
+#
+par(mfrows = c(2,1)) 
+lattice::histogram(as.factor(dat.estonia$Q12_3), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+lattice::histogram(as.factor(dat.chile$Q12_3), type = "percent", scales=list(y=list(rot=45), x=list(rot=45))) 
+
+
 
 #
 dat.chile$Q12_5 = as.numeric(dat.chile$Q12_5) # The army takes over when government is incompetent
