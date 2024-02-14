@@ -41,7 +41,54 @@ dat.estonia$Country <- "Estonia"
 # Re-coding // Descriptive [Chile and Estonia]
 ########################################################
 
+# Recode Original Dataset
 p_load("dplyr")
+
+
+# dat.chile$Gender = as.factor(dat.chile$Q4)
+
+
+# Boric.Kast
+dat.chile$winners.losers <- recode_factor(dat.chile$Q13, 
+                                      `Blanco/Nulo.` = "Other", # "Other", "Null"
+                                      `GABRIEL BORIC FONT` = "Winner", #"Boric",
+                                      `JOSÉ ANTONIO KAST RIST` = "Loser", # "Kast",
+                                      `No voté.` = "Other", # "Other", "Didn't vote"
+                                      `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
+                                      )
+
+# dat.chile <- dat.chile[ which(dat.chile$Boric.Kast=="Boric" | dat.chile$Boric.Kast == "Kast"), ]
+# dat.chile$Boric.Kast <- droplevels(dat.chile$Boric.Kast)
+
+# Losers / Winners (Q13)
+dat.estonia$winners.losers <- recode_factor(dat.estonia$Q13,
+                                            # winners
+                                            `Eesti Reformierakond` = "Winner", #  113  
+                                            `Eesti 200` = "Winner", # 55
+                                            `Sotsiaaldemokraatlik Erakond` = "Winner", # 95
+                                            # losers
+                                            `Eesti Keskerakond` = "Loser", # 53
+                                            `Eesti Konservatiivne Rahvaerakond` = "Loser", # 89
+                                            `Isamaa Erakond` = "Loser", # 41
+                                            `Eestimaa Ühendatud Vasakpartei` = "Loser", 
+                                            `Erakond Eestimaa Rohelised` = "Loser", 
+                                            `Erakond Parempoolsed` = "Loser", 
+                                            `Muu` = "Loser", 
+                                            # other
+                                            `Ma ei käinud valimas` = "Other", # "Other",
+                                            `Ma ei taha öelda` = "Other" # "Other"
+                                            )
+
+## From Mart (2024)
+# Winners (currently in governing coalition):  
+# 1. Eesti Reformierakond. 
+# 4. Eesti 200, 
+# 5. Sotsiaaldemokraatlik Erakond. 
+#
+# Losers (in opposition):  
+# 2. Eesti Keskerakond 
+# 3. Eesti Konservatiivne Rahvaerakond 
+# 6. Isamaa Erakond
 
 # gender
 dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman", "Otro/Prefiero no decir"= "Other") # gender
@@ -52,9 +99,8 @@ Q4.d <- rbind(Q4.chile, Q4.estonia)
 
 lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Gender") 
 
-
 # Democracy might have problems but it's better...
-dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  # Democracy might have problems but it's better...
+dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
@@ -62,7 +108,7 @@ dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  # Democracy might
                                   .ordered = TRUE
                                   )
 
-dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy might have problems but it's better...
+dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
                                     "Ei ole nõus" = "Somewhat disagree",
@@ -73,9 +119,7 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  # Democracy m
 Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
 Q10_1.estonia <- dat.estonia %>% select(Q10_1, Country)
 Q10_1.d <- rbind(Q10_1.chile, Q10_1.estonia)
-lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government") 
-
-
+lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government.") 
 
 # Democracy is not an effective form of government...better a strong leader
 dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  
@@ -98,10 +142,9 @@ Q10_2.chile <- dat.chile %>% select(Q10_2, Country)
 Q10_2.estonia <- dat.estonia %>% select(Q10_2, Country)
 Q10_2.d <- rbind(Q10_2.chile, Q10_2.estonia)
 lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections") 
+                   xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections.") 
 
-
-## Civil rights that guarantee political protest should not be restricted
+# Civil rights that guarantee political protest should not be restricted
 dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
@@ -121,32 +164,29 @@ Q10_3.chile <- dat.chile %>% select(Q10_3, Country)
 Q10_3.estonia <- dat.estonia %>% select(Q10_3, Country)
 Q10_3.d <- rbind(Q10_3.chile, Q10_3.estonia)
 lattice::histogram(~ Q10_3.d$Q10_3 | Q10_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Civil rights that guarantee political protest should not be restricted") 
+                   xlab = "Civil rights that guarantee political protest should not be restricted.") 
 
-
-
-## It is important that there are free and politically independent media in [country]
-dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),  # free press
+# It is important that there are free and politically independent media in [country]
+dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE
                                   )
-dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),  # free press
+dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE
                                     )
+
 Q10_4.chile <- dat.chile %>% select(Q10_4, Country)
 Q10_4.estonia <- dat.estonia %>% select(Q10_4, Country)
 Q10_4.d <- rbind(Q10_4.chile, Q10_4.estonia)
 lattice::histogram(~ Q10_4.d$Q10_4 | Q10_4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "It is important that there are free and politically independent media in [country]") 
-
-
+                   xlab = "It is important that there are free and politically independent media in [country].") 
 
 # Governments should tax the rich to help the poor
 dat.chile$Q12_1 = recode_factor(as.factor(dat.chile$Q12_1),  
@@ -191,9 +231,7 @@ Q8_1.chile <- dat.chile %>% select(Q8_1, Country)
 Q8_1.estonia <- dat.estonia %>% select(Q8_1, Country)
 Q8_1.d <- rbind(Q8_1.chile, Q8_1.estonia)
 lattice::histogram(~ Q8_1.d$Q8_1 | Q8_1.d$Country , type = "percent", scales=list(y=list(rot=25), x=list(rot=25)), aspect=1, 
-                   xlab = "Thinking on a scale where one means far left and ten means far right, where do you place yourself?") 
-
-
+                   xlab = "Thinking on a scale where one means far left and ten means far right,\nwhere do you place yourself?") 
 
 # Religious authorities have the final say in interpreting the country's laws.
 dat.chile$Q12_2 = recode_factor(as.factor(dat.chile$Q12_2),  
@@ -216,9 +254,6 @@ Q12_2.d <- rbind(Q12_2.chile, Q12_2.estonia)
 lattice::histogram(~ Q12_2.d$Q12_2 | Q12_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Religious authorities have the final say in interpreting the country's laws.\nAn essential characteristic of democracy...") 
 
-
-
-
 # The people should choose their leaders in free elections.
 dat.chile$Q12_3 = recode_factor(as.factor(dat.chile$Q12_3),  
                                 "1" = "Not at all",
@@ -240,8 +275,6 @@ Q12_3.d <- rbind(Q12_3.chile, Q12_3.estonia)
 lattice::histogram(~ Q12_3.d$Q12_3 | Q12_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The people should choose their leaders in free elections.\nAn essential characteristic of democracy...") 
 
-
-
 # The Army should take control of the state when the Government is not functioning well.
 dat.chile$Q12_5 = recode_factor(as.factor(dat.chile$Q12_5),  
                                 "1" = "Not at all",
@@ -257,10 +290,10 @@ dat.estonia$Q12_5 = recode_factor(as.factor(dat.estonia$Q12_5),
                                   .ordered = TRUE
                                   )
 
-Q12_5.chile <- dat.chile %>% select(Q12_5, Country)
-Q12_5.estonia <- dat.estonia %>% select(Q12_5, Country)
+Q12_5.chile <- dat.chile %>% select(Q12_5, Country, winners.losers)
+Q12_5.estonia <- dat.estonia %>% select(Q12_5, Country, winners.losers)
 Q12_5.d <- rbind(Q12_5.chile, Q12_5.estonia)
-lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
+lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$winners.losers * Q12_5.d$Country, type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The Army should take control of the state when the Government is not functioning well.\nAn essential characteristic of democracy...") 
 
 
@@ -279,13 +312,11 @@ dat.estonia$Q12_7 = recode_factor(as.factor(dat.estonia$Q12_7),
                                 .ordered = TRUE
                                 )
 
-
 Q12_7.chile <- dat.chile %>% select(Q12_7, Country)
 Q12_7.estonia <- dat.estonia %>% select(Q12_7, Country)
 Q12_7.d <- rbind(Q12_7.chile, Q12_7.estonia)
 lattice::histogram(~ Q12_7.d$Q12_7 | Q12_7.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The state should ensure that wages are more equal.\nAn essential characteristic of democracy...") 
-
 
 # People should always obey their rulers.
 dat.chile$Q12_8 = recode_factor(as.factor(dat.chile$Q12_8),  
@@ -331,64 +362,85 @@ lattice::histogram(~ Q12_9.d$Q12_9 | Q12_9.d$Country , type = "percent", scales=
                    xlab = "Women should have the same rights as men.\nAn essential characteristic of democracy...") 
 
 
-# Recode Original Dataset
-dat.chile$Boric.Kast = as.factor(dat.chile$Q13)
-dat.chile$Education = as.factor(dat.chile$Q5)
-dat.chile$Gender = as.factor(dat.chile$Q4)
-dat.chile$Income = as.factor(dat.chile$Q6)
+
 
 # Income Low/Mid/High
-dat.chile$IncomeLowMidHigh <- recode_factor(dat.chile$Income, 
-                                            `Menos de $35.000 mensuales liquidos` = "Low", 
-                                            `De $35.001 a $75.000 mensuales liquidos` = "Low",
-                                            `De $75.001 a $110.000 mensuales liquidos` = "Low",
-                                            `De $110.001 a $150.000 mensuales liquidos ` = "Low",
-                                            `De $150.001 a $225.000 mensuales liquidos` = "Low",
-                                            `De $225.001 a $350.000 mensuales liquidos` = "Low",
-                                            `De $350.001 a $450.000 mensuales liquidos ` = "Mid", 
-                                            `De $450.001 a $550.000 mensuales liquidos` = "Mid",
-                                            `De $550.001 a $700.000 mensuales liquidos` = "Mid",
-                                            `De $700.001 a $1.000.000 mensuales liquidos` = "Mid",
-                                            `De $1000.001 a $2.000.000 mensuales liquidos`   = "Mid",
-                                            `De $2.000.001 a $3.000.000 mensuales liquidos` = "High",
-                                            `De $3.000.001 a $4.500.000 mensuales liquidos` = "High",
-                                            `Más de $4.500.000 mensuales liquidos` = "High",
-                                            `No sabe / No contesta` = "Don't know")
+dat.chile$IncomeLowMidHigh <- recode_factor(
+  dat.chile$Q6, 
+  `Menos de $35.000 mensuales liquidos` = "Low", 
+  `De $35.001 a $75.000 mensuales liquidos` = "Low",
+  `De $75.001 a $110.000 mensuales liquidos` = "Low",
+  `De $110.001 a $150.000 mensuales liquidos ` = "Low",
+  `De $150.001 a $225.000 mensuales liquidos` = "Low",
+  `De $225.001 a $350.000 mensuales liquidos` = "Low",
+  `De $350.001 a $450.000 mensuales liquidos ` = "Mid", 
+  `De $450.001 a $550.000 mensuales liquidos` = "Mid",
+  `De $550.001 a $700.000 mensuales liquidos` = "Mid",
+  `De $700.001 a $1.000.000 mensuales liquidos` = "Mid",
+  `De $1000.001 a $2.000.000 mensuales liquidos`   = "Mid",
+  `De $2.000.001 a $3.000.000 mensuales liquidos` = "High",
+  `De $3.000.001 a $4.500.000 mensuales liquidos` = "High",
+  `Más de $4.500.000 mensuales liquidos` = "High",
+  `No sabe / No contesta` = "Don't know",
+  .ordered = TRUE)
 
+dat.estonia$IncomeLowMidHigh <- recode_factor(dat.estonia$Q6, 
+                                            `0-699` = "Low", 
+                                            `700-1099` = "Low",
+                                            `1100-1399` = "Mid", 
+                                            `1400-1699` = "Mid",
+                                            `1700-1999` = "Mid",
+                                            `2000-2299` = "Mid",
+                                            `2300-2899` = "High",
+                                            `2900-3499` = "High",
+                                            `3500-4199` = "High",
+                                            `Rohkem kui 4200` = "High",
+                                            .ordered = TRUE)
 
 # Age young/old
 dat.chile$Q3_young_old <- recode_factor(dat.chile$Q3, 
                                         `18-24` = "Young", 
                                         `25-34` = "Old",
-                                        `35-44` = "Old",
+                                        `35-44` = "Old", # ouch...
                                         `45-54` = "Old",
-                                        `Más de 55` = "Old"
-)
+                                        `Más de 55` = "Old",
+                                        .ordered = TRUE
+                                        )
 
-
-# Boric.Kast
-dat.chile$Boric.Kast <- recode_factor(dat.chile$Boric.Kast, 
-                                      `Blanco/Nulo.` = "Other", # "Other", "Null"
-                                      `GABRIEL BORIC FONT` = "Winner", #"Boric",
-                                      `JOSÉ ANTONIO KAST RIST` = "Loser", # "Kast",
-                                      `No voté.` = "Other", # "Other", "Didn't vote"
-                                      `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
-)
-
-# dat.chile <- dat.chile[ which(dat.chile$Boric.Kast=="Boric" | dat.chile$Boric.Kast == "Kast"), ]
-# dat.chile$Boric.Kast <- droplevels(dat.chile$Boric.Kast)
+dat.estonia$Q3_young_old <- recode_factor(dat.estonia$Q3, 
+                                          `18-24` = "Young", 
+                                          `25-34` = "Old",
+                                          `35-44` = "Old", # ouch...
+                                          `45-54` = "Old",
+                                          `Üle 55` = "Old",
+                                          .ordered = TRUE)
 
 # Education High/Low
-dat.chile$Educ.HighLow <- recode_factor(dat.chile$Education, 
-                                        `Menos que educación básica (menos que octavo básico).` = "Low", 
-                                        `Educación básica completa (hasta octavo básico).` = "Low",
-                                        `Educación media completa.` = "Low",
-                                        `Educación técnico-profesional completa.` = "Mid.",
-                                        `Educación universitaria completa.` = "High", 
-                                        `Magister o Doctorado completo.` = "High", 
-                                        `Otro/Prefiero no decir` = "Other"
-)
+dat.chile$Educ.HighLow <- recode_factor(
+  dat.chile$Q5, 
+  `Menos que educación básica (menos que octavo básico).` = "Low", 
+  `Educación básica completa (hasta octavo básico).` = "Low",
+  `Educación media completa.` = "Low",
+  `Educación técnico-profesional completa.` = "Mid.",
+  `Educación universitaria completa.` = "High", 
+  `Magister o Doctorado completo.` = "High", 
+  `Otro/Prefiero no decir` = "Other",
+  .ordered = TRUE)
 
+dat.estonia$Educ.HighLow <- recode_factor(
+  dat.estonia$Q5,
+  `Põhiariduseta` = "Low", #  "Without primary education"
+  `Põhiharidus` = "Low", # "Primary education"
+  `Keskharidus` = "Low", # "Secondary education"
+  `Kutseharidus` = "Mid.", # "Vocational education"
+  `Ülikooli bakalaureusekraad (3-4 aastat õpinguid)` = "High", # "University Bachelor's degree (3-4 years of study)"
+  `Magistri- või doktorikraad` = "High", # "Master's or Doctorate degree"
+  `Ei tea` = "Other", # "Don't know"
+  `Muu` = "Other", # "Other"
+  .ordered = TRUE)
+
+table(dat.chile$Educ.HighLow)
+table(dat.estonia$Educ.HighLow)
 
 # generate id variable
 dat.chile$respondent = 1:nrow(dat.chile)
@@ -404,18 +456,16 @@ vars = c('Q3', # Age
          'Q4', # Gender
          'Q5', # Educ
          'Q6' # Income
-)
+         )
 
 labs <- c('Age',
           'Gender',
           'Education',
-          'Income'
-)
+          'Income')
 
 # save dataset
 save(dat.chile, file = "/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData")
 save(dat.estonia, file = "/Users/hectorbahamonde/research/democratic_backsliding/estonia_data.RData")
-
 ## ----
 
 
@@ -432,7 +482,6 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 
 # Load Data
 load("/Users/hectorbahamonde/research/democratic_backsliding/estonia_data.RData") # Load data
-
 
 # name structure is = [4 features][h tasks][2 candidates]
 
@@ -513,15 +562,12 @@ dat.estonia <- dat.estonia %>%
     "choice_e" = "C5" ,
     "choice_f" = "C6" ,
     "choice_g" = "C7" ,
-    "choice_h" = "C8"
-  )
-
+    "choice_h" = "C8")
 
 # keep conjoint columns
 conjoint.d.estonia <- dat.estonia %>% dplyr:: select(grep("feature", names(dat.estonia)), 
                                                      grep("respondent", names(dat.estonia)),
-                                                     grep("choice", names(dat.estonia))
-)
+                                                     grep("choice", names(dat.estonia)))
 
 # CREGGG Approach
 p_load(cregg,dplyr)
@@ -569,7 +615,10 @@ conjoint.d.estonia$chosen <- ifelse((conjoint.d.estonia$profile == "A" & conjoin
 # rename features
 # p_load("dplyr")
 conjoint.d.estonia <- conjoint.d.estonia %>% 
-  rename("attr.Gender" = "feature1", "attr.Age" = "feature2","attr.Protest" = "feature3","attr.Pensions" = "feature4")
+  rename("attr.Gender" = "feature1", 
+         "attr.Age" = "feature2",
+         "attr.Protest" = "feature3",
+         "attr.Pensions" = "feature4")
 
 # features to factor
 conjoint.d.estonia$attr.Gender = as.factor(conjoint.d.estonia$attr.Gender)
@@ -577,16 +626,17 @@ conjoint.d.estonia$attr.Age = as.factor(conjoint.d.estonia$attr.Age)
 conjoint.d.estonia$attr.Protest = as.factor(conjoint.d.estonia$attr.Protest)
 conjoint.d.estonia$attr.Pensions = as.factor(conjoint.d.estonia$attr.Pensions)
 
-
 ## Gender
-conjoint.d.estonia$attr.Gender <- recode_factor(conjoint.d.estonia$attr.Gender, `Mees` = "Man", `Naine` = "Woman")
+conjoint.d.estonia$attr.Gender <- recode_factor(
+  conjoint.d.estonia$attr.Gender, 
+  `Mees` = "Man", 
+  `Naine` = "Woman")
 
 ## Age
 conjoint.d.estonia$attr.Age <- recode_factor(conjoint.d.estonia$attr.Age, 
                                              `Alla 35` = "Younger than 35 years old",
                                              `35-50` = "Between 35-50 years old", 
-                                             `Üle 50` = "Over 50 years old"
-)
+                                             `Üle 50` = "Over 50 years old")
 
 ## Protest
 conjoint.d.estonia$attr.Protest <- recode_factor(
@@ -594,8 +644,7 @@ conjoint.d.estonia$attr.Protest <- recode_factor(
   `Kandidaat TOETAB meeleavaldusi tänavatel praeguse valitsuse destabiliseerimiseks.` = 
     "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government", 
   `Kandidaat ON VASTU meeleavaldustele tänavatel praeguse valitsuse destabiliseerimiseks.` = 
-    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government"
-)
+    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government")
 
 ## Pensions
 conjoint.d.estonia$attr.Pensions <- recode_factor(
@@ -603,49 +652,37 @@ conjoint.d.estonia$attr.Pensions <- recode_factor(
   `Kandidaat TOETAB pensionite tõstmist.` = 
     "The candidate SUPPORTS increases in pensions for the elderly", 
   `Kandidaat ON VASTU pensionite tõstmisele.` = 
-    "The candidate OPPOSES increases in pensions for the elderly"
-)
-
-# Losers / Winners (Q13)
-dat.estonia$winners.losers <- recode_factor(dat.estonia$Q13,
-                                            # winners
-                                            `Eesti Reformierakond` = "Winner", #  113  
-                                            `Eesti 200` = "Winner", # 55
-                                            `Sotsiaaldemokraatlik Erakond` = "Winner", # 95
-                                            # losers
-                                            `Eesti Keskerakond` = "Loser", # 53
-                                            `Eesti Konservatiivne Rahvaerakond` = "Loser", # 89
-                                            `Isamaa Erakond` = "Loser", # 41
-                                            `Eestimaa Ühendatud Vasakpartei` = "Loser", 
-                                            `Erakond Eestimaa Rohelised` = "Loser", 
-                                            `Erakond Parempoolsed` = "Loser", 
-                                            `Muu` = "Loser", 
-                                            # other
-                                            `Ma ei käinud valimas` = "Other", # "Other",
-                                            `Ma ei taha öelda` = "Other" # "Other"
-                                            )
-
-## From Mart (2024)
-# Winners (currently in governing coalition):  
-# 1. Eesti Reformierakond. 
-# 4. Eesti 200, 
-# 5. Sotsiaaldemokraatlik Erakond. 
-#
-# Losers (in opposition):  
-# 2. Eesti Keskerakond 
-# 3. Eesti Konservatiivne Rahvaerakond 
-# 6. Isamaa Erakond
+    "The candidate OPPOSES increases in pensions for the elderly")
 
 ##############################
 # MERGING WITH LARGER DATASET [Estonia]
 ##############################
 
+# Q10_1 # Democracy might have problems but it's better...
+# Q10_2 # Democracy is not an effective form of government...better a strong leader
+# Q10_3 # Civil rights that guarantee political protest should not be restricted
+# Q10_4 # It is important that there are free and politically independent media in [country]
+# Q12_1 # Governments should tax the rich to help the poor
+# Q8_1 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+# Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+# Q12_3 # The people should choose their leaders in free elections.
+# Q12_5 # The Army should take control of the state when the Government is not functioning well.
+# Q12_7 # The state should ensure that wages are more equal.
+# Q12_8 # People should always obey their rulers.
+# Q12_9 # Women should have the same rights as men.
+# IncomeLowMidHigh # Income Low/Mid/High
+# Q3_young_old # Age young/old
+# Educ.HighLow # Education High/Low
+
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset.estonia = dat.estonia %>% dplyr::select(respondent, winners.losers)
+dat.subset.estonia = dat.estonia %>% dplyr::select(
+  respondent, 
+  winners.losers,
+  Q10_1, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, Q12_7, Q12_8, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow
+  )
 
 # Merge
 conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respondent")
-
 
 ##############################
 # CONOINT Data Analyses [Estonia]
@@ -653,13 +690,14 @@ conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respo
 
 # options(scipen=999)
 
-# Marginal Means // Subgroup Analyses: Boric and Kast
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Winners.Losers
+#####################################################
 mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                                                id = ~ respondent, 
                                                estimate = "mm", 
                                                by = ~winners.losers))
-
-
 
 # pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
 #    width = 12, # The width of the plot in inches
@@ -668,6 +706,57 @@ mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr
 plot(mm_Winner_Loser_Estonia, group = "winners.losers", vline = 0.5)
 
 #dev.off();dev.off()
+
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q12_5 : The Army should take control of the state when the Government is not functioning well.
+#####################################################
+mm_Army_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q12_5))
+
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
+#    width = 12, # The width of the plot in inches
+#    height = 4) # The height of the plot in inches
+
+plot(mm_Army_Estonia, group = "Q12_5", vline = 0.5)
+
+#dev.off();dev.off()
+
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q10_1 # Democracy might have problems but it's better...
+#####################################################
+mm_DemBetter_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                       id = ~ respondent, 
+                                       estimate = "mm", 
+                                       by = ~Q10_1))
+
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
+#    width = 12, # The width of the plot in inches
+#    height = 4) # The height of the plot in inches
+
+plot(mm_DemBetter_Estonia, group = "Q10_1", vline = 0.5)
+
+#dev.off();dev.off()
+
+
+# HERE
+## TESTING
+
+mm_Army_Estonia$Country <- "Estonia"
+mm_Army_Estonia$Question <- "Q12_5"
+
+mm_DemBetter_Estonia$Country <- "Chile"
+mm_DemBetter_Estonia$Question <- "Q10_1"
+
+p_load("dplyr")
+mm_Army_Estonia <- mm_Army_Estonia %>% rename("Value" = "Q12_5")
+mm_DemBetter_Estonia <- mm_DemBetter_Estonia %>% rename("Value" = "Q10_1")
+
+test.d = rbind(mm_Army_Estonia, mm_DemBetter_Estonia)
+plot(test.d, group = "Question", vline = 0.5)
 
 
 
@@ -766,22 +855,18 @@ dat.chile <- dat.chile %>%
     "choice_e" = "C5" ,
     "choice_f" = "C6" ,
     "choice_g" = "C7" ,
-    "choice_h" = "C8"
-  )
-
+    "choice_h" = "C8")
 
 # keep conjoint columns
 conjoint.d.chile <- dat.chile %>% dplyr:: select(grep("feature", names(dat.chile)), 
                                                  grep("respondent", names(dat.chile)),
-                                                 grep("choice", names(dat.chile))
-)
+                                                 grep("choice", names(dat.chile)))
 
 # CREGGG Approach
 p_load(cregg,dplyr)
 # https://thomasleeper.com/cregg/
 # https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
 # "If a variable in the original format records which of the two profiles was chosen (e.g., “left” and “right”), it should go in task_variables"
-
 
 ## profile_variables
 list1 <- list(
@@ -839,16 +924,15 @@ conjoint.d.chile$attr.Gender <- recode_factor(conjoint.d.chile$attr.Gender, `Muj
 conjoint.d.chile$attr.Age <- recode_factor(conjoint.d.chile$attr.Age, 
                                            `Menos de 35 años` = "Younger than 35 years old",
                                            `Entre 35 y 50 años` = "Between 35-50 years old", 
-                                           `Sobre 50 años` = "Over 50 years old"
-)
+                                           `Sobre 50 años` = "Over 50 years old")
+
 ## Protest
 conjoint.d.chile$attr.Protest <- recode_factor(
   conjoint.d.chile$attr.Protest, 
   `El candidato APOYA protestas que busquen desestabilizar el actual gobierno.` = 
     "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government", 
   `El candidato SE OPONE a protestas que busquen desestabilizar el actual gobierno.` = 
-    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government"
-)
+    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government")
 
 ## Pensions
 conjoint.d.chile$attr.Pensions <- recode_factor(
@@ -856,20 +940,33 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
   `El candidato APOYA un aumento en las pensiones para la tercera edad.` = 
     "The candidate SUPPORTS increases in pensions for the elderly", 
   `El candidato SE OPONE a un aumento en las pensiones para la tercera edad.` = 
-    "The candidate OPPOSES increases in pensions for the elderly"
-)
+    "The candidate OPPOSES increases in pensions for the elderly")
 
 # use for analysis
 # cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent)
 
-
 # descriptive plotting
 # plot(mm(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
-
 
 ##############################
 # MERGING WITH LARGER DATASET
 ##############################
+
+# Q10_1 # Democracy might have problems but it's better...
+# Q10_2 # Democracy is not an effective form of government...better a strong leader
+# Q10_3 # Civil rights that guarantee political protest should not be restricted
+# Q10_4 # It is important that there are free and politically independent media in [country]
+# Q12_1 # Governments should tax the rich to help the poor
+# Q8_1 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+# Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+# Q12_3 # The people should choose their leaders in free elections.
+# Q12_5 # The Army should take control of the state when the Government is not functioning well.
+# Q12_7 # The state should ensure that wages are more equal.
+# Q12_8 # People should always obey their rulers.
+# Q12_9 # Women should have the same rights as men.
+# IncomeLowMidHigh # Income Low/Mid/High
+# Q3_young_old # Age young/old
+# Educ.HighLow # Education High/Low
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset = dat.chile %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
