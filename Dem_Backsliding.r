@@ -693,35 +693,8 @@ conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respo
 # Marginal Means // Subgroup Analyses: 
 # Winners.Losers
 #####################################################
-mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                               id = ~ respondent, 
-                                               estimate = "mm", 
-                                               by = ~winners.losers))
 
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
-#    width = 12, # The width of the plot in inches
-#    height = 4) # The height of the plot in inches
 
-plot(mm_Winner_Loser_Estonia, group = "winners.losers", vline = 0.5)
-
-#dev.off();dev.off()
-
-#####################################################
-# Marginal Means // Subgroup Analyses
-# Q12_5 : The Army should take control of the state when the Government is not functioning well.
-#####################################################
-mm_Army_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                               id = ~ respondent, 
-                                               estimate = "mm", 
-                                               by = ~Q12_5))
-
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
-#    width = 12, # The width of the plot in inches
-#    height = 4) # The height of the plot in inches
-
-plot(mm_Army_Estonia, group = "Q12_5", vline = 0.5)
-
-#dev.off();dev.off()
 
 #####################################################
 # Marginal Means // Subgroup Analyses
@@ -740,32 +713,13 @@ plot(mm_DemBetter_Estonia, group = "Q10_1", vline = 0.5)
 
 #dev.off();dev.off()
 
-
-# HERE
-## TESTING
-
-mm_Army_Estonia$Country <- "Estonia"
-mm_Army_Estonia$Question <- "Q12_5"
-
-mm_DemBetter_Estonia$Country <- "Chile"
-mm_DemBetter_Estonia$Question <- "Q10_1"
-
-p_load("dplyr")
-mm_Army_Estonia <- mm_Army_Estonia %>% rename("Value" = "Q12_5")
-mm_DemBetter_Estonia <- mm_DemBetter_Estonia %>% rename("Value" = "Q10_1")
-
-test.d = rbind(mm_Army_Estonia, mm_DemBetter_Estonia)
-plot(test.d, group = "Question", vline = 0.5)
-
-
-
 ########################################
 # Conjoint Data Prep [Chile]
 ########################################
 
-cat("\014")
-rm(list=ls())
-setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+#cat("\014")
+#rm(list=ls())
+#setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
 
 # Pacman
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -980,33 +934,103 @@ conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
 
 
 ##############################
-# CONOINT Data Analyses [CHILE]
+# CONOINT Data Analyses
 ##############################
 
-# options(scipen=999)
-# conjoint.d.chile$BoricKast_Age <- interaction(conjoint.d.chile$Boric.Kast, conjoint.d.chile$Q3_young_old, sep = "_")
-# cj(conjoint.d.chile, chosen ~ BoricKast_Age,id = ~respondent, estimate = "mm", h0 = 0.5)
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Winners.Losers
+#####################################################
+
+mm_Winner_Loser_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~winners.losers))
+
+mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~winners.losers))
 
 
-## ---- conjoint:data:analyses ----
-# Marginal Means // Subgroup Analyses: Boric and Kast
-mm_BoricKast <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                    id = ~ respondent, 
-                                    estimate = "mm", 
-                                    by = ~Boric.Kast))
+mm_Winner_Loser_Chile$Country <- "Chile"
+mm_Winner_Loser_Estonia$Country <- "Estonia"
 
-## ----
+mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
+mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
+mm_Winner_Loser.p %+% facet_wrap(~Country)
 
 
-## ---- conjoint:data:plot ----
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Boric_Kast.pdf",   # The directory you want to save the file in
-    width = 12, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
+#    width = 12, # The width of the plot in inches
+#    height = 4) # The height of the plot in inches
 
-plot(mm_BoricKast, group = "Boric.Kast", vline = 0.5)
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
+#    width = 12, # The width of the plot in inches
+#    height = 4) # The height of the plot in inches
 
-dev.off();dev.off()
-## ----
+# plot(mm_Winner_Loser_Estonia, group = "winners.losers", vline = 0.5)
+# plot(mm_Winner_Loser_Chile, group = "winners.losers", vline = 0.5)
+
+#dev.off();dev.off()
+
+
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q12_5 : The Army should take control of the state when the Government is not functioning well.
+#####################################################
+mm_Army_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                       id = ~ respondent, 
+                                       estimate = "mm", 
+                                       by = ~Q12_5))
+
+mm_Army_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                     id = ~respondent, 
+                                     estimate = "mm", 
+                                     by = ~Q12_5))
+
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_Takes_Over_Chile.pdf",   # The directory you want to save the file in
+#     width = 12, # The width of the plot in inches
+#     height = 4) # The height of the plot in inches
+
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_Estonia.pdf",   # The directory you want to save the file in
+#    width = 12, # The width of the plot in inches
+#    height = 4) # The height of the plot in inches
+
+# plot(mm_Army_Chile, group = "Q12_5_highlow", vline = 0.5)
+# plot(mm_Army_Estonia, group = "Q12_5", vline = 0.5)
+
+mm_Army_Chile$Country <- "Chile"
+mm_Army_Estonia$Country <- "Estonia"
+
+mm_Army.d = rbind(mm_Army_Chile, mm_Army_Estonia)
+mm_Army.p <- plot(mm_Army.d, group = "Q12_5", vline = 0.5)
+mm_Army.p %+% facet_wrap(~Country)
+
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q8_1: Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+########################################################
+mm_DemSatis_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q8_1))
+
+mm_DemSatis_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q8_1))
+
+mm_DemSatis_Chile$Country <- "Chile"
+mm_DemSatis_Estonia$Country <- "Estonia"
+
+mm_DemSatis.d = rbind(mm_DemSatis_Chile, mm_DemSatis_Estonia)
+mm_DemSatis.p <- plot(mm_DemSatis.d, group = "Q8_1", vline = 0.5)
+mm_DemSatis.p %+% facet_wrap(~Country)
+
+
+
 
 
 ##############################
@@ -1017,38 +1041,6 @@ dev.off();dev.off()
 # -respondents' partisanship, 
 # -democratic satisfaction and 
 # -support for democratic norms
-
-########################################################
-# Marginal Means // Subgroup Analyses: High/Low Satisfaction with Democracy
-########################################################
-mm_DemSatis.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                   id = ~respondent, 
-                                   estimate = "mm", 
-                                   by = ~Q8_1_highlow))
-
-#p_load(dplyr)
-#mm_DemSatis.chile <- mm_DemSatis.chile %>% rename("Satisfaction With Democracy" = "Q8_1_highlow")
-
-
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Dem_Support_Chile.pdf",   # The directory you want to save the file in
-    width = 12, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
-dev.off();dev.off()
-plot(mm_DemSatis.chile, group = "Q8_1_highlow", vline = 0.5)
-
-########################################################
-# Marginal Means // Subgroup Analyses: Army should take over
-########################################################
-mm_ArmyTakesOver.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                        id = ~respondent, 
-                                        estimate = "mm", 
-                                        by = ~Q12_5_highlow))
-
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_Takes_Over_Chile.pdf",   # The directory you want to save the file in
-    width = 12, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
-dev.off();dev.off()
-plot(mm_ArmyTakesOver.chile, group = "Q12_5_highlow", vline = 0.5)
 
 
 ########################################################
