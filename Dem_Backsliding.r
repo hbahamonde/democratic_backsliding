@@ -296,7 +296,6 @@ Q12_5.d <- rbind(Q12_5.chile, Q12_5.estonia)
 lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$winners.losers * Q12_5.d$Country, type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The Army should take control of the state when the Government is not functioning well.\nAn essential characteristic of democracy...") 
 
-
 # The state should ensure that wages are more equal.
 dat.chile$Q12_7 = recode_factor(as.factor(dat.chile$Q12_7),  
                                 "1" = "Not at all",
@@ -969,7 +968,7 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 # Educ.HighLow # Education High/Low
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat.chile %>% dplyr::select(respondent, Boric.Kast, Education, Educ.HighLow, Gender, Income, IncomeLowMidHigh, Q8_1_highlow, Q12_5_highlow, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q12_1_highlow , Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, IncomeLowMidHigh, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
 
 # Merge
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
