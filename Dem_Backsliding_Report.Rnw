@@ -30,9 +30,11 @@ table(dat.estonia$Q3) # age
 @
 
 <<chunk:4>>=
+
 # Import Data
 dat.chile <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/chile_data.csv")
 dat.estonia <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/data/Qualtrics/estonia_data.csv")
+
 
 # var names
 chile.d.var.names = data.frame(
@@ -65,9 +67,11 @@ dat.estonia$Country <- "Estonia"
 ########################################################
 
 # Recode Original Dataset
+p_load("dplyr")
+
+
 # dat.chile$Gender = as.factor(dat.chile$Q4)
 
-p_load("dplyr")
 
 # Boric.Kast
 dat.chile$winners.losers <- recode_factor(dat.chile$Q13, 
@@ -165,7 +169,7 @@ Q10_2.d <- rbind(Q10_2.chile, Q10_2.estonia)
 lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections.") 
 
-## Civil rights that guarantee political protest should not be restricted
+# Civil rights that guarantee political protest should not be restricted
 dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
@@ -187,7 +191,7 @@ Q10_3.d <- rbind(Q10_3.chile, Q10_3.estonia)
 lattice::histogram(~ Q10_3.d$Q10_3 | Q10_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Civil rights that guarantee political protest should not be restricted.") 
 
-## It is important that there are free and politically independent media in [country]
+# It is important that there are free and politically independent media in [country]
 dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
@@ -317,7 +321,6 @@ Q12_5.d <- rbind(Q12_5.chile, Q12_5.estonia)
 lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$winners.losers * Q12_5.d$Country, type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The Army should take control of the state when the Government is not functioning well.\nAn essential characteristic of democracy...") 
 
-
 # The state should ensure that wages are more equal.
 dat.chile$Q12_7 = recode_factor(as.factor(dat.chile$Q12_7),  
                                 "1" = "Not at all",
@@ -434,8 +437,7 @@ dat.estonia$Q3_young_old <- recode_factor(dat.estonia$Q3,
                                           `35-44` = "Old", # ouch...
                                           `45-54` = "Old",
                                           `Üle 55` = "Old",
-                                          .ordered = TRUE
-                                          )
+                                          .ordered = TRUE)
 
 # Education High/Low
 dat.chile$Educ.HighLow <- recode_factor(
@@ -447,10 +449,7 @@ dat.chile$Educ.HighLow <- recode_factor(
   `Educación universitaria completa.` = "High", 
   `Magister o Doctorado completo.` = "High", 
   `Otro/Prefiero no decir` = "Other",
-  .ordered = TRUE
-  )
-
-
+  .ordered = TRUE)
 
 dat.estonia$Educ.HighLow <- recode_factor(
   dat.estonia$Q5,
@@ -462,11 +461,796 @@ dat.estonia$Educ.HighLow <- recode_factor(
   `Magistri- või doktorikraad` = "High", # "Master's or Doctorate degree"
   `Ei tea` = "Other", # "Don't know"
   `Muu` = "Other", # "Other"
-  .ordered = TRUE
-  )
+  .ordered = TRUE)
 
 table(dat.chile$Educ.HighLow)
 table(dat.estonia$Educ.HighLow)
+
+# generate id variable
+dat.chile$respondent = 1:nrow(dat.chile)
+dat.chile <- dat.chile %>% select(respondent, everything()) # reorder
+
+dat.estonia$respondent = 1:nrow(dat.estonia)
+dat.estonia <- dat.estonia %>% select(respondent, everything()) # reorder
+
+# summary stats demographics
+p_load(vtable,kableExtra)
+
+vars = c('Q3', # Age
+         'Q4', # Gender
+         'Q5', # Educ
+         'Q6' # Income
+         )
+
+labs <- c('Age',
+          'Gender',
+          'Education',
+          'Income')
+
+# save dataset
+save(dat.chile, file = "/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData")
+save(dat.estonia, file = "/Users/hectorbahamonde/research/democratic_backsliding/estonia_data.RData")
+## ----
+
+
+########################################
+# Conjoint Data Prep [Estonia]
+########################################
+
+cat("\014")
+rm(list=ls())
+setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+
+# Load Data
+load("/Users/hectorbahamonde/research/democratic_backsliding/estonia_data.RData") # Load data
+
+# name structure is = [4 features][h tasks][2 candidates]
+
+# rename
+p_load("dplyr")
+dat.estonia <- dat.estonia %>% 
+  rename(
+    # features
+    "feature1a1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.1.1_CBCONJOINT",
+    "feature2a1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.1.1_CBCONJOINT",
+    "feature3a1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.1.1_CBCONJOINT",
+    "feature4a1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.1.1_CBCONJOINT",
+    "feature1a2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.1.2_CBCONJOINT",
+    "feature2a2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.1.2_CBCONJOINT",
+    "feature3a2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.1.2_CBCONJOINT",
+    "feature4a2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.1.2_CBCONJOINT",
+    "feature1b1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.2.1_CBCONJOINT",
+    "feature2b1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.2.1_CBCONJOINT",
+    "feature3b1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.2.1_CBCONJOINT",
+    "feature4b1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.2.1_CBCONJOINT",
+    "feature1b2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.2.2_CBCONJOINT",
+    "feature2b2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.2.2_CBCONJOINT",
+    "feature3b2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.2.2_CBCONJOINT",
+    "feature4b2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.2.2_CBCONJOINT",
+    "feature1c1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.3.1_CBCONJOINT",
+    "feature2c1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.3.1_CBCONJOINT",
+    "feature3c1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.3.1_CBCONJOINT",
+    "feature4c1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.3.1_CBCONJOINT",
+    "feature1c2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.3.2_CBCONJOINT",
+    "feature2c2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.3.2_CBCONJOINT",
+    "feature3c2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.3.2_CBCONJOINT",
+    "feature4c2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.3.2_CBCONJOINT",
+    "feature1d1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.4.1_CBCONJOINT",
+    "feature2d1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.4.1_CBCONJOINT",
+    "feature3d1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.4.1_CBCONJOINT",
+    "feature4d1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.4.1_CBCONJOINT",
+    "feature1d2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.4.2_CBCONJOINT",
+    "feature2d2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.4.2_CBCONJOINT",
+    "feature3d2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.4.2_CBCONJOINT",
+    "feature4d2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.4.2_CBCONJOINT",
+    "feature1e1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.5.1_CBCONJOINT",
+    "feature2e1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.5.1_CBCONJOINT",
+    "feature3e1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.5.1_CBCONJOINT",
+    "feature4e1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.5.1_CBCONJOINT",
+    "feature1e2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.5.2_CBCONJOINT",
+    "feature2e2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.5.2_CBCONJOINT",
+    "feature3e2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.5.2_CBCONJOINT",
+    "feature4e2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.5.2_CBCONJOINT",
+    "feature1f1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.6.1_CBCONJOINT",
+    "feature2f1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.6.1_CBCONJOINT",
+    "feature3f1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.6.1_CBCONJOINT",
+    "feature4f1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.6.1_CBCONJOINT",
+    "feature1f2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.6.2_CBCONJOINT",
+    "feature2f2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.6.2_CBCONJOINT",
+    "feature3f2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.6.2_CBCONJOINT",
+    "feature4f2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.6.2_CBCONJOINT",
+    "feature1g1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.7.1_CBCONJOINT",
+    "feature2g1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.7.1_CBCONJOINT",
+    "feature3g1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.7.1_CBCONJOINT",
+    "feature4g1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.7.1_CBCONJOINT",
+    "feature1g2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.7.2_CBCONJOINT",
+    "feature2g2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.7.2_CBCONJOINT",
+    "feature3g2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.7.2_CBCONJOINT",
+    "feature4g2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.7.2_CBCONJOINT",
+    "feature1h1" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.8.1_CBCONJOINT",
+    "feature2h1" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.8.1_CBCONJOINT",
+    "feature3h1" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.8.1_CBCONJOINT",
+    "feature4h1" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.8.1_CBCONJOINT",
+    "feature1h2" = "d2796cd0.1d9f.4eb0.ba54.81aa3835a25f.8.2_CBCONJOINT",
+    "feature2h2" = "X33b5bd0f.eaf2.4b73.8859.ff542e570638.8.2_CBCONJOINT",
+    "feature3h2" = "X6965f897.4fef.400d.b747.aa7fd2ab1dc6.8.2_CBCONJOINT",
+    "feature4h2" = "X567734f3.ac66.4120.a1a8.ee68b0db61a4.8.2_CBCONJOINT",
+    # choice
+    "choice_a" = "C1" ,
+    "choice_b" = "C2" ,
+    "choice_c" = "C3" ,
+    "choice_d" = "C4" ,
+    "choice_e" = "C5" ,
+    "choice_f" = "C6" ,
+    "choice_g" = "C7" ,
+    "choice_h" = "C8")
+
+# keep conjoint columns
+conjoint.d.estonia <- dat.estonia %>% dplyr:: select(grep("feature", names(dat.estonia)), 
+                                                     grep("respondent", names(dat.estonia)),
+                                                     grep("choice", names(dat.estonia)))
+
+# CREGGG Approach
+p_load(cregg,dplyr)
+# https://thomasleeper.com/cregg/
+# https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
+# "If a variable in the original format records which of the two profiles was chosen (e.g., “left” and “right”), it should go in task_variables"
+
+
+## profile_variables
+list1 <- list(
+  feature1 = list( # feature 1
+    names(conjoint.d.estonia)[grep("^feature1.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature1.{1}2", names(conjoint.d.estonia))]
+  ),
+  feature2 = list(# feature 2
+    names(conjoint.d.estonia)[grep("^feature2.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature2.{1}2", names(conjoint.d.estonia))]
+  ),
+  feature3 = list(# feature 3
+    names(conjoint.d.estonia)[grep("^feature3.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature3.{1}2", names(conjoint.d.estonia))]
+  ),
+  feature4 = list(# feature 4
+    names(conjoint.d.estonia)[grep("^feature4.{1}1", names(conjoint.d.estonia))],
+    names(conjoint.d.estonia)[grep("^feature4.{1}2", names(conjoint.d.estonia))]
+  )
+)
+
+# task variables 
+list2 <- list(choice = paste0("choice_", letters[1:8]))
+
+# perform reshape
+conjoint.d.estonia <- cj_tidy(conjoint.d.estonia, 
+                              profile_variables = list1,
+                              task_variables = list2,
+                              id = ~ respondent)
+
+# checking (if nothing happens, it's true)
+# stopifnot(nrow(conjoint.d.estonia) == nrow(dat.estonia)*8*2) # 8 tasks and 2 candidates
+
+# recode outcome so it is coded sensibly
+conjoint.d.estonia$chosen <- ifelse((conjoint.d.estonia$profile == "A" & conjoint.d.estonia$choice == 1) |
+                                      (conjoint.d.estonia$profile == "B" & conjoint.d.estonia$choice == 2), 1, 0)
+
+# rename features
+# p_load("dplyr")
+conjoint.d.estonia <- conjoint.d.estonia %>% 
+  rename("attr.Gender" = "feature1", 
+         "attr.Age" = "feature2",
+         "attr.Protest" = "feature3",
+         "attr.Pensions" = "feature4")
+
+# features to factor
+conjoint.d.estonia$attr.Gender = as.factor(conjoint.d.estonia$attr.Gender)
+conjoint.d.estonia$attr.Age = as.factor(conjoint.d.estonia$attr.Age)
+conjoint.d.estonia$attr.Protest = as.factor(conjoint.d.estonia$attr.Protest)
+conjoint.d.estonia$attr.Pensions = as.factor(conjoint.d.estonia$attr.Pensions)
+
+## Gender
+conjoint.d.estonia$attr.Gender <- recode_factor(
+  conjoint.d.estonia$attr.Gender, 
+  `Mees` = "Man", 
+  `Naine` = "Woman")
+
+## Age
+conjoint.d.estonia$attr.Age <- recode_factor(conjoint.d.estonia$attr.Age, 
+                                             `Alla 35` = "Younger than 35 years old",
+                                             `35-50` = "Between 35-50 years old", 
+                                             `Üle 50` = "Over 50 years old")
+
+## Protest
+conjoint.d.estonia$attr.Protest <- recode_factor(
+  conjoint.d.estonia$attr.Protest, 
+  `Kandidaat TOETAB meeleavaldusi tänavatel praeguse valitsuse destabiliseerimiseks.` = 
+    "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government", 
+  `Kandidaat ON VASTU meeleavaldustele tänavatel praeguse valitsuse destabiliseerimiseks.` = 
+    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government")
+
+## Pensions
+conjoint.d.estonia$attr.Pensions <- recode_factor(
+  conjoint.d.estonia$attr.Pensions, 
+  `Kandidaat TOETAB pensionite tõstmist.` = 
+    "The candidate SUPPORTS increases in pensions for the elderly", 
+  `Kandidaat ON VASTU pensionite tõstmisele.` = 
+    "The candidate OPPOSES increases in pensions for the elderly")
+
+##############################
+# MERGING WITH LARGER DATASET [Estonia]
+##############################
+
+# Q10_1 # Democracy might have problems but it's better...
+# Q10_2 # Democracy is not an effective form of government...better a strong leader
+# Q10_3 # Civil rights that guarantee political protest should not be restricted
+# Q10_4 # It is important that there are free and politically independent media in [country]
+# Q12_1 # Governments should tax the rich to help the poor
+# Q8_1 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+# Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+# Q12_3 # The people should choose their leaders in free elections.
+# Q12_5 # The Army should take control of the state when the Government is not functioning well.
+# Q12_7 # The state should ensure that wages are more equal.
+# Q12_8 # People should always obey their rulers.
+# Q12_9 # Women should have the same rights as men.
+# IncomeLowMidHigh # Income Low/Mid/High
+# Q3_young_old # Age young/old
+# Educ.HighLow # Education High/Low
+
+# subset vars from the big dataset to be merged to the conjoint dataset
+dat.subset.estonia = dat.estonia %>% dplyr::select(
+  respondent, 
+  winners.losers,
+  Q10_1, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, Q12_7, Q12_8, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow
+  )
+
+# Merge
+conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respondent")
+
+########################################
+# Conjoint Data Prep [Chile]
+########################################
+
+#cat("\014")
+#rm(list=ls())
+#setwd("/Users/hectorbahamonde/research/democratic_backsliding/")
+
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+
+# Load Data
+load("/Users/hectorbahamonde/research/democratic_backsliding/chile_data.RData") # Load data
+
+
+## ---- conjoint:prep ----
+# name structure is = [4 features][h tasks][2 candidates]
+
+# rename
+p_load("dplyr")
+dat.chile <- dat.chile %>% 
+  rename(
+    # features
+    "feature1a1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.1_CBCONJOINT" ,
+    "feature2a1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.1_CBCONJOINT" ,
+    "feature3a1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.1_CBCONJOINT" ,
+    "feature4a1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.1_CBCONJOINT" ,
+    "feature1a2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.1.2_CBCONJOINT" ,
+    "feature2a2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.1.2_CBCONJOINT" ,
+    "feature3a2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.1.2_CBCONJOINT" ,
+    "feature4a2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.1.2_CBCONJOINT" ,
+    "feature1b1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.1_CBCONJOINT" ,
+    "feature2b1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.1_CBCONJOINT" ,
+    "feature3b1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.1_CBCONJOINT" ,
+    "feature4b1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.1_CBCONJOINT" ,
+    "feature1b2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.2.2_CBCONJOINT" ,
+    "feature2b2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.2.2_CBCONJOINT" ,
+    "feature3b2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.2.2_CBCONJOINT" ,
+    "feature4b2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.2.2_CBCONJOINT" ,
+    "feature1c1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.1_CBCONJOINT" ,
+    "feature2c1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.1_CBCONJOINT" ,
+    "feature3c1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.1_CBCONJOINT" ,
+    "feature4c1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.1_CBCONJOINT" ,
+    "feature1c2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.3.2_CBCONJOINT" ,
+    "feature2c2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.3.2_CBCONJOINT" ,
+    "feature3c2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.3.2_CBCONJOINT" ,
+    "feature4c2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.3.2_CBCONJOINT" ,
+    "feature1d1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.1_CBCONJOINT" ,
+    "feature2d1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.1_CBCONJOINT" ,
+    "feature3d1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.1_CBCONJOINT" ,
+    "feature4d1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.1_CBCONJOINT" ,
+    "feature1d2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.4.2_CBCONJOINT" ,
+    "feature2d2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.4.2_CBCONJOINT" ,
+    "feature3d2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.4.2_CBCONJOINT" ,
+    "feature4d2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.4.2_CBCONJOINT" ,
+    "feature1e1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.1_CBCONJOINT" ,
+    "feature2e1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.1_CBCONJOINT" ,
+    "feature3e1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.1_CBCONJOINT" ,
+    "feature4e1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.1_CBCONJOINT" ,
+    "feature1e2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.5.2_CBCONJOINT" ,
+    "feature2e2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.5.2_CBCONJOINT" ,
+    "feature3e2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.5.2_CBCONJOINT" ,
+    "feature4e2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.5.2_CBCONJOINT" ,
+    "feature1f1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.1_CBCONJOINT" ,
+    "feature2f1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.1_CBCONJOINT" ,
+    "feature3f1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.1_CBCONJOINT" ,
+    "feature4f1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.1_CBCONJOINT" ,
+    "feature1f2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.6.2_CBCONJOINT" ,
+    "feature2f2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.6.2_CBCONJOINT" ,
+    "feature3f2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.6.2_CBCONJOINT" ,
+    "feature4f2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.6.2_CBCONJOINT" ,
+    "feature1g1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.1_CBCONJOINT" ,
+    "feature2g1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.1_CBCONJOINT" ,
+    "feature3g1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.1_CBCONJOINT" ,
+    "feature4g1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.1_CBCONJOINT" ,
+    "feature1g2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.7.2_CBCONJOINT" ,
+    "feature2g2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.7.2_CBCONJOINT" ,
+    "feature3g2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.7.2_CBCONJOINT" ,
+    "feature4g2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.7.2_CBCONJOINT" ,
+    "feature1h1" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.1_CBCONJOINT" ,
+    "feature2h1" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.1_CBCONJOINT" ,
+    "feature3h1" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.1_CBCONJOINT" ,
+    "feature4h1" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.1_CBCONJOINT" ,
+    "feature1h2" = "X13773a6d.7567.418e.9a54.5ed4a9e1be74.8.2_CBCONJOINT" ,
+    "feature2h2" = "X5e2374ad.f827.494e.ae28.c6a2430508ba.8.2_CBCONJOINT" ,
+    "feature3h2" = "X39381113.09d9.4f5e.a4d9.5ce7e8a27c88.8.2_CBCONJOINT" ,
+    "feature4h2" = "b1429583.39b1.42fc.8ee2.2559edc4ca94.8.2_CBCONJOINT",
+    # choice
+    "choice_a" = "C1" ,
+    "choice_b" = "C2" ,
+    "choice_c" = "C3" ,
+    "choice_d" = "C4" ,
+    "choice_e" = "C5" ,
+    "choice_f" = "C6" ,
+    "choice_g" = "C7" ,
+    "choice_h" = "C8")
+
+# keep conjoint columns
+conjoint.d.chile <- dat.chile %>% dplyr:: select(grep("feature", names(dat.chile)), 
+                                                 grep("respondent", names(dat.chile)),
+                                                 grep("choice", names(dat.chile)))
+
+# CREGGG Approach
+p_load(cregg,dplyr)
+# https://thomasleeper.com/cregg/
+# https://thomasleeper.com/cregg/reference/cj_tidy.html#examples
+# "If a variable in the original format records which of the two profiles was chosen (e.g., “left” and “right”), it should go in task_variables"
+
+## profile_variables
+list1 <- list(
+  feature1 = list( # feature 1
+    names(conjoint.d.chile)[grep("^feature1.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature1.{1}2", names(conjoint.d.chile))]
+  ),
+  feature2 = list(# feature 2
+    names(conjoint.d.chile)[grep("^feature2.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature2.{1}2", names(conjoint.d.chile))]
+  ),
+  feature3 = list(# feature 3
+    names(conjoint.d.chile)[grep("^feature3.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature3.{1}2", names(conjoint.d.chile))]
+  ),
+  feature4 = list(# feature 4
+    names(conjoint.d.chile)[grep("^feature4.{1}1", names(conjoint.d.chile))],
+    names(conjoint.d.chile)[grep("^feature4.{1}2", names(conjoint.d.chile))]
+  )
+)
+
+# task variables 
+list2 <- list(choice = paste0("choice_", letters[1:8]))
+
+# perform reshape
+conjoint.d.chile <- cj_tidy(conjoint.d.chile, 
+                            profile_variables = list1,
+                            task_variables = list2,
+                            id = ~ respondent)
+
+# checking (if nothing happens, it's true)
+# stopifnot(nrow(conjoint.d.chile) == nrow(dat.chile)*8*2) # 8 tasks and 2 candidates
+
+# recode outcome so it is coded sensibly
+conjoint.d.chile$chosen <- ifelse((conjoint.d.chile$profile == "A" & conjoint.d.chile$choice == 1) |
+                                    (conjoint.d.chile$profile == "B" & conjoint.d.chile$choice == 2), 1, 0)
+
+# rename features
+# p_load("dplyr")
+conjoint.d.chile <- conjoint.d.chile %>% 
+  rename("attr.Gender" = "feature1", "attr.Age" = "feature2","attr.Protest" = "feature3","attr.Pensions" = "feature4")
+
+# features to factor
+conjoint.d.chile$attr.Gender = as.factor(conjoint.d.chile$attr.Gender)
+conjoint.d.chile$attr.Age = as.factor(conjoint.d.chile$attr.Age)
+conjoint.d.chile$attr.Protest = as.factor(conjoint.d.chile$attr.Protest)
+conjoint.d.chile$attr.Pensions = as.factor(conjoint.d.chile$attr.Pensions)
+
+# Translate // Recode
+
+## Gender
+conjoint.d.chile$attr.Gender <- recode_factor(conjoint.d.chile$attr.Gender, `Mujer` = "Woman", `Hombre` = "Man")
+
+## Age
+conjoint.d.chile$attr.Age <- recode_factor(conjoint.d.chile$attr.Age, 
+                                           `Menos de 35 años` = "Younger than 35 years old",
+                                           `Entre 35 y 50 años` = "Between 35-50 years old", 
+                                           `Sobre 50 años` = "Over 50 years old")
+
+## Protest
+conjoint.d.chile$attr.Protest <- recode_factor(
+  conjoint.d.chile$attr.Protest, 
+  `El candidato APOYA protestas que busquen desestabilizar el actual gobierno.` = 
+    "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government", 
+  `El candidato SE OPONE a protestas que busquen desestabilizar el actual gobierno.` = 
+    "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government")
+
+## Pensions
+conjoint.d.chile$attr.Pensions <- recode_factor(
+  conjoint.d.chile$attr.Pensions, 
+  `El candidato APOYA un aumento en las pensiones para la tercera edad.` = 
+    "The candidate SUPPORTS increases in pensions for the elderly", 
+  `El candidato SE OPONE a un aumento en las pensiones para la tercera edad.` = 
+    "The candidate OPPOSES increases in pensions for the elderly")
+
+# use for analysis
+# cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent)
+
+# descriptive plotting
+# plot(mm(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, id = ~ respondent), vline = 0.5)
+
+##############################
+# MERGING WITH LARGER DATASET
+##############################
+
+## Q10_1 # Democracy might have problems but it's better...
+## Q10_2 # Democracy is not an effective form of government...better a strong leader
+## Q10_3 # Civil rights that guarantee political protest should not be restricted
+## Q10_4 # It is important that there are free and politically independent media in [country]
+## Q12_1 # Governments should tax the rich to help the poor
+## Q8_1 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+## Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+## Q12_3 # The people should choose their leaders in free elections.
+## Q12_5 # The Army should take control of the state when the Government is not functioning well.
+# Q12_7 # The state should ensure that wages are more equal.
+## Q12_8 # People should always obey their rulers.
+# Q12_9 # Women should have the same rights as men.
+## IncomeLowMidHigh # Income Low/Mid/High
+# Q3_young_old # Age young/old
+## Educ.HighLow # Education High/Low
+
+# subset vars from the big dataset to be merged to the conjoint dataset
+dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, IncomeLowMidHigh, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+
+# Merge
+conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
+## ----
+
+
+
+
+
+
+##############################
+# CONOINT Data Analyses
+##############################
+
+# We explore sub-group differences in the propensity to support anti-systemic action by 
+# -respondents' partisanship, 
+# -democratic satisfaction and 
+# -support for democratic norms
+
+p_load(ggplot2)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Winners.Losers
+#####################################################
+
+mm_Winner_Loser_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~winners.losers))
+
+mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~winners.losers))
+
+
+mm_Winner_Loser_Chile$Country <- "Chile"
+mm_Winner_Loser_Estonia$Country <- "Estonia"
+
+mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
+mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
+mm_Winner_Loser.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_3 # The people should choose their leaders in free elections.
+#####################################################
+
+mm_Free_Elec_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                          id = ~ respondent, 
+                                          estimate = "mm", 
+                                          by = ~Q12_3))
+
+mm_Free_Elec_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_3))
+
+
+mm_Free_Elec_Chile$Country <- "Chile"
+mm_Free_Elec_Estonia$Country <- "Estonia"
+
+mm_Free_Elec.d = rbind(mm_Free_Elec_Chile, mm_Free_Elec_Estonia)
+mm_Free_Elec.p <- plot(mm_Free_Elec.d, group = "Q12_3", vline = 0.5)
+mm_Free_Elec.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+#####################################################
+
+mm_Rel_Auth_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~ respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q12_2))
+
+mm_Rel_Auth_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q12_2))
+
+
+mm_Rel_Auth_Chile$Country <- "Chile"
+mm_Rel_Auth_Estonia$Country <- "Estonia"
+
+mm_Rel_Auth.d = rbind(mm_Rel_Auth_Chile, mm_Rel_Auth_Estonia)
+mm_Rel_Auth.p <- plot(mm_Rel_Auth.d, group = "Q12_2", vline = 0.5)
+mm_Rel_Auth.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_8 # People should always obey their rulers.
+#####################################################
+
+mm_Obey_Rulers_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_8))
+
+mm_Obey_Rulers_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q12_8))
+
+
+mm_Obey_Rulers_Chile$Country <- "Chile"
+mm_Obey_Rulers_Estonia$Country <- "Estonia"
+
+mm_Obey_Rulers.d = rbind(mm_Obey_Rulers_Chile, mm_Obey_Rulers_Estonia)
+mm_Obey_Rulers.p <- plot(mm_Obey_Rulers.d, group = "Q12_8", vline = 0.5)
+mm_Obey_Rulers.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_4 # It is important that there are free and politically independent media in [country]
+#####################################################
+mm_Free_Media_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q10_4))
+
+mm_Free_Media_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~ respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q10_4))
+
+
+mm_Free_Media_Chile$Country <- "Chile"
+mm_Free_Media_Estonia$Country <- "Estonia"
+
+mm_Free_Media.d = rbind(mm_Free_Media_Chile, mm_Free_Media_Estonia)
+mm_Free_Media.p <- plot(mm_Free_Media.d, group = "Q10_4", vline = 0.5)
+mm_Free_Media.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q12_5 : The Army should take control of the state when the Government is not functioning well.
+#####################################################
+mm_Army_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                       id = ~ respondent, 
+                                       estimate = "mm", 
+                                       by = ~Q12_5))
+
+mm_Army_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                     id = ~respondent, 
+                                     estimate = "mm", 
+                                     by = ~Q12_5))
+
+mm_Army_Chile$Country <- "Chile"
+mm_Army_Estonia$Country <- "Estonia"
+
+mm_Army.d = rbind(mm_Army_Chile, mm_Army_Estonia)
+mm_Army.p <- plot(mm_Army.d, group = "Q12_5", vline = 0.5)
+mm_Army.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q10_1 # Democracy might have problems but it's better...
+#####################################################
+mm_DemBetter_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q10_1))
+
+mm_DemBetter_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                          id = ~ respondent, 
+                                          estimate = "mm", 
+                                          by = ~Q10_1))
+
+mm_DemBetter_Chile$Country <- "Chile"
+mm_DemBetter_Estonia$Country <- "Estonia"
+
+mm_DemBetter.d = rbind(mm_DemBetter_Chile, mm_DemBetter_Estonia)
+mm_DemBetter.p <- plot(mm_DemBetter.d, group = "Q10_1", vline = 0.5)
+mm_DemBetter.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_2: Democracy is not an effective form of government...better a strong leader
+########################################################
+mm_StrongLeader_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q10_2))
+
+mm_StrongLeader_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q10_2))
+
+
+mm_StrongLeader_Chile$Country <- "Chile"
+mm_StrongLeader_Estonia$Country <- "Estonia"
+
+mm_StrongLeader.d = rbind(mm_StrongLeader_Chile, mm_StrongLeader_Estonia)
+mm_StrongLeader.p <- plot(mm_StrongLeader.d, group = "Q10_2", vline = 0.5)
+mm_StrongLeader.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_3: Civil rights that guarantee political protest should not be restricted
+########################################################
+mm_RightToProtest_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q10_3))
+
+mm_RightToProtest_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~Q10_3))
+
+
+
+mm_RightToProtest_Chile$Country <- "Chile"
+mm_RightToProtest_Estonia$Country <- "Estonia"
+
+mm_RightToProtest.d = rbind(mm_RightToProtest_Chile, mm_RightToProtest_Estonia)
+mm_RightToProtest.p <- plot(mm_RightToProtest.d, group = "Q10_3", vline = 0.5)
+mm_RightToProtest.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q8_1: Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+########################################################
+mm_DemSatis_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q8_1))
+
+mm_DemSatis_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q8_1))
+
+mm_DemSatis_Chile$Country <- "Chile"
+mm_DemSatis_Estonia$Country <- "Estonia"
+
+mm_DemSatis.d = rbind(mm_DemSatis_Chile, mm_DemSatis_Estonia)
+mm_DemSatis.p <- plot(mm_DemSatis.d, group = "Q8_1", vline = 0.5)
+mm_DemSatis.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_7 # The state should ensure that wages are more equal.
+#####################################################
+
+mm_Wages_Equal_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_7))
+
+mm_Wages_Equal_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q12_7))
+
+
+mm_Wages_Equal_Chile$Country <- "Chile"
+mm_Wages_Equal_Estonia$Country <- "Estonia"
+
+mm_Wages_Equal.d = rbind(mm_Wages_Equal_Chile, mm_Wages_Equal_Estonia)
+mm_Wages_Equal.p <- plot(mm_Wages_Equal.d, group = "Q12_7", vline = 0.5)
+mm_Wages_Equal.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_1 # Governments should tax the rich to help the poor
+#####################################################
+
+mm_Tax_Rich_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~ respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q12_1))
+
+mm_Tax_Rich_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q12_1))
+
+
+mm_Tax_Rich_Chile$Country <- "Chile"
+mm_Tax_Rich_Estonia$Country <- "Estonia"
+
+mm_Tax_Rich.d = rbind(mm_Tax_Rich_Chile, mm_Tax_Rich_Estonia)
+mm_Tax_Rich.p <- plot(mm_Tax_Rich.d, group = "Q12_1", vline = 0.5)
+mm_Tax_Rich.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Educ.HighLow
+########################################################
+
+mm_EducHighLow_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~respondent, 
+                                            estimate = "mm", 
+                                            by = ~Educ.HighLow))
+
+mm_EducHighLow_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~respondent, 
+                                              estimate = "mm", 
+                                              by = ~Educ.HighLow))
+
+mm_EducHighLow_Chile$Country <- "Chile"
+mm_EducHighLow_Estonia$Country <- "Estonia"
+
+mm_EducHighLow.d = rbind(mm_EducHighLow_Chile, mm_EducHighLow_Estonia)
+mm_EducHighLow.p <- plot(mm_EducHighLow.d, group = "Educ.HighLow", vline = 0.5)
+mm_EducHighLow.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# IncomeLowMidHigh
+########################################################
+
+mm_IncomeHighMidLow_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~IncomeLowMidHigh))
+
+mm_IncomeHighMidLow_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                   id = ~respondent, 
+                                                   estimate = "mm", 
+                                                   by = ~IncomeLowMidHigh))
+
+mm_IncomeHighMidLow_Chile$Country <- "Chile"
+mm_IncomeHighMidLow_Estonia$Country <- "Estonia"
+
+mm_IncomeHighMidLow.d = rbind(mm_IncomeHighMidLow_Chile, mm_IncomeHighMidLow_Estonia)
+mm_IncomeHighMidLow.p <- plot(mm_IncomeHighMidLow.d, group = "IncomeLowMidHigh", vline = 0.5)
+mm_IncomeHighMidLow.p %+% facet_wrap(~Country)
+
 @
 
 

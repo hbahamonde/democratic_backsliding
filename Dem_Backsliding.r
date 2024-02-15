@@ -683,36 +683,6 @@ dat.subset.estonia = dat.estonia %>% dplyr::select(
 # Merge
 conjoint.d.estonia = merge(dat.subset.estonia, conjoint.d.estonia, by.x = "respondent")
 
-##############################
-# CONOINT Data Analyses [Estonia]
-##############################
-
-# options(scipen=999)
-
-#####################################################
-# Marginal Means // Subgroup Analyses: 
-# Winners.Losers
-#####################################################
-
-
-
-#####################################################
-# Marginal Means // Subgroup Analyses
-# Q10_1 # Democracy might have problems but it's better...
-#####################################################
-mm_DemBetter_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                       id = ~ respondent, 
-                                       estimate = "mm", 
-                                       by = ~Q10_1))
-
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
-#    width = 12, # The width of the plot in inches
-#    height = 4) # The height of the plot in inches
-
-plot(mm_DemBetter_Estonia, group = "Q10_1", vline = 0.5)
-
-#dev.off();dev.off()
-
 ########################################
 # Conjoint Data Prep [Chile]
 ########################################
@@ -905,21 +875,21 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 # MERGING WITH LARGER DATASET
 ##############################
 
-# Q10_1 # Democracy might have problems but it's better...
-# Q10_2 # Democracy is not an effective form of government...better a strong leader
-# Q10_3 # Civil rights that guarantee political protest should not be restricted
-# Q10_4 # It is important that there are free and politically independent media in [country]
-# Q12_1 # Governments should tax the rich to help the poor
-# Q8_1 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
-# Q12_2 # Religious authorities have the final say in interpreting the country's laws.
-# Q12_3 # The people should choose their leaders in free elections.
-# Q12_5 # The Army should take control of the state when the Government is not functioning well.
+## Q10_1 # Democracy might have problems but it's better...
+## Q10_2 # Democracy is not an effective form of government...better a strong leader
+## Q10_3 # Civil rights that guarantee political protest should not be restricted
+## Q10_4 # It is important that there are free and politically independent media in [country]
+## Q12_1 # Governments should tax the rich to help the poor
+## Q8_1 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
+## Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+## Q12_3 # The people should choose their leaders in free elections.
+## Q12_5 # The Army should take control of the state when the Government is not functioning well.
 # Q12_7 # The state should ensure that wages are more equal.
-# Q12_8 # People should always obey their rulers.
+## Q12_8 # People should always obey their rulers.
 # Q12_9 # Women should have the same rights as men.
-# IncomeLowMidHigh # Income Low/Mid/High
+## IncomeLowMidHigh # Income Low/Mid/High
 # Q3_young_old # Age young/old
-# Educ.HighLow # Education High/Low
+## Educ.HighLow # Education High/Low
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, IncomeLowMidHigh, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
@@ -928,14 +898,17 @@ dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLo
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
 ## ----
 
-
-
-
-
-
 ##############################
 # CONOINT Data Analyses
 ##############################
+
+# We explore sub-group differences in the propensity to support anti-systemic action by 
+# -respondents' partisanship, 
+# -democratic satisfaction and 
+# -support for democratic norms
+
+p_load(ggplot2)
+
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
@@ -960,20 +933,96 @@ mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
 mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
 mm_Winner_Loser.p %+% facet_wrap(~Country)
 
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_3 # The people should choose their leaders in free elections.
+#####################################################
 
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
-#    width = 12, # The width of the plot in inches
-#    height = 4) # The height of the plot in inches
+mm_Free_Elec_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                          id = ~ respondent, 
+                                          estimate = "mm", 
+                                          by = ~Q12_3))
 
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Winner_Loser_Estonia.pdf",   # The directory you want to save the file in
-#    width = 12, # The width of the plot in inches
-#    height = 4) # The height of the plot in inches
+mm_Free_Elec_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_3))
 
-# plot(mm_Winner_Loser_Estonia, group = "winners.losers", vline = 0.5)
-# plot(mm_Winner_Loser_Chile, group = "winners.losers", vline = 0.5)
 
-#dev.off();dev.off()
+mm_Free_Elec_Chile$Country <- "Chile"
+mm_Free_Elec_Estonia$Country <- "Estonia"
 
+mm_Free_Elec.d = rbind(mm_Free_Elec_Chile, mm_Free_Elec_Estonia)
+mm_Free_Elec.p <- plot(mm_Free_Elec.d, group = "Q12_3", vline = 0.5)
+mm_Free_Elec.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_2 # Religious authorities have the final say in interpreting the country's laws.
+#####################################################
+
+mm_Rel_Auth_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~ respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q12_2))
+
+mm_Rel_Auth_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q12_2))
+
+
+mm_Rel_Auth_Chile$Country <- "Chile"
+mm_Rel_Auth_Estonia$Country <- "Estonia"
+
+mm_Rel_Auth.d = rbind(mm_Rel_Auth_Chile, mm_Rel_Auth_Estonia)
+mm_Rel_Auth.p <- plot(mm_Rel_Auth.d, group = "Q12_2", vline = 0.5)
+mm_Rel_Auth.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_8 # People should always obey their rulers.
+#####################################################
+
+mm_Obey_Rulers_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_8))
+
+mm_Obey_Rulers_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q12_8))
+
+
+mm_Obey_Rulers_Chile$Country <- "Chile"
+mm_Obey_Rulers_Estonia$Country <- "Estonia"
+
+mm_Obey_Rulers.d = rbind(mm_Obey_Rulers_Chile, mm_Obey_Rulers_Estonia)
+mm_Obey_Rulers.p <- plot(mm_Obey_Rulers.d, group = "Q12_8", vline = 0.5)
+mm_Obey_Rulers.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_4 # It is important that there are free and politically independent media in [country]
+#####################################################
+mm_Free_Media_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q10_4))
+
+mm_Free_Media_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~ respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q10_4))
+
+
+mm_Free_Media_Chile$Country <- "Chile"
+mm_Free_Media_Estonia$Country <- "Estonia"
+
+mm_Free_Media.d = rbind(mm_Free_Media_Chile, mm_Free_Media_Estonia)
+mm_Free_Media.p <- plot(mm_Free_Media.d, group = "Q10_4", vline = 0.5)
+mm_Free_Media.p %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses
@@ -989,17 +1038,6 @@ mm_Army_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + at
                                      estimate = "mm", 
                                      by = ~Q12_5))
 
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_Takes_Over_Chile.pdf",   # The directory you want to save the file in
-#     width = 12, # The width of the plot in inches
-#     height = 4) # The height of the plot in inches
-
-# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_Estonia.pdf",   # The directory you want to save the file in
-#    width = 12, # The width of the plot in inches
-#    height = 4) # The height of the plot in inches
-
-# plot(mm_Army_Chile, group = "Q12_5_highlow", vline = 0.5)
-# plot(mm_Army_Estonia, group = "Q12_5", vline = 0.5)
-
 mm_Army_Chile$Country <- "Chile"
 mm_Army_Estonia$Country <- "Estonia"
 
@@ -1007,6 +1045,71 @@ mm_Army.d = rbind(mm_Army_Chile, mm_Army_Estonia)
 mm_Army.p <- plot(mm_Army.d, group = "Q12_5", vline = 0.5)
 mm_Army.p %+% facet_wrap(~Country)
 
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q10_1 # Democracy might have problems but it's better...
+#####################################################
+mm_DemBetter_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q10_1))
+
+mm_DemBetter_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                          id = ~ respondent, 
+                                          estimate = "mm", 
+                                          by = ~Q10_1))
+
+mm_DemBetter_Chile$Country <- "Chile"
+mm_DemBetter_Estonia$Country <- "Estonia"
+
+mm_DemBetter.d = rbind(mm_DemBetter_Chile, mm_DemBetter_Estonia)
+mm_DemBetter.p <- plot(mm_DemBetter.d, group = "Q10_1", vline = 0.5)
+mm_DemBetter.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_2: Democracy is not an effective form of government...better a strong leader
+########################################################
+mm_StrongLeader_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q10_2))
+
+mm_StrongLeader_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q10_2))
+
+
+mm_StrongLeader_Chile$Country <- "Chile"
+mm_StrongLeader_Estonia$Country <- "Estonia"
+
+mm_StrongLeader.d = rbind(mm_StrongLeader_Chile, mm_StrongLeader_Estonia)
+mm_StrongLeader.p <- plot(mm_StrongLeader.d, group = "Q10_2", vline = 0.5)
+mm_StrongLeader.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_3: Civil rights that guarantee political protest should not be restricted
+########################################################
+mm_RightToProtest_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q10_3))
+
+mm_RightToProtest_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~Q10_3))
+
+
+
+mm_RightToProtest_Chile$Country <- "Chile"
+mm_RightToProtest_Estonia$Country <- "Estonia"
+
+mm_RightToProtest.d = rbind(mm_RightToProtest_Chile, mm_RightToProtest_Estonia)
+mm_RightToProtest.p <- plot(mm_RightToProtest.d, group = "Q10_3", vline = 0.5)
+mm_RightToProtest.p %+% facet_wrap(~Country)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
@@ -1029,93 +1132,99 @@ mm_DemSatis.d = rbind(mm_DemSatis_Chile, mm_DemSatis_Estonia)
 mm_DemSatis.p <- plot(mm_DemSatis.d, group = "Q8_1", vline = 0.5)
 mm_DemSatis.p %+% facet_wrap(~Country)
 
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_7 # The state should ensure that wages are more equal.
+#####################################################
+
+mm_Wages_Equal_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_7))
+
+mm_Wages_Equal_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q12_7))
 
 
+mm_Wages_Equal_Chile$Country <- "Chile"
+mm_Wages_Equal_Estonia$Country <- "Estonia"
 
+mm_Wages_Equal.d = rbind(mm_Wages_Equal_Chile, mm_Wages_Equal_Estonia)
+mm_Wages_Equal.p <- plot(mm_Wages_Equal.d, group = "Q12_7", vline = 0.5)
+mm_Wages_Equal.p %+% facet_wrap(~Country)
 
-##############################
-# CONOINT Data Analyses
-##############################
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_1 # Governments should tax the rich to help the poor
+#####################################################
 
-# We explore sub-group differences in the propensity to support anti-systemic action by 
-# -respondents' partisanship, 
-# -democratic satisfaction and 
-# -support for democratic norms
-
-
-########################################################
-# Marginal Means // Subgroup Analyses: right to protest
-########################################################
-mm_RightToProtest.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                         id = ~respondent, 
+mm_Tax_Rich_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~ respondent, 
                                          estimate = "mm", 
-                                         by = ~Q10_3))
+                                         by = ~Q12_1))
+
+mm_Tax_Rich_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q12_1))
 
 
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Right_to_Protest_Chile.pdf",   # The directory you want to save the file in
-    width = 12, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
-dev.off();dev.off()
-plot(mm_RightToProtest.chile, group = "Q10_3", vline = 0.5)
+mm_Tax_Rich_Chile$Country <- "Chile"
+mm_Tax_Rich_Estonia$Country <- "Estonia"
 
-
-########################################################
-# Marginal Means // Subgroup Analyses: Democracy is not an effective form of government...better a strong leader
-########################################################
-mm_StrongLeader.chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                       id = ~respondent, 
-                                       estimate = "mm", 
-                                       by = ~Q10_2))
-
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Democracy_Strong_Leader_Chile.pdf",   # The directory you want to save the file in
-    width = 12, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
-dev.off();dev.off()
-plot(mm_StrongLeader.chile, group = "Q10_2", vline = 0.5)
-
+mm_Tax_Rich.d = rbind(mm_Tax_Rich_Chile, mm_Tax_Rich_Estonia)
+mm_Tax_Rich.p <- plot(mm_Tax_Rich.d, group = "Q12_1", vline = 0.5)
+mm_Tax_Rich.p %+% facet_wrap(~Country)
 
 ########################################################
+# Marginal Means // Subgroup Analyses: 
+# Educ.HighLow
+########################################################
+
+mm_EducHighLow_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~respondent, 
+                                            estimate = "mm", 
+                                            by = ~Educ.HighLow))
+
+mm_EducHighLow_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~respondent, 
+                                              estimate = "mm", 
+                                              by = ~Educ.HighLow))
+
+mm_EducHighLow_Chile$Country <- "Chile"
+mm_EducHighLow_Estonia$Country <- "Estonia"
+
+mm_EducHighLow.d = rbind(mm_EducHighLow_Chile, mm_EducHighLow_Estonia)
+mm_EducHighLow.p <- plot(mm_EducHighLow.d, group = "Educ.HighLow", vline = 0.5)
+mm_EducHighLow.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# IncomeLowMidHigh
+########################################################
+
+mm_IncomeHighMidLow_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~IncomeLowMidHigh))
+
+mm_IncomeHighMidLow_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                   id = ~respondent, 
+                                                   estimate = "mm", 
+                                                   by = ~IncomeLowMidHigh))
+
+mm_IncomeHighMidLow_Chile$Country <- "Chile"
+mm_IncomeHighMidLow_Estonia$Country <- "Estonia"
+
+mm_IncomeHighMidLow.d = rbind(mm_IncomeHighMidLow_Chile, mm_IncomeHighMidLow_Estonia)
+mm_IncomeHighMidLow.p <- plot(mm_IncomeHighMidLow.d, group = "IncomeLowMidHigh", vline = 0.5)
+mm_IncomeHighMidLow.p %+% facet_wrap(~Country)
 
 
-# Marginal Means // Subgroup Analyses: Democracy might have problems but it's better...
-mm_DemIsBetter <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                      id = ~respondent, 
-                                      estimate = "mm", 
-                                      by = ~Q10_1))
 
-# DemIsBetter.p = plot(mm_DemIsBetter, group = "Q10_1", vline = 0.5)
-
-
-# Marginal Means // Subgroup Analyses: education
-mm_Educ <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                               id = ~respondent, 
-                               estimate = "mm", 
-                               by = ~Education))
-
-# Educ.p = plot(mm_Educ, group = "Education", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: education High/Low
-mm_EducHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                      id = ~respondent, 
-                                      estimate = "mm", 
-                                      by = ~Educ.HighLow))
-
-# EducHighLow.p = plot(mm_EducHighLow, group = "Educ.HighLow", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: income Low/Mid/High
-mm_IncomeHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                        id = ~respondent, 
-                                        estimate = "mm", 
-                                        by = ~IncomeLowMidHigh))
-
-# IncomeHighLow.p = plot(mm_IncomeHighLow, group = "IncomeLowMidHigh", vline = 0.5)
-
-# Marginal Means // Subgroup Analyses: gov't should tax the rich/poor essential for dem
-mm_TaxRichHighLow <- suppressWarnings(cj(conjoint.d, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                         id = ~respondent, 
-                                         estimate = "mm", 
-                                         by = ~Q12_1_highlow))
-
+############################################################################## END RUN
 
 
 
