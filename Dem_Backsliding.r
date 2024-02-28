@@ -49,13 +49,13 @@ p_load("dplyr")
 
 
 # Boric.Kast
-dat.chile$winners.losers <- recode_factor(dat.chile$Q13, 
-                                      `Blanco/Nulo.` = "Other", # "Other", "Null"
-                                      `GABRIEL BORIC FONT` = "Winner", #"Boric",
-                                      `JOSÉ ANTONIO KAST RIST` = "Loser", # "Kast",
-                                      `No voté.` = "Other", # "Other", "Didn't vote"
-                                      `Prefiero no decir.` = "Other" # "Other", "Don't want to say"
-                                      )
+dat.chile$winners.losers <- recode_factor(dat.chile$Q13,
+                                          `GABRIEL BORIC FONT` = "Winner", #"Boric",
+                                          `JOSÉ ANTONIO KAST RIST` = "Loser", # "Kast",
+                                          `Blanco/Nulo.` = "Other", # "Other", "Null"
+                                          `No voté.` = "Other", # "Other", "Didn't vote"
+                                          `Prefiero no decir.` = "Other", # "Other", "Don't want to say"
+                                          .ordered = TRUE)
 
 # dat.chile <- dat.chile[ which(dat.chile$Boric.Kast=="Boric" | dat.chile$Boric.Kast == "Kast"), ]
 # dat.chile$Boric.Kast <- droplevels(dat.chile$Boric.Kast)
@@ -76,8 +76,8 @@ dat.estonia$winners.losers <- recode_factor(dat.estonia$Q13,
                                             `Muu` = "Loser", 
                                             # other
                                             `Ma ei käinud valimas` = "Other", # "Other",
-                                            `Ma ei taha öelda` = "Other" # "Other"
-                                            )
+                                            `Ma ei taha öelda` = "Other", # "Other",
+                                            .ordered = TRUE)
 
 ## From Mart (2024)
 # Winners (currently in governing coalition):  
@@ -89,6 +89,33 @@ dat.estonia$winners.losers <- recode_factor(dat.estonia$Q13,
 # 2. Eesti Keskerakond 
 # 3. Eesti Konservatiivne Rahvaerakond 
 # 6. Isamaa Erakond
+
+# Losers / Winners (Q13)
+dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Q13,
+                                         `Sotsiaaldemokraatlik Erakond` = "Social Democratic Party",
+                                         `Eesti 200` = "Estonia 200",
+                                         `Eesti Keskerakond` = "Estonian Centre Party",
+                                         `Eesti Konservatiivne Rahvaerakond` = "Estonian Conservative People\'s Party",
+                                         `Eesti Reformierakond` = "Estonian Reform Party",
+                                         `Eestimaa Ühendatud Vasakpartei` = "United Left Party of Estonia",
+                                         `Erakond Eestimaa Rohelised` = "Estonian Green Party",
+                                         `Erakond Parempoolsed` = "Party of Right-Wingers",
+                                         `Isamaa Erakond` = "Pro Patria Party",
+                                         `Ma ei käinud valimas` = "I did not vote",
+                                         `Ma ei taha öelda` = "I do not want to say",
+                                         `Muu` = "Other",
+                                         .ordered = TRUE)
+
+# Language (Q7) // Only for Estonia data
+dat.estonia$Language <- recode_factor(dat.estonia$Q7,
+                                      `Eesti` = "Estonian", #  561  
+                                      `Other` = "Mõni teine keel", # 8
+                                      `Ukraina` = "Ukrainian", # 2
+                                      `Vene` = "Russian", # 68
+                                      .ordered = TRUE)
+
+
+
 
 # gender
 dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman", "Otro/Prefiero no decir"= "Other") # gender
@@ -127,16 +154,14 @@ dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
 
 dat.estonia$Q10_2  <- recode_factor(as.factor(dat.estonia$Q10_2),
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
-                                    .ordered = TRUE
-                                    )
+                                    .ordered = TRUE)
 
 Q10_2.chile <- dat.chile %>% select(Q10_2, Country)
 Q10_2.estonia <- dat.estonia %>% select(Q10_2, Country)
@@ -149,16 +174,15 @@ dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protes
                                   "Completamente de acuerdo" = "Agree completely", 
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
-                                  "Completamente en desacuerdo" = "Completely disagree"
-                                  )
+                                  "Completamente en desacuerdo" = "Completely disagree",
+                                  .ordered = TRUE)
 
 dat.estonia$Q10_3  <- recode_factor(as.factor(dat.estonia$Q10_3),  # right to protest
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
-                                    .ordered = TRUE
-                                    )
+                                    .ordered = TRUE)
 
 Q10_3.chile <- dat.chile %>% select(Q10_3, Country)
 Q10_3.estonia <- dat.estonia %>% select(Q10_3, Country)
@@ -172,15 +196,14 @@ dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
+
 dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),
                                     "Täiesti nõus" = "Agree completely",
                                     "Nõus" = "Agree to some extent",
                                     "Ei ole nõus" = "Somewhat disagree",
                                     "Üldse ei ole nõus" = "Completely disagree",
-                                    .ordered = TRUE
-                                    )
+                                    .ordered = TRUE)
 
 Q10_4.chile <- dat.chile %>% select(Q10_4, Country)
 Q10_4.estonia <- dat.estonia %>% select(Q10_4, Country)
@@ -193,15 +216,13 @@ dat.chile$Q12_1 = recode_factor(as.factor(dat.chile$Q12_1),
               "1" = "Not at all",
               "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
               "10" = "Definitely essential",
-              .ordered = TRUE
-              )
+              .ordered = TRUE)
 
 dat.estonia$Q12_1 = recode_factor(as.factor(dat.estonia$Q12_1),  
                                   "1" = "Not at all",
                                   "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                   "10" = "Definitely essential",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
 
 
 Q12_1.chile <- dat.chile %>% select(Q12_1, Country)
@@ -216,15 +237,13 @@ dat.chile$Q8_1 = recode_factor(as.factor(dat.chile$Q8_1),
                                 "1" = "Left",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Right",
-                                .ordered = TRUE
-                               )
+                                .ordered = TRUE)
 
 dat.estonia$Q8_1 = recode_factor(as.factor(dat.estonia$Q8_1),  
                                "1" = "Left",
                                "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                "10" = "Right",
-                               .ordered = TRUE
-                               )
+                               .ordered = TRUE)
 
 
 Q8_1.chile <- dat.chile %>% select(Q8_1, Country)
@@ -238,15 +257,13 @@ dat.chile$Q12_2 = recode_factor(as.factor(dat.chile$Q12_2),
                                   "1" = "Not at all",
                                   "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                   "10" = "Definitely essential",
-                                  .ordered = TRUE
-                                )
+                                  .ordered = TRUE)
 
 dat.estonia$Q12_2 = recode_factor(as.factor(dat.estonia$Q12_2),  
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 Q12_2.chile <- dat.chile %>% select(Q12_2, Country)
 Q12_2.estonia <- dat.estonia %>% select(Q12_2, Country)
@@ -259,15 +276,13 @@ dat.chile$Q12_3 = recode_factor(as.factor(dat.chile$Q12_3),
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 dat.estonia$Q12_3 = recode_factor(as.factor(dat.estonia$Q12_3),  
                                   "1" = "Not at all",
                                   "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                   "10" = "Definitely essential",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
 
 Q12_3.chile <- dat.chile %>% select(Q12_3, Country)
 Q12_3.estonia <- dat.estonia %>% select(Q12_3, Country)
@@ -280,15 +295,13 @@ dat.chile$Q12_5 = recode_factor(as.factor(dat.chile$Q12_5),
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 dat.estonia$Q12_5 = recode_factor(as.factor(dat.estonia$Q12_5),  
                                   "1" = "Not at all",
                                   "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                   "10" = "Definitely essential",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
 
 Q12_5.chile <- dat.chile %>% select(Q12_5, Country, winners.losers)
 Q12_5.estonia <- dat.estonia %>% select(Q12_5, Country, winners.losers)
@@ -301,15 +314,13 @@ dat.chile$Q12_7 = recode_factor(as.factor(dat.chile$Q12_7),
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 dat.estonia$Q12_7 = recode_factor(as.factor(dat.estonia$Q12_7),  
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 Q12_7.chile <- dat.chile %>% select(Q12_7, Country)
 Q12_7.estonia <- dat.estonia %>% select(Q12_7, Country)
@@ -322,15 +333,13 @@ dat.chile$Q12_8 = recode_factor(as.factor(dat.chile$Q12_8),
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 dat.estonia$Q12_8 = recode_factor(as.factor(dat.estonia$Q12_8),  
                                   "1" = "Not at all",
                                   "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                   "10" = "Definitely essential",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
 
 Q12_8.chile <- dat.chile %>% select(Q12_8, Country)
 Q12_8.estonia <- dat.estonia %>% select(Q12_8, Country)
@@ -344,15 +353,13 @@ dat.chile$Q12_9 = recode_factor(as.factor(dat.chile$Q12_9),
                                 "1" = "Not at all",
                                 "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                 "10" = "Definitely essential",
-                                .ordered = TRUE
-                                )
+                                .ordered = TRUE)
 
 dat.estonia$Q12_9 = recode_factor(as.factor(dat.estonia$Q12_9),  
                                   "1" = "Not at all",
                                   "2"="2", "3"="3", "4"="4", "5"="5", "6"="6", "7"="7", "8"="8", "9"="9",
                                   "10" = "Definitely essential",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
 
 Q12_9.chile <- dat.chile %>% select(Q12_9, Country)
 Q12_9.estonia <- dat.estonia %>% select(Q12_9, Country)
@@ -672,12 +679,16 @@ conjoint.d.estonia$attr.Pensions <- recode_factor(
 # IncomeLowMidHigh # Income Low/Mid/High
 # Q3_young_old # Age young/old
 # Educ.HighLow # Education High/Low
+# Vote.Choice
+# Language
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset.estonia = dat.estonia %>% dplyr::select(
   respondent, 
   winners.losers,
-  Q10_1, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, Q12_7, Q12_8, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow
+  Q10_1, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, 
+  Q12_7, Q12_8, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow,
+  Vote.Choice, Language
   )
 
 # Merge
@@ -932,6 +943,32 @@ mm_Winner_Loser_Estonia$Country <- "Estonia"
 mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
 mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
 mm_Winner_Loser.p %+% facet_wrap(~Country)
+
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Vote.Choice
+# ONLY ESTONIA
+#####################################################
+
+mm_Vote_Choice_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~ respondent, 
+                                             estimate = "mm", 
+                                             by = ~Vote.Choice))
+plot(mm_Vote_Choice_Estonia, group = "Vote.Choice", vline = 0.5)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Language
+# ONLY ESTONIA
+#####################################################
+
+mm_Language_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Language))
+plot(mm_Language_Estonia, group = "Language", vline = 0.5)
+
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
