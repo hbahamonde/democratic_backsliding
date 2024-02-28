@@ -132,16 +132,23 @@ dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),
                                   "Un poco de acuerdo" = "Agree to some extent",
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
-                                  .ordered = TRUE
-                                  )
+                                  .ordered = TRUE)
+# HERE
 
-dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  
-                                    "Täiesti nõus" = "Agree completely",
-                                    "Nõus" = "Agree to some extent",
-                                    "Ei ole nõus" = "Somewhat disagree",
-                                    "Üldse ei ole nõus" = "Completely disagree",
-                                    .ordered = TRUE
-                                    )
+# Democracy might have problems but it's better...RECODED
+dat.chile$Q10_1.r  <- recode_factor(as.factor(dat.chile$Q10_1),  
+                                  "Completamente de acuerdo" = "Agree", 
+                                  "Un poco de acuerdo" = "Agree",
+                                  "Un poco en desacuerdo" = "Disagree",
+                                  "Completamente en desacuerdo" = "Disagree",
+                                  .ordered = TRUE)
+
+dat.estonia$Q10_1.r  <- recode_factor(as.factor(dat.estonia$Q10_1),  
+                                    "Täiesti nõus" = "Agree",
+                                    "Nõus" = "Agree",
+                                    "Ei ole nõus" = "Disagree",
+                                    "Üldse ei ole nõus" = "Disagree",
+                                    .ordered = TRUE)
 
 Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
 Q10_1.estonia <- dat.estonia %>% select(Q10_1, Country)
@@ -686,7 +693,7 @@ conjoint.d.estonia$attr.Pensions <- recode_factor(
 dat.subset.estonia = dat.estonia %>% dplyr::select(
   respondent, 
   winners.losers,
-  Q10_1, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, 
+  Q10_1, Q10_1.r, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, 
   Q12_7, Q12_8, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow,
   Vote.Choice, Language
   )
@@ -903,7 +910,10 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 ## Educ.HighLow # Education High/Low
 
 # subset vars from the big dataset to be merged to the conjoint dataset
-dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, IncomeLowMidHigh, Q3, Q3_young_old, Q4 , Q10_1 , Q10_2 , Q10_3 , Q10_4 , Q12_1, Q8_1 , Q12_2 , Q12_3 , Q12_5 , Q12_7 , Q12_8 , Q12_9)
+dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, 
+                                         IncomeLowMidHigh, Q3, Q3_young_old, Q4, 
+                                         Q10_1, Q10_1.r, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, 
+                                         Q12_2, Q12_3, Q12_5, Q12_7, Q12_8, Q12_9)
 
 # Merge
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
