@@ -109,8 +109,9 @@ dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Q13,
 # Language (Q7) // Only for Estonia data
 dat.estonia$Language <- recode_factor(dat.estonia$Q7,
                                       `Eesti` = "Estonian", #  561  
-                                      `Other` = "Mõni teine keel", # 8
-                                      `Ukraina` = "Ukrainian", # 2
+                                      `Mõni teine keel` = "Other", # 8
+                                      #`Ukraina` = "Ukrainian", # 2
+                                      `Ukraina` = "Other", # 2
                                       `Vene` = "Russian", # 68
                                       .ordered = TRUE)
 
@@ -133,7 +134,13 @@ dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),
                                   "Un poco en desacuerdo" = "Somewhat disagree",
                                   "Completamente en desacuerdo" = "Completely disagree",
                                   .ordered = TRUE)
-# HERE
+
+dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),  
+                                    "Täiesti nõus" = "Agree completely",
+                                    "Nõus" = "Agree to some extent",
+                                    "Ei ole nõus" = "Somewhat disagree", 
+                                    "Üldse ei ole nõus" = "Completely disagree",
+                                    .ordered = TRUE)
 
 # Democracy might have problems but it's better...RECODED
 dat.chile$Q10_1.r  <- recode_factor(as.factor(dat.chile$Q10_1),  
@@ -1112,6 +1119,27 @@ mm_DemBetter_Estonia$Country <- "Estonia"
 mm_DemBetter.d = rbind(mm_DemBetter_Chile, mm_DemBetter_Estonia)
 mm_DemBetter.p <- plot(mm_DemBetter.d, group = "Q10_1", vline = 0.5)
 mm_DemBetter.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses
+# Q10_1.r # Democracy might have problems but it's better...
+#####################################################
+mm_DemBetter_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q10_1.r))
+
+mm_DemBetter_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q10_1.r))
+
+mm_DemBetter_Chile.r$Country <- "Chile"
+mm_DemBetter_Estonia.r$Country <- "Estonia"
+
+mm_DemBetter.d.r = rbind(mm_DemBetter_Chile.r, mm_DemBetter_Estonia.r)
+mm_DemBetter.p.r <- plot(mm_DemBetter.d.r, group = "Q10_1.r", vline = 0.5)
+mm_DemBetter.p.r %+% facet_wrap(~Country)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
