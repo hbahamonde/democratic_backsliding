@@ -142,19 +142,21 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE)
 
+# HERE
+
 # Democracy might have problems but it's better...RECODED
 dat.chile$Q10_1.r  <- recode_factor(as.factor(dat.chile$Q10_1),  
-                                  "Completamente de acuerdo" = "Agree", 
-                                  "Un poco de acuerdo" = "Agree",
-                                  "Un poco en desacuerdo" = "Disagree",
-                                  "Completamente en desacuerdo" = "Disagree",
+                                    "Agree" = "Completamente de acuerdo", 
+                                    "Agree" = "Un poco de acuerdo",
+                                    "Disagree" = "Un poco en desacuerdo",
+                                    "Disagree" = "Completamente en desacuerdo",
                                   .ordered = TRUE)
 
 dat.estonia$Q10_1.r  <- recode_factor(as.factor(dat.estonia$Q10_1),  
-                                    "Täiesti nõus" = "Agree",
-                                    "Nõus" = "Agree",
-                                    "Ei ole nõus" = "Disagree",
-                                    "Üldse ei ole nõus" = "Disagree",
+                                    "Agree" = "Agree completely",
+                                    "Agree" = "Agree to some extent",
+                                    "Disagree" = "Somewhat disagree",
+                                    "Disagree" = "Completely disagree",
                                     .ordered = TRUE)
 
 Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
