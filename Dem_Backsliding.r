@@ -115,9 +115,6 @@ dat.estonia$Language <- recode_factor(dat.estonia$Q7,
                                       `Vene` = "Russian", # 68
                                       .ordered = TRUE)
 
-
-
-
 # gender
 dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman", "Otro/Prefiero no decir"= "Other") # gender
 dat.estonia$Q4  <- recode_factor(as.factor(dat.estonia$Q4), `Mees` = "Man", `Naine` = "Woman", `Ei tea` = "Do not know", `Muu` = "Other" ) # gender
@@ -142,27 +139,25 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),
                                     "Üldse ei ole nõus" = "Completely disagree",
                                     .ordered = TRUE)
 
-# HERE
-
-# Democracy might have problems but it's better...RECODED
-dat.chile$Q10_1.r  <- recode_factor(as.factor(dat.chile$Q10_1),  
-                                    "Agree" = "Completamente de acuerdo", 
-                                    "Agree" = "Un poco de acuerdo",
-                                    "Disagree" = "Un poco en desacuerdo",
-                                    "Disagree" = "Completamente en desacuerdo",
-                                  .ordered = TRUE)
-
-dat.estonia$Q10_1.r  <- recode_factor(as.factor(dat.estonia$Q10_1),  
-                                    "Agree" = "Agree completely",
-                                    "Agree" = "Agree to some extent",
-                                    "Disagree" = "Somewhat disagree",
-                                    "Disagree" = "Completely disagree",
-                                    .ordered = TRUE)
-
 Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
 Q10_1.estonia <- dat.estonia %>% select(Q10_1, Country)
 Q10_1.d <- rbind(Q10_1.chile, Q10_1.estonia)
 lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government.") 
+
+# Democracy might have problems but it's better... RECODED
+dat.chile$Q10_1.r  <- recode_factor(as.factor(dat.chile$Q10_1),  
+                                    "Agree completely" = "Agree",
+                                    "Agree to some extent" = "Agree",
+                                    "Somewhat disagree" = "Disagree",
+                                    "Completely disagree" = "Disagree",
+                                    .ordered = TRUE)
+
+dat.estonia$Q10_1.r  <- recode_factor(as.factor(dat.estonia$Q10_1),  
+                                      "Agree completely" = "Agree",
+                                      "Agree to some extent" = "Agree",
+                                      "Somewhat disagree" = "Disagree",
+                                      "Completely disagree" = "Disagree",
+                                      .ordered = TRUE)
 
 # Democracy is not an effective form of government...better a strong leader
 dat.chile$Q10_2  <- recode_factor(as.factor(dat.chile$Q10_2),  
@@ -185,6 +180,21 @@ Q10_2.d <- rbind(Q10_2.chile, Q10_2.estonia)
 lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections.") 
 
+# Democracy is not an effective form of government...better a strong leader RECODED
+dat.chile$Q10_2.r  <- recode_factor(as.factor(dat.chile$Q10_2),  
+                                    "Agree completely" = "Agree", 
+                                    "Agree to some extent" = "Agree",
+                                    "Somewhat disagree" = "Disagree",
+                                    "Completely disagree" = "Disagree",
+                                    .ordered = TRUE)
+
+dat.estonia$Q10_2.r  <- recode_factor(as.factor(dat.estonia$Q10_2),
+                                      "Agree completely" = "Agree", 
+                                      "Agree to some extent" = "Agree",
+                                      "Somewhat disagree" = "Disagree",
+                                      "Completely disagree" = "Disagree",
+                                      .ordered = TRUE)
+
 # Civil rights that guarantee political protest should not be restricted
 dat.chile$Q10_3  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
                                   "Completamente de acuerdo" = "Agree completely", 
@@ -205,6 +215,21 @@ Q10_3.estonia <- dat.estonia %>% select(Q10_3, Country)
 Q10_3.d <- rbind(Q10_3.chile, Q10_3.estonia)
 lattice::histogram(~ Q10_3.d$Q10_3 | Q10_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Civil rights that guarantee political protest should not be restricted.") 
+
+# Civil rights that guarantee political protest should not be restricted... RECODED
+dat.chile$Q10_3.r  <- recode_factor(as.factor(dat.chile$Q10_3),  # right to protest
+                                  "Agree completely" = "Agree", 
+                                  "Agree to some extent" = "Agree",
+                                  "Somewhat disagree" = "Disagree",
+                                  "Completely disagree" = "Disagree",
+                                  .ordered = TRUE)
+
+dat.estonia$Q10_3.r  <- recode_factor(as.factor(dat.estonia$Q10_3),  # right to protest
+                                    "Agree completely" = "Agree", 
+                                    "Agree to some extent" = "Agree",
+                                    "Somewhat disagree" = "Disagree",
+                                    "Completely disagree" = "Disagree",
+                                    .ordered = TRUE)
 
 # It is important that there are free and politically independent media in [country]
 dat.chile$Q10_4  <- recode_factor(as.factor(dat.chile$Q10_4),
@@ -227,6 +252,21 @@ Q10_4.d <- rbind(Q10_4.chile, Q10_4.estonia)
 lattice::histogram(~ Q10_4.d$Q10_4 | Q10_4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "It is important that there are free and politically independent media in [country].") 
 
+# It is important that there are free and politically independent media in [country]... RECODED
+dat.chile$Q10_4.r  <- recode_factor(as.factor(dat.chile$Q10_4),
+                                  "Agree completely" = "Agree", 
+                                  "Agree to some extent" = "Agree",
+                                  "Somewhat disagree" = "Disagree",
+                                  "Completely disagree" = "Disagree",
+                                  .ordered = TRUE)
+
+dat.estonia$Q10_4.r  <- recode_factor(as.factor(dat.estonia$Q10_4),
+                                    "Agree completely" = "Agree", 
+                                    "Agree to some extent" = "Agree",
+                                    "Somewhat disagree" = "Disagree",
+                                    "Completely disagree" = "Disagree",
+                                    .ordered = TRUE)
+
 # Governments should tax the rich to help the poor
 dat.chile$Q12_1 = recode_factor(as.factor(dat.chile$Q12_1),  
               "1" = "Not at all",
@@ -248,6 +288,33 @@ lattice::histogram(~ Q12_1.d$Q12_1 | Q12_1.d$Country , type = "percent", scales=
                    xlab = "Governments should tax the rich to help the poor\nAn essential characteristic of democracy...") 
 
 
+# Governments should tax the rich to help the poor... RECODED
+dat.chile$Q12_1.r = recode_factor(as.factor(dat.chile$Q12_1),  
+                                "Not at all" = "Not essential",
+                                "2" = "Not essential",
+                                "3" = "Not essential",
+                                "4" = "Not essential",
+                                "5" = "Intermediate",
+                                "6" = "Intermediate",
+                                "7" = "Definitely essential",
+                                "8" = "Definitely essential",
+                                "9" = "Definitely essential",
+                                "Definitely essential" = "Definitely essential",
+                                .ordered = TRUE)
+
+dat.estonia$Q12_1.r = recode_factor(as.factor(dat.estonia$Q12_1),  
+                                    "Not at all" = "Not essential",
+                                    "2" = "Not essential",
+                                    "3" = "Not essential",
+                                    "4" = "Not essential",
+                                    "5" = "Intermediate",
+                                    "6" = "Intermediate",
+                                    "7" = "Definitely essential",
+                                    "8" = "Definitely essential",
+                                    "9" = "Definitely essential",
+                                    "Definitely essential" = "Definitely essential",
+                                    .ordered = TRUE)
+
 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?
 dat.chile$Q8_1 = recode_factor(as.factor(dat.chile$Q8_1),  
                                 "1" = "Left",
@@ -268,6 +335,33 @@ Q8_1.d <- rbind(Q8_1.chile, Q8_1.estonia)
 lattice::histogram(~ Q8_1.d$Q8_1 | Q8_1.d$Country , type = "percent", scales=list(y=list(rot=25), x=list(rot=25)), aspect=1, 
                    xlab = "Thinking on a scale where one means far left and ten means far right,\nwhere do you place yourself?") 
 
+# Thinking on a scale where one means far left and ten means far right, where do you place yourself?... RECODED
+dat.chile$Q8_1.r = recode_factor(as.factor(dat.chile$Q8_1),  
+                                 "Not at all" = "Left",
+                                 "2" = "Left",
+                                 "3" = "Left",
+                                 "4" = "Left",
+                                 "5" = "Center",
+                                 "6" = "Center",
+                                 "7" = "Right",
+                                 "8" = "Right",
+                                 "9" = "Right",
+                                 "Right" = "Right",
+                                 .ordered = TRUE)
+
+dat.estonia$Q8_1.r = recode_factor(as.factor(dat.estonia$Q8_1),  
+                                   "Not at all" = "Left",
+                                   "2" = "Left",
+                                   "3" = "Left",
+                                   "4" = "Left",
+                                   "5" = "Center",
+                                   "6" = "Center",
+                                   "7" = "Right",
+                                   "8" = "Right",
+                                   "9" = "Right",
+                                   "Right" = "Right",
+                                   .ordered = TRUE)
+
 # Religious authorities have the final say in interpreting the country's laws.
 dat.chile$Q12_2 = recode_factor(as.factor(dat.chile$Q12_2),  
                                   "1" = "Not at all",
@@ -286,6 +380,33 @@ Q12_2.estonia <- dat.estonia %>% select(Q12_2, Country)
 Q12_2.d <- rbind(Q12_2.chile, Q12_2.estonia)
 lattice::histogram(~ Q12_2.d$Q12_2 | Q12_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Religious authorities have the final say in interpreting the country's laws.\nAn essential characteristic of democracy...") 
+
+# Religious authorities have the final say in interpreting the country's laws... RECODED
+dat.chile$Q12_2.r = recode_factor(as.factor(dat.chile$Q12_2),  
+                                "Not at all" = "Not essential",
+                                "2" = "Not essential",
+                                "3" = "Not essential",
+                                "4" = "Not essential",
+                                "5" = "Intermediate",
+                                "6" = "Intermediate",
+                                "7" = "Definitely essential",
+                                "8" = "Definitely essential",
+                                "9" = "Definitely essential",
+                                "Definitely essential" = "Definitely essential",
+                                .ordered = TRUE)
+
+dat.estonia$Q12_2.r = recode_factor(as.factor(dat.estonia$Q12_2),  
+                                  "Not at all" = "Not essential",
+                                  "2" = "Not essential",
+                                  "3" = "Not essential",
+                                  "4" = "Not essential",
+                                  "5" = "Intermediate",
+                                  "6" = "Intermediate",
+                                  "7" = "Definitely essential",
+                                  "8" = "Definitely essential",
+                                  "9" = "Definitely essential",
+                                  "Definitely essential" = "Definitely essential",
+                                  .ordered = TRUE)
 
 # The people should choose their leaders in free elections.
 dat.chile$Q12_3 = recode_factor(as.factor(dat.chile$Q12_3),  
@@ -306,6 +427,33 @@ Q12_3.d <- rbind(Q12_3.chile, Q12_3.estonia)
 lattice::histogram(~ Q12_3.d$Q12_3 | Q12_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The people should choose their leaders in free elections.\nAn essential characteristic of democracy...") 
 
+# The people should choose their leaders in free elections... RECODED
+dat.chile$Q12_3.r = recode_factor(as.factor(dat.chile$Q12_3),  
+                                  "Not at all" = "Not essential",
+                                  "2" = "Not essential",
+                                  "3" = "Not essential",
+                                  "4" = "Not essential",
+                                  "5" = "Intermediate",
+                                  "6" = "Intermediate",
+                                  "7" = "Definitely essential",
+                                  "8" = "Definitely essential",
+                                  "9" = "Definitely essential",
+                                  "Definitely essential" = "Definitely essential",
+                                .ordered = TRUE)
+
+dat.estonia$Q12_3.r = recode_factor(as.factor(dat.estonia$Q12_3),  
+                                    "Not at all" = "Not essential",
+                                    "2" = "Not essential",
+                                    "3" = "Not essential",
+                                    "4" = "Not essential",
+                                    "5" = "Intermediate",
+                                    "6" = "Intermediate",
+                                    "7" = "Definitely essential",
+                                    "8" = "Definitely essential",
+                                    "9" = "Definitely essential",
+                                    "Definitely essential" = "Definitely essential",
+                                  .ordered = TRUE)
+
 # The Army should take control of the state when the Government is not functioning well.
 dat.chile$Q12_5 = recode_factor(as.factor(dat.chile$Q12_5),  
                                 "1" = "Not at all",
@@ -324,6 +472,33 @@ Q12_5.estonia <- dat.estonia %>% select(Q12_5, Country, winners.losers)
 Q12_5.d <- rbind(Q12_5.chile, Q12_5.estonia)
 lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$winners.losers * Q12_5.d$Country, type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "The Army should take control of the state when the Government is not functioning well.\nAn essential characteristic of democracy...") 
+
+# The Army should take control of the state when the Government is not functioning well... RECODED
+dat.chile$Q12_5.r = recode_factor(as.factor(dat.chile$Q12_5),  
+                                "Not at all" = "Not essential",
+                                "2" = "Not essential",
+                                "3" = "Not essential",
+                                "4" = "Not essential",
+                                "5" = "Intermediate",
+                                "6" = "Intermediate",
+                                "7" = "Definitely essential",
+                                "8" = "Definitely essential",
+                                "9" = "Definitely essential",
+                                "Definitely essential" = "Definitely essential",
+                                .ordered = TRUE)
+
+dat.estonia$Q12_5.r = recode_factor(as.factor(dat.estonia$Q12_5),  
+                                    "Not at all" = "Not essential",
+                                    "2" = "Not essential",
+                                    "3" = "Not essential",
+                                    "4" = "Not essential",
+                                    "5" = "Intermediate",
+                                    "6" = "Intermediate",
+                                    "7" = "Definitely essential",
+                                    "8" = "Definitely essential",
+                                    "9" = "Definitely essential",
+                                    "Definitely essential" = "Definitely essential",
+                                  .ordered = TRUE)
 
 # The state should ensure that wages are more equal.
 dat.chile$Q12_7 = recode_factor(as.factor(dat.chile$Q12_7),  
@@ -363,6 +538,32 @@ Q12_8.d <- rbind(Q12_8.chile, Q12_8.estonia)
 lattice::histogram(~ Q12_8.d$Q12_8 | Q12_8.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "People should always obey their rulers.\nAn essential characteristic of democracy...") 
 
+# People should always obey their rulers... RECODED
+dat.chile$Q12_8.r = recode_factor(as.factor(dat.chile$Q12_8),  
+                                  "Not at all" = "Not essential",
+                                  "2" = "Not essential",
+                                  "3" = "Not essential",
+                                  "4" = "Not essential",
+                                  "5" = "Intermediate",
+                                  "6" = "Intermediate",
+                                  "7" = "Definitely essential",
+                                  "8" = "Definitely essential",
+                                  "9" = "Definitely essential",
+                                  "Definitely essential" = "Definitely essential",
+                                  .ordered = TRUE)
+
+dat.estonia$Q12_8.r = recode_factor(as.factor(dat.estonia$Q12_8),  
+                                    "Not at all" = "Not essential",
+                                    "2" = "Not essential",
+                                    "3" = "Not essential",
+                                    "4" = "Not essential",
+                                    "5" = "Intermediate",
+                                    "6" = "Intermediate",
+                                    "7" = "Definitely essential",
+                                    "8" = "Definitely essential",
+                                    "9" = "Definitely essential",
+                                    "Definitely essential" = "Definitely essential",
+                                    .ordered = TRUE)
 
 # Women should have the same rights as men.
 dat.chile$Q12_9 = recode_factor(as.factor(dat.chile$Q12_9),  
@@ -382,9 +583,6 @@ Q12_9.estonia <- dat.estonia %>% select(Q12_9, Country)
 Q12_9.d <- rbind(Q12_9.chile, Q12_9.estonia)
 lattice::histogram(~ Q12_9.d$Q12_9 | Q12_9.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
                    xlab = "Women should have the same rights as men.\nAn essential characteristic of democracy...") 
-
-
-
 
 # Income Low/Mid/High
 dat.chile$IncomeLowMidHigh <- recode_factor(
@@ -702,8 +900,8 @@ conjoint.d.estonia$attr.Pensions <- recode_factor(
 dat.subset.estonia = dat.estonia %>% dplyr::select(
   respondent, 
   winners.losers,
-  Q10_1, Q10_1.r, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, Q12_2, Q12_3, Q12_5, 
-  Q12_7, Q12_8, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow,
+  Q10_1, Q10_1.r, Q10_2, Q10_2.r, Q10_3, Q10_3.r, Q10_4, Q10_4.r, Q12_1, Q12_1.r, Q8_1, Q8_1.r, Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r,
+  Q12_7, Q12_8, Q12_8.r, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow,
   Vote.Choice, Language
   )
 
@@ -921,8 +1119,8 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, 
                                          IncomeLowMidHigh, Q3, Q3_young_old, Q4, 
-                                         Q10_1, Q10_1.r, Q10_2, Q10_3, Q10_4, Q12_1, Q8_1, 
-                                         Q12_2, Q12_3, Q12_5, Q12_7, Q12_8, Q12_9)
+                                         Q10_1, Q10_1.r, Q10_2, Q10_2.r, Q10_3, Q10_3.r, Q10_4, Q10_4.r, Q12_1, Q12_1.r, Q8_1, Q8_1.r, 
+                                         Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r, Q12_7, Q12_8, Q12_8.r, Q12_9)
 
 # Merge
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
@@ -1014,6 +1212,29 @@ mm_Free_Elec.p %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
+# Q12_3 # The people should choose their leaders in free elections... RECODED
+#####################################################
+
+mm_Free_Elec_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q12_3.r))
+
+mm_Free_Elec_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q12_3.r))
+
+
+mm_Free_Elec_Chile.r$Country <- "Chile"
+mm_Free_Elec_Estonia.r$Country <- "Estonia"
+
+mm_Free_Elec.d.r = rbind(mm_Free_Elec_Chile.r, mm_Free_Elec_Estonia.r)
+mm_Free_Elec.p.r <- plot(mm_Free_Elec.d.r, group = "Q12_3.r", vline = 0.5)
+mm_Free_Elec.p.r %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
 # Q12_2 # Religious authorities have the final say in interpreting the country's laws.
 #####################################################
 
@@ -1034,6 +1255,29 @@ mm_Rel_Auth_Estonia$Country <- "Estonia"
 mm_Rel_Auth.d = rbind(mm_Rel_Auth_Chile, mm_Rel_Auth_Estonia)
 mm_Rel_Auth.p <- plot(mm_Rel_Auth.d, group = "Q12_2", vline = 0.5)
 mm_Rel_Auth.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_2 # Religious authorities have the final say in interpreting the country's laws... RECODED
+#####################################################
+
+mm_Rel_Auth_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q12_2.r))
+
+mm_Rel_Auth_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~ respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q12_2.r))
+
+
+mm_Rel_Auth_Chile.r$Country <- "Chile"
+mm_Rel_Auth_Estonia.r$Country <- "Estonia"
+
+mm_Rel_Auth.d.r = rbind(mm_Rel_Auth_Chile.r, mm_Rel_Auth_Estonia.r)
+mm_Rel_Auth.p.r <- plot(mm_Rel_Auth.d.r, group = "Q12_2.r", vline = 0.5)
+mm_Rel_Auth.p.r %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
@@ -1060,6 +1304,29 @@ mm_Obey_Rulers.p %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
+# Q12_8 # People should always obey their rulers... RECODED
+#####################################################
+
+mm_Obey_Rulers_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~ respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q12_8.r))
+
+mm_Obey_Rulers_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                id = ~ respondent, 
+                                                estimate = "mm", 
+                                                by = ~Q12_8.r))
+
+
+mm_Obey_Rulers_Chile.r$Country <- "Chile"
+mm_Obey_Rulers_Estonia.r$Country <- "Estonia"
+
+mm_Obey_Rulers.d.r = rbind(mm_Obey_Rulers_Chile.r, mm_Obey_Rulers_Estonia.r)
+mm_Obey_Rulers.p.r <- plot(mm_Obey_Rulers.d.r, group = "Q12_8.r", vline = 0.5)
+mm_Obey_Rulers.p.r %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
 # Q10_4 # It is important that there are free and politically independent media in [country]
 #####################################################
 mm_Free_Media_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -1079,6 +1346,28 @@ mm_Free_Media_Estonia$Country <- "Estonia"
 mm_Free_Media.d = rbind(mm_Free_Media_Chile, mm_Free_Media_Estonia)
 mm_Free_Media.p <- plot(mm_Free_Media.d, group = "Q10_4", vline = 0.5)
 mm_Free_Media.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_4.r # It is important that there are free and politically independent media in [country]... RECODED
+#####################################################
+mm_Free_Media_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~ respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q10_4.r))
+
+mm_Free_Media_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~ respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q10_4.r))
+
+
+mm_Free_Media_Chile.r$Country <- "Chile"
+mm_Free_Media_Estonia.r$Country <- "Estonia"
+
+mm_Free_Media.d.r = rbind(mm_Free_Media_Chile.r, mm_Free_Media_Estonia.r)
+mm_Free_Media.p.r <- plot(mm_Free_Media.d.r, group = "Q10_4.r", vline = 0.5)
+mm_Free_Media.p.r %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses
@@ -1103,6 +1392,27 @@ mm_Army.p %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses
+# Q12_5 : The Army should take control of the state when the Government is not functioning well... RECODED
+#####################################################
+mm_Army_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                         id = ~ respondent, 
+                                         estimate = "mm", 
+                                         by = ~Q12_5.r))
+
+mm_Army_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                       id = ~respondent, 
+                                       estimate = "mm", 
+                                       by = ~Q12_5.r))
+
+mm_Army_Chile.r$Country <- "Chile"
+mm_Army_Estonia.r$Country <- "Estonia"
+
+mm_Army.d.r = rbind(mm_Army_Chile.r, mm_Army_Estonia.r)
+mm_Army.p.r <- plot(mm_Army.d.r, group = "Q12_5.r", vline = 0.5)
+mm_Army.p.r %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses
 # Q10_1 # Democracy might have problems but it's better...
 #####################################################
 mm_DemBetter_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -1124,7 +1434,7 @@ mm_DemBetter.p %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses
-# Q10_1.r # Democracy might have problems but it's better...
+# Q10_1.r # Democracy might have problems but it's better... RECODED
 #####################################################
 mm_DemBetter_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                                               id = ~ respondent, 
@@ -1167,6 +1477,28 @@ mm_StrongLeader.p %+% facet_wrap(~Country)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
+# Q10_2: # Democracy is not an effective form of government...better a strong leader RECODED
+########################################################
+mm_StrongLeader_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                               id = ~respondent, 
+                                               estimate = "mm", 
+                                               by = ~Q10_2.r))
+
+mm_StrongLeader_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~Q10_2.r))
+
+
+mm_StrongLeader_Chile.r$Country <- "Chile"
+mm_StrongLeader_Estonia.r$Country <- "Estonia"
+
+mm_StrongLeader.d.r = rbind(mm_StrongLeader_Chile.r, mm_StrongLeader_Estonia.r)
+mm_StrongLeader.p.r <- plot(mm_StrongLeader.d.r, group = "Q10_2.r", vline = 0.5)
+mm_StrongLeader.p.r %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
 # Q10_3: Civil rights that guarantee political protest should not be restricted
 ########################################################
 mm_RightToProtest_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
@@ -1190,24 +1522,68 @@ mm_RightToProtest.p %+% facet_wrap(~Country)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
+# Q10_3.r: Civil rights that guarantee political protest should not be restricted... RECODED
+########################################################
+mm_RightToProtest_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~Q10_3.r))
+
+mm_RightToProtest_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                                   id = ~respondent, 
+                                                   estimate = "mm", 
+                                                   by = ~Q10_3.r))
+
+
+
+mm_RightToProtest_Chile.r$Country <- "Chile"
+mm_RightToProtest_Estonia.r$Country <- "Estonia"
+
+mm_RightToProtest.d.r = rbind(mm_RightToProtest_Chile.r, mm_RightToProtest_Estonia.r)
+mm_RightToProtest.p.r <- plot(mm_RightToProtest.d.r, group = "Q10_3.r", vline = 0.5)
+mm_RightToProtest.p.r %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
 # Q8_1: Thinking on a scale where one means far left and ten means far right, where do you place yourself?
 ########################################################
-mm_DemSatis_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                         id = ~respondent, 
-                                         estimate = "mm", 
-                                         by = ~Q8_1))
+mm_LeftRight_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                          id = ~respondent, 
+                                          estimate = "mm", 
+                                          by = ~Q8_1))
 
-mm_DemSatis_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
-                                           id = ~respondent, 
-                                           estimate = "mm", 
-                                           by = ~Q8_1))
+mm_LeftRight_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q8_1))
 
-mm_DemSatis_Chile$Country <- "Chile"
-mm_DemSatis_Estonia$Country <- "Estonia"
+mm_LeftRight_Chile$Country <- "Chile"
+mm_LeftRight_Estonia$Country <- "Estonia"
 
-mm_DemSatis.d = rbind(mm_DemSatis_Chile, mm_DemSatis_Estonia)
-mm_DemSatis.p <- plot(mm_DemSatis.d, group = "Q8_1", vline = 0.5)
-mm_DemSatis.p %+% facet_wrap(~Country)
+mm_LeftRight.d = rbind(mm_LeftRight_Chile, mm_LeftRight_Estonia)
+mm_LeftRight.p <- plot(mm_LeftRight.d, group = "Q8_1", vline = 0.5)
+mm_LeftRight.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q8_1: Thinking on a scale where one means far left and ten means far right, where do you place yourself?... RECODED
+########################################################
+mm_LeftRight_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q8_1.r))
+
+mm_LeftRight_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q8_1.r))
+
+mm_LeftRight_Chile.r$Country <- "Chile"
+mm_LeftRight_Estonia.r$Country <- "Estonia"
+
+mm_LeftRight.d.r = rbind(mm_LeftRight_Chile.r, mm_LeftRight_Estonia.r)
+mm_LeftRight.p.r <- plot(mm_LeftRight.d.r, group = "Q8_1.r", vline = 0.5)
+mm_LeftRight.p.r %+% facet_wrap(~Country)
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
@@ -1254,6 +1630,29 @@ mm_Tax_Rich_Estonia$Country <- "Estonia"
 mm_Tax_Rich.d = rbind(mm_Tax_Rich_Chile, mm_Tax_Rich_Estonia)
 mm_Tax_Rich.p <- plot(mm_Tax_Rich.d, group = "Q12_1", vline = 0.5)
 mm_Tax_Rich.p %+% facet_wrap(~Country)
+
+#####################################################
+# Marginal Means // Subgroup Analyses: 
+# Q12_1 # Governments should tax the rich to help the poor... RECODED
+#####################################################
+
+mm_Tax_Rich_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~ respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q12_1.r))
+
+mm_Tax_Rich_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~ respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q12_1.r))
+
+
+mm_Tax_Rich_Chile.r$Country <- "Chile"
+mm_Tax_Rich_Estonia.r$Country <- "Estonia"
+
+mm_Tax_Rich.d.r = rbind(mm_Tax_Rich_Chile.r, mm_Tax_Rich_Estonia.r)
+mm_Tax_Rich.p.r <- plot(mm_Tax_Rich.d.r, group = "Q12_1.r", vline = 0.5)
+mm_Tax_Rich.p.r %+% facet_wrap(~Country)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
