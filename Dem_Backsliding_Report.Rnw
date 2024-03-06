@@ -29,6 +29,11 @@ table(dat.chile$Q3) # age
 table(dat.estonia$Q3) # age
 @
 
+<<chunk:3b>>=
+table(dat.chile$Q4) # gender
+table(dat.estonia$Q4) # gender
+@
+
 <<chunk:4>>=
 
 # Import Data
