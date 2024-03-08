@@ -1175,8 +1175,36 @@ mm_Winner_Loser_Chile$Country <- "Chile"
 mm_Winner_Loser_Estonia$Country <- "Estonia"
 
 mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
-mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
-mm_Winner_Loser.p %+% facet_wrap(~Country)
+# mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
+# mm_Winner_Loser.p %+% facet_wrap(~Country)
+
+mm_Winner_Loser.p = ggplot(mm_Winner_Loser.d,
+                           aes(factor(level),
+                               y=estimate,
+                               ymin=lower,
+                               ymax=upper,
+                               color=factor(winners.losers))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_Winner_Loser.p, file="Conjoint_Winner_Loser.pdf", width=12, height=10)
 
 
 #####################################################
