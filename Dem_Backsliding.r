@@ -115,6 +115,20 @@ dat.estonia$Language <- recode_factor(dat.estonia$Q7,
                                       `Vene` = "Russian", # 68
                                       .ordered = TRUE)
 
+
+# Vote.Choice (Q32) # Chile
+## Coding https://www.cambridge.org/core/product/identifier/S104909652300104X/type/journal_article
+dat.chile$Vote.Choice <- recode_factor(dat.chile$Q32,
+                                       `PARTIDO DE LA GENTE (LISTA A)` = "Right",
+                                       `TODO POR CHILE (LISTA B) (Partido por la Democracia (PPD), Democracia Cristiana, y Partido Radical)` = "Center",
+                                       `PARTIDO REPUBLICANO DE CHILE (LISTA C)` = "Far-Right",
+                                       `UNIDAD PARA CHILE (LISTA D) (Partido Socialista, Partido Comunista, Partido Liberal, Convergencia Social, Revolución Democrática, Comunes, Acción Humanista y FRSV)` = "Left",
+                                       `CHILE SEGURO (LISTA E) (UDI, Renovación Nacional (RN) y Evópoli)` = "Right",
+                                       `Votó en blanco` = "Blank/spoiled",
+                                       `Votó nulo` = "Blank/spoiled",
+                                       `No sabe / No contesta` = "I do not want to say",
+                                       .ordered = TRUE)
+
 # gender
 dat.chile$Q4  <- recode_factor(as.factor(dat.chile$Q4), `Hombre` = "Man", `Mujer` = "Woman", "Otro/Prefiero no decir"= "Other") # gender
 dat.estonia$Q4  <- recode_factor(as.factor(dat.estonia$Q4), `Mees` = "Man", `Naine` = "Woman", `Ei tea` = "Do not know", `Muu` = "Other" ) # gender
@@ -1132,12 +1146,13 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 ## IncomeLowMidHigh # Income Low/Mid/High
 # Q3_young_old # Age young/old
 ## Educ.HighLow # Education High/Low
+# Vote.Choice
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, 
                                          IncomeLowMidHigh, Q3, Q3_young_old, Q4, 
                                          Q10_1, Q10_1.r, Q10_2, Q10_2.r, Q10_3, Q10_3.r, Q10_4, Q10_4.r, Q12_1, Q12_1.r, Q8_1, Q8_1.r, 
-                                         Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r, Q12_7, Q12_8, Q12_8.r, Q12_9)
+                                         Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r, Q12_7, Q12_8, Q12_8.r, Q12_9, Vote.Choice)
 
 # Merge
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
@@ -1210,14 +1225,56 @@ ggsave(mm_Winner_Loser.p, file="Conjoint_Winner_Loser.pdf", width=12, height=10)
 #####################################################
 # Marginal Means // Subgroup Analyses: 
 # Vote.Choice
-# ONLY ESTONIA
 #####################################################
 
 mm_Vote_Choice_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
                                              id = ~ respondent, 
                                              estimate = "mm", 
                                              by = ~Vote.Choice))
-plot(mm_Vote_Choice_Estonia, group = "Vote.Choice", vline = 0.5)
+
+mm_Vote_Choice_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~ respondent, 
+                                            estimate = "mm", 
+                                            by = ~Vote.Choice))
+
+
+# plot(mm_Vote_Choice_Estonia, group = "Vote.Choice", vline = 0.5)
+# plot(mm_Vote_Choice_Chile, group = "Vote.Choice", vline = 0.5)
+
+mm_Vote_Choice_Chile$Country <- "Chile"
+mm_Vote_Choice_Estonia$Country <- "Estonia"
+
+mm_Vote_Choice.d = rbind(mm_Vote_Choice_Chile, mm_Vote_Choice_Estonia)
+# mm_Vote_Choice.p <- plot(mm_Vote_Choice.d, group = "winners.losers", vline = 0.5)
+# mm_Vote_Choice.p %+% facet_wrap(~Country)
+
+mm_Vote_Choice.p = ggplot(mm_Vote_Choice.d,
+                          aes(factor(level),
+                              y=estimate,
+                              ymin=lower,
+                              ymax=upper,
+                              color=factor(Vote.Choice))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_Vote_Choice.p, file="Conjoint_Vote_Choice.pdf", width=20, height=10)
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
@@ -1535,12 +1592,46 @@ mm_StrongLeader_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ at
                                                  by = ~Q10_2.r))
 
 
+# mm_StrongLeader_Chile.r$Country <- "Chile"
+# mm_StrongLeader_Estonia.r$Country <- "Estonia"
+# mm_StrongLeader.d.r = rbind(mm_StrongLeader_Chile.r, mm_StrongLeader_Estonia.r)
+# mm_StrongLeader.p.r <- plot(mm_StrongLeader.d.r, group = "Q10_2.r", vline = 0.5)
+# mm_StrongLeader.p.r %+% facet_wrap(~Country)
+
 mm_StrongLeader_Chile.r$Country <- "Chile"
 mm_StrongLeader_Estonia.r$Country <- "Estonia"
 
-mm_StrongLeader.d.r = rbind(mm_StrongLeader_Chile.r, mm_StrongLeader_Estonia.r)
-mm_StrongLeader.p.r <- plot(mm_StrongLeader.d.r, group = "Q10_2.r", vline = 0.5)
-mm_StrongLeader.p.r %+% facet_wrap(~Country)
+mm_StrongLeader.d = rbind(mm_StrongLeader_Chile.r, mm_StrongLeader_Estonia.r)
+# mm_StrongLeader.p <- plot(mm_StrongLeader.d, group = "winners.losers", vline = 0.5)
+# mm_StrongLeader.p %+% facet_wrap(~Country)
+
+mm_StrongLeader.p = ggplot(mm_StrongLeader.d,
+                           aes(factor(level),
+                               y=estimate,
+                               ymin=lower,
+                               ymax=upper,
+                               color=factor(Q10_2.r))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_StrongLeader.p, file="Conjoint_StrongLeader.pdf", width=12, height=10)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
@@ -1581,12 +1672,47 @@ mm_RightToProtest_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ 
 
 
 
+# mm_RightToProtest_Chile.r$Country <- "Chile"
+# mm_RightToProtest_Estonia.r$Country <- "Estonia"
+# mm_RightToProtest.d.r = rbind(mm_RightToProtest_Chile.r, mm_RightToProtest_Estonia.r)
+# mm_RightToProtest.p.r <- plot(mm_RightToProtest.d.r, group = "Q10_3.r", vline = 0.5)
+# mm_RightToProtest.p.r %+% facet_wrap(~Country)
+
 mm_RightToProtest_Chile.r$Country <- "Chile"
 mm_RightToProtest_Estonia.r$Country <- "Estonia"
 
-mm_RightToProtest.d.r = rbind(mm_RightToProtest_Chile.r, mm_RightToProtest_Estonia.r)
-mm_RightToProtest.p.r <- plot(mm_RightToProtest.d.r, group = "Q10_3.r", vline = 0.5)
-mm_RightToProtest.p.r %+% facet_wrap(~Country)
+mm_RightToProtest.d = rbind(mm_RightToProtest_Chile.r, mm_RightToProtest_Estonia.r)
+#colnames(mm_RightToProtest.d)[colnames(mm_RightToProtest.d)=="Q10_3.r"] <- "RighttoProtest"
+# mm_RightToProtest.p <- plot(mm_RightToProtest.d, group = "winners.losers", vline = 0.5)
+# mm_RightToProtest.p %+% facet_wrap(~Country)
+
+mm_RightToProtest.p = ggplot(mm_RightToProtest.d,
+                             aes(factor(level),
+                                 y=estimate,
+                                 ymin=lower,
+                                 ymax=upper,
+                                 color=factor(Q10_3.r))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_RightToProtest.p, file="Conjoint_RightToProtest.pdf", width=12, height=10)
 
 ########################################################
 # Marginal Means // Subgroup Analyses: 
