@@ -102,7 +102,7 @@ dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Q13,
                                          `Erakond Parempoolsed` = "Party of Right-Wingers",
                                          `Isamaa Erakond` = "Pro Patria Party",
                                          `Ma ei käinud valimas` = "I did not vote",
-                                         `Ma ei taha öelda` = "I do not want to say",
+                                         `Ma ei taha öelda` = "Other",
                                          `Muu` = "Other",
                                          .ordered = TRUE)
 
@@ -124,9 +124,9 @@ dat.chile$Vote.Choice <- recode_factor(dat.chile$Q32,
                                        `PARTIDO REPUBLICANO DE CHILE (LISTA C)` = "Far-Right",
                                        `UNIDAD PARA CHILE (LISTA D) (Partido Socialista, Partido Comunista, Partido Liberal, Convergencia Social, Revolución Democrática, Comunes, Acción Humanista y FRSV)` = "Left",
                                        `CHILE SEGURO (LISTA E) (UDI, Renovación Nacional (RN) y Evópoli)` = "Right",
-                                       `Votó en blanco` = "Blank/spoiled",
-                                       `Votó nulo` = "Blank/spoiled",
-                                       `No sabe / No contesta` = "I do not want to say",
+                                       `Votó en blanco` = "I did not vote",
+                                       `Votó nulo` = "I did not vote",
+                                       `No sabe / No contesta` = "Other",
                                        .ordered = TRUE)
 
 # gender
@@ -1193,6 +1193,7 @@ mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
 # mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
 # mm_Winner_Loser.p %+% facet_wrap(~Country)
 
+p_load(ggplot2)
 mm_Winner_Loser.p = ggplot(mm_Winner_Loser.d,
                            aes(factor(level),
                                y=estimate,
@@ -1248,6 +1249,7 @@ mm_Vote_Choice.d = rbind(mm_Vote_Choice_Chile, mm_Vote_Choice_Estonia)
 # mm_Vote_Choice.p <- plot(mm_Vote_Choice.d, group = "winners.losers", vline = 0.5)
 # mm_Vote_Choice.p %+% facet_wrap(~Country)
 
+p_load(ggplot2)
 mm_Vote_Choice.p = ggplot(mm_Vote_Choice.d,
                           aes(factor(level),
                               y=estimate,
@@ -1605,6 +1607,7 @@ mm_StrongLeader.d = rbind(mm_StrongLeader_Chile.r, mm_StrongLeader_Estonia.r)
 # mm_StrongLeader.p <- plot(mm_StrongLeader.d, group = "winners.losers", vline = 0.5)
 # mm_StrongLeader.p %+% facet_wrap(~Country)
 
+p_load(ggplot2)
 mm_StrongLeader.p = ggplot(mm_StrongLeader.d,
                            aes(factor(level),
                                y=estimate,
@@ -1686,6 +1689,7 @@ mm_RightToProtest.d = rbind(mm_RightToProtest_Chile.r, mm_RightToProtest_Estonia
 # mm_RightToProtest.p <- plot(mm_RightToProtest.d, group = "winners.losers", vline = 0.5)
 # mm_RightToProtest.p %+% facet_wrap(~Country)
 
+p_load(ggplot2)
 mm_RightToProtest.p = ggplot(mm_RightToProtest.d,
                              aes(factor(level),
                                  y=estimate,
@@ -1862,13 +1866,47 @@ mm_IncomeHighMidLow_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ 
                                                    estimate = "mm", 
                                                    by = ~IncomeLowMidHigh))
 
+# mm_IncomeHighMidLow_Chile$Country <- "Chile"
+# mm_IncomeHighMidLow_Estonia$Country <- "Estonia"
+# mm_IncomeHighMidLow.d = rbind(mm_IncomeHighMidLow_Chile, mm_IncomeHighMidLow_Estonia)
+# mm_IncomeHighMidLow.p <- plot(mm_IncomeHighMidLow.d, group = "IncomeLowMidHigh", vline = 0.5)
+# mm_IncomeHighMidLow.p %+% facet_wrap(~Country)
+
 mm_IncomeHighMidLow_Chile$Country <- "Chile"
 mm_IncomeHighMidLow_Estonia$Country <- "Estonia"
 
 mm_IncomeHighMidLow.d = rbind(mm_IncomeHighMidLow_Chile, mm_IncomeHighMidLow_Estonia)
-mm_IncomeHighMidLow.p <- plot(mm_IncomeHighMidLow.d, group = "IncomeLowMidHigh", vline = 0.5)
-mm_IncomeHighMidLow.p %+% facet_wrap(~Country)
+# mm_IncomeHighMidLow.p <- plot(mm_IncomeHighMidLow.d, group = "winners.losers", vline = 0.5)
+# mm_IncomeHighMidLow.p %+% facet_wrap(~Country)
 
+p_load(ggplot2)
+mm_IncomeHighMidLow.p = ggplot(mm_IncomeHighMidLow.d,
+                               aes(factor(level),
+                                   y=estimate,
+                                   ymin=lower,
+                                   ymax=upper,
+                                   color=factor(IncomeLowMidHigh))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_IncomeHighMidLow.p, file="Conjoint_IncomeHighMidLow.pdf", width=12, height=10)
 
 
 ############################################################################## END RUN
