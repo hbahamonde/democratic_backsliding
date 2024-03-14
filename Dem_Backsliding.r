@@ -33,6 +33,76 @@ estonia.sample.size = as.numeric(nrow(dat.estonia))
 dat.chile$Country <- "Chile"
 dat.estonia$Country <- "Estonia"
 
+# proxy on external validity: if respondents would have voted for such candidate.
+## chile
+would.vote.chile.mean = mean(c(
+  round((table(dat.chile$DC1)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC96)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC55)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC97)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC46)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC98)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC113)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC114)[[2]]*100)/chile.sample.size,0)
+))
+
+would.vote.chile.min = min(c(
+  round((table(dat.chile$DC1)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC96)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC55)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC97)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC46)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC98)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC113)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC114)[[2]]*100)/chile.sample.size,0)
+))
+
+would.vote.chile.max = max(c(
+  round((table(dat.chile$DC1)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC96)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC55)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC97)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC46)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC98)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC113)[[2]]*100)/chile.sample.size,0), 
+  round((table(dat.chile$DC114)[[2]]*100)/chile.sample.size,0)
+))
+
+## estonia
+would.vote.estonia.mean = mean(c(
+  round((table(dat.estonia$DC1)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC96)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC55)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC193)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC194)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC195)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC196)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC197)[[2]]*100)/estonia.sample.size,0)
+))
+
+would.vote.estonia.min = min(c(
+  round((table(dat.estonia$DC1)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC96)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC55)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC193)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC194)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC195)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC196)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC197)[[2]]*100)/estonia.sample.size,0)
+))
+
+would.vote.estonia.max = max(c(
+  round((table(dat.estonia$DC1)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC96)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC55)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC193)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC194)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC195)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC196)[[2]]*100)/estonia.sample.size,0), 
+  round((table(dat.estonia$DC197)[[2]]*100)/estonia.sample.size,0)
+))
+
+
 # convert all character columns to factor
 #### THIS BELOW WAS CONVERTING TIME IN A WEIRD WAY
 # dat.chile[sapply(dat.chile, is.character)] <- lapply(dat.chile[sapply(dat.chile, is.character)], as.factor)
