@@ -2091,6 +2091,8 @@ ggplot(dat, aes(block, Q39_6)) +
 # VDEM
 ##########
 
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
 # import data
 vdem.d <- readRDS("/Users/hectorbahamonde/research/democratic_backsliding/data/vdem.rds")
@@ -2323,6 +2325,8 @@ cowplot::plot_grid(p33, p34, p35, p36, p37, p38, p39, p40, p41, p42, p43, p44, p
 cowplot::plot_grid(p49, p50, p51, p52, p53, p55, p56, p57, p58, p59, p60, p61, p62, p63, p64, p65, align = "hv",axis = "b", ncol = 4) 
 
 # selection of 9 dimensions for paper
+p_load(ggplot2)
+
 p1 = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election free and fair") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
@@ -2417,14 +2421,10 @@ p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth() + 
   plot.title = element_text(size=14),
   strip.text.x = element_text(size=14)) +
   guides(colour=guide_legend(title="")) + 
-  labs(x = "")
+  labs(x = "",  caption = "Source: VDEM Data V12 2022 (Coppedge et al., 2022).")
 
 vdem.chile.estonia.p = cowplot::plot_grid(p1,p2,p5,p13,p39,p43, align = "hv",axis = "b", ncol = 3) 
 ggsave(vdem.chile.estonia.p, file="VD_Chile_Estonia.pdf", width=15, height=10)
-
-
-
-
 
 
 ##########
