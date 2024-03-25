@@ -167,9 +167,9 @@ dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Q13,
                                          `Eesti Keskerakond` = "Estonian Centre Party",
                                          `Eesti Konservatiivne Rahvaerakond` = "Estonian Conservative People\'s Party",
                                          `Eesti Reformierakond` = "Estonian Reform Party",
-                                         `Eestimaa Ühendatud Vasakpartei` = "United Left Party of Estonia",
-                                         `Erakond Eestimaa Rohelised` = "Estonian Green Party",
-                                         `Erakond Parempoolsed` = "Party of Right-Wingers",
+                                         `Eestimaa Ühendatud Vasakpartei` = "Other", #"United Left Party of Estonia",
+                                         `Erakond Eestimaa Rohelised` = "Other", #"Estonian Green Party",
+                                         `Erakond Parempoolsed` = "Other", #"Party of Right-Wingers",
                                          `Isamaa Erakond` = "Pro Patria Party",
                                          `Ma ei käinud valimas` = "I did not vote",
                                          `Ma ei taha öelda` = "Other",
@@ -207,6 +207,37 @@ Q4.estonia <- dat.estonia %>% select(Q4, Country)
 Q4.d <- rbind(Q4.chile, Q4.estonia)
 
 lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Gender") 
+
+
+# Democratic satisfaction Q9_1
+## "¿Cuán satisfecho está usted con el funcionamiento de la democracia en Chile?"
+## 1-4 "Dissatisfied" 5-6 "Intermediate" 7-10 "Satisfied"
+dat.chile$Q9_1  <- recode_factor(as.factor(dat.chile$Q9_1),
+                                 "1" = "Dissatisfied", 
+                                 "2" = "Dissatisfied", 
+                                 "3" = "Dissatisfied", 
+                                 "4" = "Dissatisfied", 
+                                 "5" = "Intermediate", 
+                                 "6" = "Intermediate", 
+                                 "7" = "Satisfied", 
+                                 "8" = "Satisfied", 
+                                 "9" = "Satisfied", 
+                                 "10" = "Satisfied",
+                                 .ordered = TRUE)
+
+## "Kuivõrd rahul olete te demokraatia toimimisega Eestis?"
+dat.estonia$Q9_1  <- recode_factor(as.factor(dat.estonia$Q9_1),  
+                                   "1" = "Dissatisfied", 
+                                   "2" = "Dissatisfied", 
+                                   "3" = "Dissatisfied", 
+                                   "4" = "Dissatisfied", 
+                                   "5" = "Intermediate", 
+                                   "6" = "Intermediate", 
+                                   "7" = "Satisfied", 
+                                   "8" = "Satisfied", 
+                                   "9" = "Satisfied", 
+                                   "10" = "Satisfied",
+                                   .ordered = TRUE)
 
 # Democracy might have problems but it's better...
 dat.chile$Q10_1  <- recode_factor(as.factor(dat.chile$Q10_1),  
@@ -996,6 +1027,7 @@ conjoint.d.estonia$attr.Pensions <- recode_factor(
 # Educ.HighLow # Education High/Low
 # Vote.Choice
 # Language
+# Q9_1 # Dem Satis
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset.estonia = dat.estonia %>% dplyr::select(
@@ -1003,7 +1035,7 @@ dat.subset.estonia = dat.estonia %>% dplyr::select(
   winners.losers,
   Q10_1, Q10_1.r, Q10_2, Q10_2.r, Q10_3, Q10_3.r, Q10_4, Q10_4.r, Q12_1, Q12_1.r, Q8_1, Q8_1.r, Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r,
   Q12_7, Q12_8, Q12_8.r, Q12_9, IncomeLowMidHigh, Q3_young_old, Educ.HighLow,
-  Vote.Choice, Language
+  Vote.Choice, Language, Q9_1
   )
 
 # Merge
@@ -1217,12 +1249,13 @@ conjoint.d.chile$attr.Pensions <- recode_factor(
 # Q3_young_old # Age young/old
 ## Educ.HighLow # Education High/Low
 # Vote.Choice
+# Q9_1 # Dem Satis
 
 # subset vars from the big dataset to be merged to the conjoint dataset
 dat.subset = dat.chile %>% dplyr::select(respondent, winners.losers, Educ.HighLow, 
                                          IncomeLowMidHigh, Q3, Q3_young_old, Q4, 
                                          Q10_1, Q10_1.r, Q10_2, Q10_2.r, Q10_3, Q10_3.r, Q10_4, Q10_4.r, Q12_1, Q12_1.r, Q8_1, Q8_1.r, 
-                                         Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r, Q12_7, Q12_8, Q12_8.r, Q12_9, Vote.Choice)
+                                         Q12_2, Q12_2.r, Q12_3, Q12_3.r, Q12_5, Q12_5.r, Q12_7, Q12_8, Q12_8.r, Q12_9, Vote.Choice, Q9_1)
 
 # Merge
 conjoint.d.chile = merge(dat.subset, conjoint.d.chile, by.x = "respondent")
@@ -1344,7 +1377,8 @@ mm_Vote_Choice.p = ggplot(mm_Vote_Choice.d,
     plot.title = element_text(size=14),
     strip.text.x = element_text(size = 14)) +
   guides(colour=guide_legend(title="")) + 
-  labs(x = "", y = "")
+  labs(x = "", y = "") +
+  scale_color_brewer(palette="Paired")
 
 ggsave(mm_Vote_Choice.p, file="Conjoint_Vote_Choice.pdf", width=20, height=10)
 
@@ -1585,6 +1619,63 @@ mm_Army.d.r = rbind(mm_Army_Chile.r, mm_Army_Estonia.r)
 mm_Army.p.r <- plot(mm_Army.d.r, group = "Q12_5.r", vline = 0.5)
 mm_Army.p.r %+% facet_wrap(~Country)
 
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q9_1: # Democratic satisfaction
+########################################################
+mm_DemSatis_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                           id = ~respondent, 
+                                           estimate = "mm", 
+                                           by = ~Q9_1))
+
+mm_DemSatis_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                             id = ~respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q9_1))
+
+
+# mm_DemSatis_Chile.r$Country <- "Chile"
+# mm_DemSatis_Estonia.r$Country <- "Estonia"
+# mm_DemSatis.d.r = rbind(mm_DemSatis_Chile.r, mm_DemSatis_Estonia.r)
+# mm_DemSatis.p.r <- plot(mm_DemSatis.d.r, group = "Q9_1", vline = 0.5)
+# mm_DemSatis.p.r %+% facet_wrap(~Country)
+
+mm_DemSatis_Chile.r$Country <- "Chile"
+mm_DemSatis_Estonia.r$Country <- "Estonia"
+
+mm_DemSatis.d = rbind(mm_DemSatis_Chile.r, mm_DemSatis_Estonia.r)
+# mm_DemSatis.p <- plot(mm_DemSatis.d, group = "winners.losers", vline = 0.5)
+# mm_DemSatis.p %+% facet_wrap(~Country)
+
+p_load(ggplot2)
+mm_DemSatis.p = ggplot(mm_DemSatis.d,
+                       aes(factor(level),
+                           y=estimate,
+                           ymin=lower,
+                           ymax=upper,
+                           color=factor(Q9_1))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_DemSatis.p, file="Conjoint_DemSatis.pdf", width=12, height=10)
+
 #####################################################
 # Marginal Means // Subgroup Analyses
 # Q10_1 # Democracy might have problems but it's better...
@@ -1605,6 +1696,63 @@ mm_DemBetter_Estonia$Country <- "Estonia"
 mm_DemBetter.d = rbind(mm_DemBetter_Chile, mm_DemBetter_Estonia)
 mm_DemBetter.p <- plot(mm_DemBetter.d, group = "Q10_1", vline = 0.5)
 mm_DemBetter.p %+% facet_wrap(~Country)
+
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q10_1.r: # Democratic satisfaction
+########################################################
+mm_DemBetter_Chile.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                            id = ~respondent, 
+                                            estimate = "mm", 
+                                            by = ~Q10_1.r))
+
+mm_DemBetter_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+                                              id = ~respondent, 
+                                              estimate = "mm", 
+                                              by = ~Q10_1.r))
+
+
+# mm_DemBetter_Chile.r$Country <- "Chile"
+# mm_DemBetter_Estonia.r$Country <- "Estonia"
+# mm_DemBetter.d.r = rbind(mm_DemBetter_Chile.r, mm_DemBetter_Estonia.r)
+# mm_DemBetter.p.r <- plot(mm_DemBetter.d.r, group = "Q10_1.r", vline = 0.5)
+# mm_DemBetter.p.r %+% facet_wrap(~Country)
+
+mm_DemBetter_Chile.r$Country <- "Chile"
+mm_DemBetter_Estonia.r$Country <- "Estonia"
+
+mm_DemBetter.d = rbind(mm_DemBetter_Chile.r, mm_DemBetter_Estonia.r)
+# mm_DemBetter.p <- plot(mm_DemBetter.d, group = "winners.losers", vline = 0.5)
+# mm_DemBetter.p %+% facet_wrap(~Country)
+
+p_load(ggplot2)
+mm_DemBetter.p = ggplot(mm_DemBetter.d,
+                        aes(factor(level),
+                            y=estimate,
+                            ymin=lower,
+                            ymax=upper,
+                            color=factor(Q10_1.r))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_DemBetter.p, file="Conjoint_DemBetter.pdf", width=12, height=10)
 
 #####################################################
 # Marginal Means // Subgroup Analyses
