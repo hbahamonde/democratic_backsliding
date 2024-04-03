@@ -279,10 +279,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 
 \institute[shortinst]{\inst{1} University of Turku, Finland \and %
                       \inst{2} \textnormal{Åbo Akademi}, Finland \and
-                      \inst{3} Monterrey Tec, Mexico}
-
-
-
+                      \inst{3} Tecn\'ologico de Monterrey, Mexico}
 
 
 
@@ -299,7 +296,15 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \begin{document}
 
 
+<<echo=FALSE, cache=FALSE, warning = FALSE, message = F>>=
+read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backsliding.r') # Hector path // MAC
 
+@
+
+
+<<loadings, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, cache=FALSE, eval=TRUE>>=
+
+@
 
 % % % % % % % % % % % % % % %
 %           CONTENT
@@ -317,7 +322,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \subsection{Motivation}
 
 \miniframeson
-\begin{frame}[c]{``Losers' Consent'': A Weak Assumption.}
+\begin{frame}[c]{``Losers' Consent'': A Weak Assumption}
 \begin{columns}[T] % The [T] option aligns column content at the top
 
     \begin{column}{0.5\textwidth} % Left column and width
@@ -325,7 +330,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
             \item<1-> Political elites typically accept election outcomes in stable democracies.
             \item<2-> Yet, actions by Trump's and Bolsonaro's supporters question the acceptance of defeat.
             \item<3-> Research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
-            \item<4-> Still, we know little about the losing side's commitment to democracy among \emph{voters}.
+            \item<4-> Still, {\bf we know little about the losing side's \emph{commitment to democracy among voters}}; ``systemic support'' \scriptsize{{\color{gray}(Easton, 1965)}}.
         \end{itemize}
     \end{column}
 
@@ -347,90 +352,58 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \framesubtitle{\& Institutional Heterogeneities}
 
   \begin{itemize}
-    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment.
+    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
 
-    \item We exploit institutional heterogeneities in consensus and majoritarian democracies (Chile and Estonia), which effectively alter the costs for election ``losers'' and ``winners.''
+    \item We exploit institutional heterogeneities in presidential and parliamentary systems, which effectively shift the \emph{costs} of losing/winning an election.
 
-    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}} %\href{https://osf.io/u72z4}{\beamerbutton{pre-registered}}
+    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
       
     \begin{itemize}
-      \item Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''
-      \item This tendency is stronger in presidential versus parliamentary systems.
+      \item \only<1>{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}\only<3>{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
+           \only<2>{\textcolor{americanrose}{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}}
+      \item \only<1-2>{This tendency is stronger in presidential versus parliamentary systems.}
+           \only<3>{\textcolor{amber}{This tendency is stronger in presidential versus parliamentary systems.}}
     \end{itemize}
 
 \end{itemize}
 
 \end{frame}
-
-\miniframesoff
-\begin{frame}[c]{Voters' Commitment After Electoral Loss}
-\framesubtitle{\& Institutional Heterogeneities}
-
-  \begin{itemize}
-    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment.
-
-    \item We exploit institutional heterogeneities in consensus and majoritarian democracies (Chile and Estonia), which effectively alter the costs for election ``losers'' and ``winners.''
-
-    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}} %\href{https://osf.io/u72z4}{\beamerbutton{pre-registered}}
-      
-    \begin{itemize}
-      \item {\color{americanrose}Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
-      \item This tendency is stronger in presidential versus parliamentary systems.
-    \end{itemize}
-
-\end{itemize}
-
-\end{frame}
-
-\miniframesoff
-\begin{frame}[c]{Voters' Commitment After Electoral Loss}
-\framesubtitle{\& Institutional Heterogeneities}
-
-  \begin{itemize}
-    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment.
-
-    \item We exploit institutional heterogeneities in consensus and majoritarian democracies (Chile and Estonia), which effectively alter the costs for election ``losers'' and ``winners.''
-
-    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}} %\href{https://osf.io/u72z4}{\beamerbutton{pre-registered}}
-      
-    \begin{itemize}
-      \item Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''
-      \item {\color{amber}This tendency is stronger in presidential versus parliamentary systems.}
-    \end{itemize}
-
-\end{itemize}
-\end{frame}
-
 
 \section{Theory}
 
-\subsection{Democratic Backsliding}
+\subsection{Soc. Movements and Institutional Literature}
+
+
 
 \miniframeson
-\begin{frame}[c]{Democratic Backsliding}
+\begin{frame}[c]{Voters' Commitment After Electoral Loss}
+\framesubtitle{\& Institutional Heterogeneities}
 
-  \begin{itemize}
-    \item \textcite{Bermeo2016} ``{\bf introduced} the landmark essay on democratic backsliding'' {\scriptsize\parencite[p. 27]{Haggard2021ca}}.
-    \item Democratic institutions, norms, and values are gradually eroded {\bf within} a political system.
-    \item Erosion of civil liberties, undermining of free and fair elections, and the {\bf concentration of power in the executive branch}.
-  \end{itemize}
+  \begin{enumerate}
+    \item Citizens' support for anti-system mobilizations varies between electoral winners and losers.
+
+      \begin{itemize}
+        
+        \item \emph{``Enraged'' losers} might be more willing to support anti-systemic politicians {\tiny{\color{gray}(Bowler, Donovan, and Karp 2007)}}.
+ 
+        \item Winners should oppose politicians supporting anti-systemic actions.
+     
+      \end{itemize}
+
+  \item Institutional setting should affect differently the costs of losing an election \tiny{{\color{gray}(Lijphart, 2012)}}.
+
+        \begin{itemize}
+        
+        \item  {\bf Presidential}: losers have little input outside of the electoral cycle. 
+
+        \item {\bf Parliamentary}: losers’ interests can be represented through a variety of power sharing institutions. 
+     
+      \end{itemize}
+
+\end{enumerate}
 
 \end{frame}
 
-
-
-\section{Argument}
-
-\subsection{Argument}
-
-\miniframeson
-\begin{frame}[c]{Pre-Registered Hypothesis}
-
-\begin{exampleblock}{Argument}
-Respondents who voted for the candidate/party that lost the the last election (Kast) would be more likely to choose a candidate who supports anti-systemic actions (protests) against the current government than respondents in the ``winning side'' (Boric). 
-\end{exampleblock}
-
-\end{frame}
 
 
 \section{Empirics}
@@ -441,11 +414,11 @@ Respondents who voted for the candidate/party that lost the the last election (K
 \begin{frame}[c]{Conjoint Experiment}
 
   \begin{itemize}
-    \item Disenamos un conjoint experiment {\scriptsize\parencite{Hainmueller2014}}.
-    \item Fully randomized design (no constrains).
-    \item Representatividad estad\'istica de g\'enero y partido.
-    \item Bater\'ia de socio-demogr\'aficos, intenci\'on pol\'itica (Kast, Boric), evaluaci\'on de la democracia.
+    \item Designed an unconstrained, fully randomized conjoint experiment \textsuperscript{\tiny\parencite{Hainmueller2014}}.
+    \item Data collected from Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}) with gender and party sample quotas.
+    \item Included questions on socio-demographics and support for democracy.
   \end{itemize}
+
 
 \begin{table}[h]
 %\begin{footnotesize}

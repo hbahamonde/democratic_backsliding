@@ -206,7 +206,7 @@ Q4.chile <- dat.chile %>% select(Q4, Country)
 Q4.estonia <- dat.estonia %>% select(Q4, Country)
 Q4.d <- rbind(Q4.chile, Q4.estonia)
 
-lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Gender") 
+# lattice::histogram(~ Q4.d$Q4 | Q4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Gender") 
 
 
 # Democratic satisfaction Q9_1
@@ -257,9 +257,9 @@ dat.estonia$Q10_1  <- recode_factor(as.factor(dat.estonia$Q10_1),
 Q10_1.chile <- dat.chile %>% select(Q10_1, Country)
 Q10_1.estonia <- dat.estonia %>% select(Q10_1, Country)
 Q10_1.d <- rbind(Q10_1.chile, Q10_1.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Dem_might_have_problems.pdf") # The height of the plot in inches
-lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government.") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Dem_might_have_problems.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q10_1.d$Q10_1 | Q10_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy may have problems, but it is better than other forms of government.") 
+# dev.off()
 
 # Democracy might have problems but it's better... RECODED
 dat.chile$Q10_1.r  <- recode_factor(as.factor(dat.chile$Q10_1),  
@@ -294,10 +294,9 @@ dat.estonia$Q10_2  <- recode_factor(as.factor(dat.estonia$Q10_2),
 Q10_2.chile <- dat.chile %>% select(Q10_2, Country)
 Q10_2.estonia <- dat.estonia %>% select(Q10_2, Country)
 Q10_2.d <- rbind(Q10_2.chile, Q10_2.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Dem_not_efficient_strong_leader.pdf") # The height of the plot in inches
-lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections.") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Dem_not_efficient_strong_leader.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q10_2.d$Q10_2 | Q10_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Democracy is not an efficient form of government,\nand it would be better for [country] to be governed by a strong leader\nwho does not have to worry about winning elections.") 
+# dev.off()
 
 # Democracy is not an effective form of government...better a strong leader RECODED
 dat.chile$Q10_2.r  <- recode_factor(as.factor(dat.chile$Q10_2),  
@@ -332,10 +331,9 @@ dat.estonia$Q10_3  <- recode_factor(as.factor(dat.estonia$Q10_3),  # right to pr
 Q10_3.chile <- dat.chile %>% select(Q10_3, Country)
 Q10_3.estonia <- dat.estonia %>% select(Q10_3, Country)
 Q10_3.d <- rbind(Q10_3.chile, Q10_3.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Right_to_protest.pdf") # The height of the plot in inches
-lattice::histogram(~ Q10_3.d$Q10_3 | Q10_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Civil rights that guarantee political protest should not be restricted.") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Right_to_protest.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q10_3.d$Q10_3 | Q10_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Civil rights that guarantee political protest should not be restricted.") 
+# dev.off()
 
 
 # Civil rights that guarantee political protest should not be restricted... RECODED
@@ -371,10 +369,9 @@ dat.estonia$Q10_4  <- recode_factor(as.factor(dat.estonia$Q10_4),
 Q10_4.chile <- dat.chile %>% select(Q10_4, Country)
 Q10_4.estonia <- dat.estonia %>% select(Q10_4, Country)
 Q10_4.d <- rbind(Q10_4.chile, Q10_4.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Free_media.pdf") # The height of the plot in inches
-lattice::histogram(~ Q10_4.d$Q10_4 | Q10_4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "It is important that there are free and politically independent media in [country].") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Free_media.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q10_4.d$Q10_4 | Q10_4.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "It is important that there are free and politically independent media in [country].") 
+# dev.off()
 
 # It is important that there are free and politically independent media in [country]... RECODED
 dat.chile$Q10_4.r  <- recode_factor(as.factor(dat.chile$Q10_4),
@@ -408,8 +405,7 @@ dat.estonia$Q12_1 = recode_factor(as.factor(dat.estonia$Q12_1),
 Q12_1.chile <- dat.chile %>% select(Q12_1, Country)
 Q12_1.estonia <- dat.estonia %>% select(Q12_1, Country)
 Q12_1.d <- rbind(Q12_1.chile, Q12_1.estonia)
-lattice::histogram(~ Q12_1.d$Q12_1 | Q12_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Governments should tax the rich to help the poor\nAn essential characteristic of democracy...") 
+# lattice::histogram(~ Q12_1.d$Q12_1 | Q12_1.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Governments should tax the rich to help the poor\nAn essential characteristic of democracy...") 
 
 
 # Governments should tax the rich to help the poor... RECODED
@@ -456,10 +452,9 @@ dat.estonia$Q8_1 = recode_factor(as.factor(dat.estonia$Q8_1),
 Q8_1.chile <- dat.chile %>% select(Q8_1, Country)
 Q8_1.estonia <- dat.estonia %>% select(Q8_1, Country)
 Q8_1.d <- rbind(Q8_1.chile, Q8_1.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Left_right.pdf") # The height of the plot in inches
-lattice::histogram(~ Q8_1.d$Q8_1 | Q8_1.d$Country , type = "percent", scales=list(y=list(rot=25), x=list(rot=25)), aspect=1, 
-                   xlab = "Thinking on a scale where one means far left and ten means far right,\nwhere do you place yourself?") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Left_right.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q8_1.d$Q8_1 | Q8_1.d$Country , type = "percent", scales=list(y=list(rot=25), x=list(rot=25)), aspect=1, xlab = "Thinking on a scale where one means far left and ten means far right,\nwhere do you place yourself?") 
+# dev.off()
 
 # Thinking on a scale where one means far left and ten means far right, where do you place yourself?... RECODED
 dat.chile$Q8_1.r = recode_factor(as.factor(dat.chile$Q8_1),  
@@ -504,10 +499,9 @@ dat.estonia$Q12_2 = recode_factor(as.factor(dat.estonia$Q12_2),
 Q12_2.chile <- dat.chile %>% select(Q12_2, Country)
 Q12_2.estonia <- dat.estonia %>% select(Q12_2, Country)
 Q12_2.d <- rbind(Q12_2.chile, Q12_2.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Rel_auth_final_say.pdf") # The height of the plot in inches
-lattice::histogram(~ Q12_2.d$Q12_2 | Q12_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Religious authorities have the final say in interpreting the country's laws.\nAn essential characteristic of democracy...") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Rel_auth_final_say.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q12_2.d$Q12_2 | Q12_2.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Religious authorities have the final say in interpreting the country's laws.\nAn essential characteristic of democracy...") 
+# dev.off()
 
 # Religious authorities have the final say in interpreting the country's laws... RECODED
 dat.chile$Q12_2.r = recode_factor(as.factor(dat.chile$Q12_2),  
@@ -552,8 +546,7 @@ dat.estonia$Q12_3 = recode_factor(as.factor(dat.estonia$Q12_3),
 Q12_3.chile <- dat.chile %>% select(Q12_3, Country)
 Q12_3.estonia <- dat.estonia %>% select(Q12_3, Country)
 Q12_3.d <- rbind(Q12_3.chile, Q12_3.estonia)
-lattice::histogram(~ Q12_3.d$Q12_3 | Q12_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "The people should choose their leaders in free elections.\nAn essential characteristic of democracy...") 
+# lattice::histogram(~ Q12_3.d$Q12_3 | Q12_3.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "The people should choose their leaders in free elections.\nAn essential characteristic of democracy...") 
 
 # The people should choose their leaders in free elections... RECODED
 dat.chile$Q12_3.r = recode_factor(as.factor(dat.chile$Q12_3),  
@@ -598,10 +591,9 @@ dat.estonia$Q12_5 = recode_factor(as.factor(dat.estonia$Q12_5),
 Q12_5.chile <- dat.chile %>% select(Q12_5, Country, winners.losers)
 Q12_5.estonia <- dat.estonia %>% select(Q12_5, Country, winners.losers)
 Q12_5.d <- rbind(Q12_5.chile, Q12_5.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_takes_control.pdf") # The height of the plot in inches
-lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$winners.losers * Q12_5.d$Country, type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "The Army should take control of the state when the Government is not functioning well.\nAn essential characteristic of democracy...") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Army_takes_control.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q12_5.d$Q12_5 | Q12_5.d$winners.losers * Q12_5.d$Country, type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "The Army should take control of the state when the Government is not functioning well.\nAn essential characteristic of democracy...") 
+# dev.off()
 
 # The Army should take control of the state when the Government is not functioning well... RECODED
 dat.chile$Q12_5.r = recode_factor(as.factor(dat.chile$Q12_5),  
@@ -646,8 +638,7 @@ dat.estonia$Q12_7 = recode_factor(as.factor(dat.estonia$Q12_7),
 Q12_7.chile <- dat.chile %>% select(Q12_7, Country)
 Q12_7.estonia <- dat.estonia %>% select(Q12_7, Country)
 Q12_7.d <- rbind(Q12_7.chile, Q12_7.estonia)
-lattice::histogram(~ Q12_7.d$Q12_7 | Q12_7.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "The state should ensure that wages are more equal.\nAn essential characteristic of democracy...") 
+# lattice::histogram(~ Q12_7.d$Q12_7 | Q12_7.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "The state should ensure that wages are more equal.\nAn essential characteristic of democracy...") 
 
 # People should always obey their rulers.
 dat.chile$Q12_8 = recode_factor(as.factor(dat.chile$Q12_8),  
@@ -665,10 +656,9 @@ dat.estonia$Q12_8 = recode_factor(as.factor(dat.estonia$Q12_8),
 Q12_8.chile <- dat.chile %>% select(Q12_8, Country)
 Q12_8.estonia <- dat.estonia %>% select(Q12_8, Country)
 Q12_8.d <- rbind(Q12_8.chile, Q12_8.estonia)
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Obey_rulers.pdf") # The height of the plot in inches
-lattice::histogram(~ Q12_8.d$Q12_8 | Q12_8.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "People should always obey their rulers.\nAn essential characteristic of democracy...") 
-dev.off()
+# pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/Obey_rulers.pdf") # The height of the plot in inches
+# lattice::histogram(~ Q12_8.d$Q12_8 | Q12_8.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "People should always obey their rulers.\nAn essential characteristic of democracy...") 
+# dev.off()
 
 # People should always obey their rulers... RECODED
 dat.chile$Q12_8.r = recode_factor(as.factor(dat.chile$Q12_8),  
@@ -713,8 +703,7 @@ dat.estonia$Q12_9 = recode_factor(as.factor(dat.estonia$Q12_9),
 Q12_9.chile <- dat.chile %>% select(Q12_9, Country)
 Q12_9.estonia <- dat.estonia %>% select(Q12_9, Country)
 Q12_9.d <- rbind(Q12_9.chile, Q12_9.estonia)
-lattice::histogram(~ Q12_9.d$Q12_9 | Q12_9.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, 
-                   xlab = "Women should have the same rights as men.\nAn essential characteristic of democracy...") 
+# lattice::histogram(~ Q12_9.d$Q12_9 | Q12_9.d$Country , type = "percent", scales=list(y=list(rot=15), x=list(rot=15)), aspect=1, xlab = "Women should have the same rights as men.\nAn essential characteristic of democracy...") 
 
 # Income Low/Mid/High
 dat.chile$IncomeLowMidHigh <- recode_factor(
@@ -791,8 +780,8 @@ dat.estonia$Educ.HighLow <- recode_factor(
   `Muu` = "Other", # "Other"
   .ordered = TRUE)
 
-table(dat.chile$Educ.HighLow)
-table(dat.estonia$Educ.HighLow)
+# table(dat.chile$Educ.HighLow)
+# table(dat.estonia$Educ.HighLow)
 
 # generate id variable
 dat.chile$respondent = 1:nrow(dat.chile)
