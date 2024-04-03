@@ -324,7 +324,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
         \begin{itemize}
             \item<1-> Political elites typically accept election outcomes in stable democracies.
             \item<2-> Yet, actions by Trump's and Bolsonaro's supporters question the acceptance of defeat.
-            \item<3-> Research has looked into "losers' consent," focusing on satisfaction, trust, and efficacy.
+            \item<3-> Research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
             \item<4-> Still, we know little about the losing side's commitment to democracy among \emph{voters}.
         \end{itemize}
     \end{column}

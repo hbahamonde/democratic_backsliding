@@ -127,6 +127,8 @@
 
 \usepackage{listings}
 \usepackage{color}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -322,7 +324,7 @@
 \author[shortname]{
 Hector Bahamonde \inst{1} \and 
 Inga Saikkonen \inst{2} \and 
-Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphabetical order. All contributed equally to this project.}
+Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphabetical order. All contributed equally to this paper.}
 }
 
 \institute[shortinst]{\inst{1} University of Turku, Finland \and %
@@ -345,19 +347,6 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 % % % % % % % % % % % % % % %
 %           CONTENT
 % % % % % % % % % % % % % % %
@@ -374,65 +363,88 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \subsection{Motivation}
 
 \miniframeson
-\begin{frame}[c]{Democratic Backsliding}
-  \begin{itemize}
-    \item Parece existir un consenso en que algunas democracias est\'an en riesgo de retroceder (\emph{democratic backsliding}).
+\begin{frame}[c]{``Losers' Consent'': A Weak Assumption.}
+\begin{columns}[T] % The [T] option aligns column content at the top
 
-    \item Estos retrocesos han sido estudiados en un sinn\'umero de casos.
-
+    \begin{column}{0.5\textwidth} % Left column and width
         \begin{itemize}
-          \item \textcite{Kaufman2019} explican que ``a transition to competitive authoritarianism in the {\bf United States} is unlikely, although not impossible.''
-
-          \item Kreko and Zsolt (2018) estudian el caso de {\bf Hungria}.
-          \item Bochsler and Andreas (2020) estudian el caso de {\bf Rusia}. 
-
+            \item<1-> Political elites typically accept election outcomes in stable democracies.
+            \item<2-> Yet, actions by Trump's and Bolsonaro's supporters question the acceptance of defeat.
+            \item<3-> Research has looked into "losers' consent," focusing on satisfaction, trust, and efficacy.
+            \item<4-> Still, we know little about the losing side's commitment to democracy among \emph{voters}.
         \end{itemize}
+    \end{column}
 
-  \end{itemize}
-\end{frame} 
-
-\miniframesoff
-\begin{frame}[c]{Democratic Backsliding: A ``Winners Bias''}
-
-Desafortunadamente, la major\'ia ha concentrado sus esfuerzos en c\'omo el {\bf ejecutivo} \emph{agranda} sus poderes. 
-
-    \begin{itemize}
-      \item \textcite[p. 27]{Haggard2021} definen ``[d]emocratic backsliding is the incremental erosion of institutions [...] that results from the actions of [...] {\bf \emph{elected} governments}.''
-
-      \item \textcite[p. 2]{Perez-Linan2018} explica que ``most threats to democracy originate in the {\bf \emph{executive}}, not in congress.''
-
-      \item \textcite[p. 41]{Corrales2020} explica que ``electoral irregularities contributed to democratic backsliding in Venezuela under {\bf \emph{chavista} rule}.''
-
-    \end{itemize}
-
-\begin{alertblock}{What about the \underline{electoral lossers}?}
-Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'aticas en cuanto la tolerancia de acciones no democr\'aticas entre ``ganadores'' y ``perdedores''?
-\end{alertblock}
+    \begin{column}{0.5\textwidth} % Right column and width
+        % Show the first figure only with the first item
+        \begin{figure}
+            \includegraphics<2,3,4>[scale=0.4]{Brasil_US_storming.jpeg} % Adjust path and size as needed
+        \end{figure}
+    \end{column}
     
+\end{columns}
 \end{frame}
+
 
 \subsection{Our Paper}
 
 \miniframeson
-\begin{frame}[c]{Nuestro Paper: ``El baile de los que sobran''}
+\begin{frame}[c]{Voters' Commitment After Electoral Loss}
+\framesubtitle{\& Institutional Heterogeneities}
 
   \begin{itemize}
-    \item A diferencia de la mayoría de quienes estudian posibles violaciones de los principios democr\'aticos por parte de los ``ganadores,'' nosotros estudiamos a los ``{\bf perdedores}'' electorales.
+    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment.
 
-    \item Hicimos un survey experiment (pre-registrado) en dos democracias recientes, Chile (y Estonia).
+    \item We exploit institutional heterogeneities in consensus and majoritarian democracies (Chile and Estonia), which effectively alter the costs for election ``losers'' and ``winners.''
 
-    \item {\color{blue} Entender si los votantes que apoyaron al {\bf candidato perdedor} est\'an más abiertos a respaldar acciones anti-sist\'emicas {\bf contra el ganador}}.
+    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}} %\href{https://osf.io/u72z4}{\beamerbutton{pre-registered}}
+      
+    \begin{itemize}
+      \item Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''
+      \item This tendency is stronger in presidential versus parliamentary systems.
+    \end{itemize}
 
-    \item Para esto, incluimos una teor\'ia enfocada en \emph{pérdidas} y \emph{loss aversion} (``\emph{prospect theory},'' e.g., \cite{Kahneman1979}).
+\end{itemize}
 
-    %\item {\bf Pre-registered findings}: encontramos que los votantes de {\bf Kast} \emph{no} son mas proclives que los votantes de {\bf Boric} a apoyar acciones antisist\'emicas (protestas). 
+\end{frame}
 
-  \end{itemize}
+\miniframesoff
+\begin{frame}[c]{Voters' Commitment After Electoral Loss}
+\framesubtitle{\& Institutional Heterogeneities}
 
-      \begin{exampleblock}{Findings no conforman con nuestras espectativas iniciales} 
-      Encontramos que los votantes de {\bf Kast} (perdedores) \emph{no} son mas proclives que los votantes de {\bf Boric} (ganadores) a apoyar acciones no democraticas (protestas antisist\'emicas) que pongan en peligro el \emph{status quo}. 
-      \end{exampleblock}
-  
+  \begin{itemize}
+    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment.
+
+    \item We exploit institutional heterogeneities in consensus and majoritarian democracies (Chile and Estonia), which effectively alter the costs for election ``losers'' and ``winners.''
+
+    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}} %\href{https://osf.io/u72z4}{\beamerbutton{pre-registered}}
+      
+    \begin{itemize}
+      \item {\color{americanrose}Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
+      \item This tendency is stronger in presidential versus parliamentary systems.
+    \end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Voters' Commitment After Electoral Loss}
+\framesubtitle{\& Institutional Heterogeneities}
+
+  \begin{itemize}
+    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment.
+
+    \item We exploit institutional heterogeneities in consensus and majoritarian democracies (Chile and Estonia), which effectively alter the costs for election ``losers'' and ``winners.''
+
+    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}} %\href{https://osf.io/u72z4}{\beamerbutton{pre-registered}}
+      
+    \begin{itemize}
+      \item Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''
+      \item {\color{amber}This tendency is stronger in presidential versus parliamentary systems.}
+    \end{itemize}
+
+\end{itemize}
 \end{frame}
 
 
@@ -451,26 +463,6 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 
 \end{frame}
 
-\subsection{Prospect Theory}
-
-
-
-\miniframeson
-\begin{frame}[c]{Prospect Theory}
-
-  \begin{itemize}
-
-    \item {\bf Losses loom larger than gains}: individuals ``give more weight to losses than to comparable gains'' \scriptsize{\parencite[p. 171]{Levy1992a}}.
-
-    \normalsize{\item{\bf Loss aversion}: individuals ``are more concerned with preventing a decline than increasing gains'' \scriptsize{\parencite[p. 89]{Levy1997}}}.
-    
-    %\item Utilities are defined with regard to \emph{changes} in outcomes with respect to a reference point.
-    
-    \item {\bf Asymmetric decision making}: ``[I]ndividuals tend to be risk averse in a domain of gains, and relatively risk seeking in a domain of losses'' \scriptsize{\parencite[p. 18]{McDermott1998}}.
-    
-  \end{itemize}
-
-\end{frame}
 
 
 \section{Argument}
@@ -481,7 +473,7 @@ Qu\'e ocurre con los que pierden la elecci\'on? Existen diferencias sistem\'atic
 \begin{frame}[c]{Pre-Registered Hypothesis}
 
 \begin{exampleblock}{Argument}
-Respondents who voted for the candidate/party that lost the the last election (Kast) would be more likely to choose a candidate who supports anti-systemic actions (protests) against the current government than respondents in the ``winning side.'' 
+Respondents who voted for the candidate/party that lost the the last election (Kast) would be more likely to choose a candidate who supports anti-systemic actions (protests) against the current government than respondents in the ``winning side'' (Boric). 
 \end{exampleblock}
 
 \end{frame}
@@ -496,7 +488,6 @@ Respondents who voted for the candidate/party that lost the the last election (K
 
   \begin{itemize}
     \item Disenamos un conjoint experiment {\scriptsize\parencite{Hainmueller2014}}.
-    \item La muestra es representativa a nivel pais ($n=741$).
     \item Fully randomized design (no constrains).
     \item Representatividad estad\'istica de g\'enero y partido.
     \item Bater\'ia de socio-demogr\'aficos, intenci\'on pol\'itica (Kast, Boric), evaluaci\'on de la democracia.
@@ -543,58 +534,22 @@ Respondents who voted for the candidate/party that lost the the last election (K
 \miniframeson
 \begin{frame}[c]{Subgroup Marginal Means (MM): Boric, Kast}
 
-\begin{center}
-          \includegraphics[scale=0.5, center]{/Users/hectorbahamonde/research/democratic_backsliding/Boric_Kast.pdf}
-\end{center}
-\end{frame}
-
-%\miniframesoff
-%\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
-%
-%\begin{center}
-%          \includegraphics[scale=0.65, center]{/Users/hectorbahamonde/research/democratic_backsliding/left_right.pdf}
-%\end{center}
-%\end{frame}
-
-\subsection{Descriptive Results}
-
-
-\miniframeson
-\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
-
-\begin{center}
-          \includegraphics[scale=0.35, center]{/Users/hectorbahamonde/research/democratic_backsliding/dem_better.pdf}
-\end{center}
-\end{frame}
-
-\miniframesoff
-\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
-
-\begin{center}
-          \includegraphics[scale=0.35, center]{/Users/hectorbahamonde/research/democratic_backsliding/strong_leader.pdf}
-\end{center}
-\end{frame}
-
-\miniframesoff
-\begin{frame}[c]{Other Descriptive Results: Support for Democracy}
-
-\begin{center}
-          \includegraphics[scale=0.35, center]{/Users/hectorbahamonde/research/democratic_backsliding/free_press.pdf}
-\end{center}
+test
 \end{frame}
 
 
 
-\section{Discussion}
 
-\subsection{Wrapping Up}
+
+
+
 
 \miniframeson
 \begin{frame}[c]{Main Takeaways: More Questions Than Answers}
   \begin{itemize}
     \item Hipotetizamos que los \emph{electoral losers} estarian mas dispuestos a apoyar acciones no-democraticas (protestas anti-sistemicas).
     \item Registramos esta hipotesis.
-    \item Sin embargo, no encontramos resultados que van en linea con nuestras expectativas iniciales.
+    \item Sin embargo, no encontramos resultados que vayan en linea con nuestras expectativas iniciales.
     \item {\color{red}Preguntas para ustedes}: {\bf cometimos un error en mezclar a la derecha con ``protestas''?}
   \end{itemize}
 \end{frame}
@@ -613,73 +568,7 @@ Respondents who voted for the candidate/party that lost the the last election (K
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% APPENDIX
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Appendix}
-
-\subsection{Sum stats}
-
-\miniframeson
-\begin{frame}[shrink=5, plain]{\hypertarget{sum:table:slide}{{\tiny Summary Stats}}}
-
-\begin{table}[!htbp] \centering \renewcommand*{\arraystretch}{1.1}\caption{Summary Statistics}\resizebox{\textwidth}{!}{
-\begin{tabular}{lrr}
-\hline
-\hline
-Variable & N & Percent \\ 
-\hline
-Age & 741 &  \\ 
-... 18-24 & 120 & 16\% \\ 
-... 25-34 & 172 & 23\% \\ 
-... 35-44 & 146 & 20\% \\ 
-... 45-54 & 146 & 20\% \\ 
-... M<c3><a1>s de 55 & 157 & 21\% \\ 
-Gender & 741 &  \\ 
-... Man & 315 & 43\% \\ 
-... Woman & 422 & 57\% \\ 
-... Otro/Prefiero no decir & 4 & 1\% \\ 
-Education & 741 &  \\ 
-... Educaci<c3><b3>n b<c3><a1>sica completa (hasta octavo b<c3><a1>sico). & 10 & 1\% \\ 
-... Educaci<c3><b3>n media completa. & 192 & 26\% \\ 
-... Educaci<c3><b3>n t<c3><a9>cnico-profesional completa. & 214 & 29\% \\ 
-... Educaci<c3><b3>n universitaria completa. & 270 & 36\% \\ 
-... Magister o Doctorado completo. & 42 & 6\% \\ 
-... Menos que educaci<c3><b3>n b<c3><a1>sica (menos que octavo b<c3><a1>sico). & 2 & 0\% \\ 
-... Otro/Prefiero no decir & 11 & 1\% \\ 
-Income & 741 &  \\ 
-... De \$1000.001 a \$2.000.000 mensuales liquidos & 155 & 21\% \\ 
-... De \$110.001 a \$150.000 mensuales liquidos  & 7 & 1\% \\ 
-... De \$150.001 a \$225.000 mensuales liquidos & 20 & 3\% \\ 
-... De \$2.000.001 a \$3.000.000 mensuales liquidos & 48 & 6\% \\ 
-... De \$225.001 a \$350.000 mensuales liquidos & 35 & 5\% \\ 
-... De \$3.000.001 a \$4.500.000 mensuales liquidos & 31 & 4\% \\ 
-... De \$35.001 a \$75.000 mensuales liquidos & 14 & 2\% \\ 
-... De \$350.001 a \$450.000 mensuales liquidos  & 48 & 6\% \\ 
-... De \$450.001 a \$550.000 mensuales liquidos & 68 & 9\% \\ 
-... De \$550.001 a \$700.000 mensuales liquidos & 86 & 12\% \\ 
-... De \$700.001 a \$1.000.000 mensuales liquidos & 146 & 20\% \\ 
-... De \$75.001 a \$110.000 mensuales liquidos & 18 & 2\% \\ 
-... Menos de \$35.000 mensuales liquidos & 28 & 4\% \\ 
-... M<c3><a1>s de \$4.500.000 mensuales liquidos & 16 & 2\% \\ 
-... No sabe / No contesta & 21 & 3\%\\ 
-\hline
-\hline
-\end{tabular}
-}
-\end{table}
-
-
-
-\end{frame}
-
-\subsection{References}
-
-\miniframeson
-\begin{frame}[shrink=35]
-\vspace{1cm}\printbibliography
-\end{frame} 
 
 
 \end{document}
