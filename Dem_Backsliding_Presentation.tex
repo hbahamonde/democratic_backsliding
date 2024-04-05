@@ -1,5 +1,5 @@
 \RequirePackage{atbegshi}
-\documentclass[compress,aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+\documentclass[compress,aspectratio=169,usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -391,8 +391,8 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \subsection{Our Paper}
 
 \miniframeson
-\begin{frame}[c]{Voters' Commitment After Electoral Loss}
-\framesubtitle{\& Institutional Heterogeneities}
+\begin{frame}[c]{Voters' Commitment:}
+\framesubtitle{Electoral Losses and Institutional Heterogeneities}
 
   \begin{itemize}
     \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment in Chile (N=811) and Estonia (N=639).
@@ -419,8 +419,8 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 
 
 \miniframeson
-\begin{frame}[c]{Voters' Commitment After Electoral Loss}
-\framesubtitle{\& Institutional Heterogeneities}
+\begin{frame}[c]{Voters' Commitment:}
+\framesubtitle{Electoral Losses and Institutional Heterogeneities}
 
   \begin{enumerate}
     \item Citizens' support for anti-system mobilizations varies between electoral winners and losers.
@@ -449,7 +449,42 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 
 
 
-\section{Empirics}
+\section{Research Design}
+
+\subsection{Case Selection}
+
+\miniframeson
+\begin{frame}[c]{Losers' Consent and Democratic Stability}
+
+
+\begin{columns}
+
+\onslide<1->{
+\begin{column}[T]{0.45\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{\linewidth}
+    \begin{itemize}
+        \item Collected novel data from Chile (N=811) and Estonia (N=639) with gender and party sample quotas.
+
+        \item {\bf Most dissimilar cases}: maximize variance regarding government system (Presidential and Parliamentary).
+
+        \item {\bf Most similar cases}: minimize variance regarding critical V-Dem variables.
+    \end{itemize} 
+    \end{minipage}}
+\end{column}
+
+\begin{column}[T]{0.65\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
+    \centering{\includegraphics<2>[width=.51\textwidth]{VD_Chile_Estonia_ElecFree.pdf}}
+    \centering{\includegraphics<3>[width=.51\textwidth]{VD_Chile_Estonia_LosersConsent.pdf}}
+    \centering{\includegraphics<4>[width=.51\textwidth]{VD_Chile_Estonia_FreedomAssam.pdf}}
+    \end{minipage}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+
 
 \subsection{Experimental Design}
 
@@ -457,9 +492,11 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \begin{frame}[c]{Conjoint Experiment}
 
   \begin{itemize}
-    \item Designed an unconstrained, fully randomized conjoint experiment \textsuperscript{\tiny\parencite{Hainmueller2014}}.
-    \item Data collected from Chile (N=811) and Estonia (N=639) with gender and party sample quotas.
-    \item Included questions on socio-demographics and support for democracy.
+    \item Designed an unconstrained, fully randomized conjoint experiment. %{\tiny\parencite{Hainmueller2014}}.
+    \item We depart from standard AMCE analyses {\scriptsize\parencite{Hainmueller2014}} and instead compute {\bf subgroup marginal means} {\scriptsize\parencite{Leeper2020a}}.
+    %\item In practice, when using marginal means, there's no need to set a reference category.
+    %\item ``In a forced-choice conjoint design, the grand mean is by definition 0.5'' {\scriptsize\parencite[p. 209]{Leeper2020a}}.
+
   \end{itemize}
 
 
@@ -470,52 +507,120 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 \toprule
 \textbf{Dimension} & \textbf{Attribute Set} \\
 \midrule
-{\only<1,2>{\leavevmode\color{blue}}Gender} & {\only<1>{\leavevmode\color{red}}Male}, {\only<2>{\leavevmode\color{red}}Female}. \\
-{\only<3,4,5>{\leavevmode\color{blue}}Age} & {\only<3>{\leavevmode\color{red}}Younger than 35}, {\only<4>{\leavevmode\color{red}}Between 35-50}, {\only<5>{\leavevmode\color{red}}Over 50}. \\
-{\only<6,7>{\leavevmode\color{blue}}Protest} & {\only<6>{\leavevmode\color{red}}The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government}, {\only<7>{\leavevmode\color{red}}The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government} \\
+{\only<2,3>{\leavevmode\color{blue}}Gender} & {\only<2>{\leavevmode\color{red}}Male}, {\only<3>{\leavevmode\color{red}}Female}. \\
+{\only<4,5,6>{\leavevmode\color{blue}}Age} & {\only<4>{\leavevmode\color{red}}Younger than 35}, {\only<5>{\leavevmode\color{red}}Between 35-50}, {\only<6>{\leavevmode\color{red}}Over 50}. \\
+{\only<7,8>{\leavevmode\color{blue}}Protest} & {\only<7>{\leavevmode\color{red}}The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government}, {\only<8>{\leavevmode\color{red}}The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government} \\
+{\only<9,10>{\leavevmode\color{blue}}Pensions} & {\only<9>{\leavevmode\color{red}}The candidate OPPOSES increases in pensions for the elderly}, {\only<10>{\leavevmode\color{red}}The candidate SUPPORTS increases in pensions for the elderly}\\ 
 \bottomrule
 \end{tabular}}
 %\end{footnotesize}
 \end{table}
 \end{frame}
 
-
-
-
-\subsection{Statistical Analyses}
-
+\subsection{Questioner}
 
 \miniframeson
-\begin{frame}[c]{Subgroup Marginal Means (MM)}
+\begin{frame}[c]{Additional Questions}
 
   \begin{itemize}
-    \item We depart from standard AMCE analyses {\scriptsize\parencite{Hainmueller2014}} and instead compute {\bf subgroup marginal means} {\scriptsize\parencite{Leeper2020a}}.
-    \item In practice, when using marginal means, there's no need to set a reference category.
-    \item ``In a forced-choice conjoint design, the grand mean is by definition 0.5'' {\scriptsize\parencite[p. 209]{Leeper2020a}}.
+    \item Included questions on socio-demographics and support for democracy.
+    \item {\only<2>{\leavevmode\color{Red}}{\bf Losers}}/{\only<3>{\leavevmode\color{ForestGreen}}{\bf Winners}}: asked who respondents voted for.
+
+      \begin{itemize}
+        \item {\bf Chile}: ``\emph{Which candidate did you vote for in the 2nd round of the December 2021 presidential election?}'' 
+        \\ {\only<2>{\leavevmode\color{Red}}\texttt{Kast}}, {\only<3>{\leavevmode\color{ForestGreen}}\texttt{Boric}}, \texttt{Others} {\tiny(\texttt{Blank/Spoiled}, \texttt{I did not vote}, \texttt{Prefer not to say})}.
+        \item {\bf Estonia}: ``\emph{Which political party did you vote for in the last elections?}'' \\ {\tiny \texttt{List of Estonian political parties that participated in the March 2023 parliamentary election}.}
+      \end{itemize}
+ 
   \end{itemize}
 
 \end{frame}
 
 
 
-\subsection{Results}
+\section{Results}
+
+\subsection{Subgroup Marginal Means (MM): Boric, Kast}
 
 
 \miniframeson
-\begin{frame}[c]{Subgroup Marginal Means (MM): Boric, Kast}
+\begin{frame}[c]%{Losers' Consent and Democratic Stability}
 
-test
+\begin{columns}
+
+\begin{column}[T]{0.45\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{\linewidth}
+    \begin{itemize}
+        \item {\only<2>{\leavevmode\color{Red}}Candidates favoring anti-systemic protests are systematically {\bf rejected} by {\bf both} winners and losers}
+
+        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers} show even {\bf stronger disapproval} of such candidates.}
+
+        \item {\only<4>{\leavevmode\color{Red}}Effects might be driven by the legacies of the 2019-20 protests (\emph{Estallido Social})?}
+
+        \item {\only<5>{\leavevmode\color{Red}}{\bf Estonia}: results support H1}.
+
+
+    \end{itemize} 
+    \end{minipage}
+\end{column}
+
+\begin{column}[T]{0.65\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
+        \begin{center}
+          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.295, center]{Conjoint_Winner_Loser.pdf}
+        \end{center}
+    \end{minipage}
+\end{column}
+
+\end{columns}
+
 \end{frame}
 
 
+\subsection{Exploratory Analysis (MM): Partisanship/Ideology}
 
 
+\miniframeson
+\begin{frame}[c]%{Losers' Consent and Democratic Stability}
 
+\begin{columns}
+
+\begin{column}[T]{0.35\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{\linewidth}
+    \begin{itemize}
+        \item {\only<2>{\leavevmode\color{Red}}Voters generally reject candidates favoring protests.}
+
+        \item {\only<3>{\leavevmode\color{Red}}Extreme right voters (\emph{Rep. Party}) are especially likely to reject candidates associated with anti-systemic protest.}
+
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Estonia}: loser effects are largely driven by the extreme right}.
+
+
+    \end{itemize} 
+    \end{minipage}
+\end{column}
+
+\begin{column}[T]{0.7\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
+        \begin{center}
+          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.2, center]{Conjoint_Vote_Choice.pdf}
+        \end{center}
+    \end{minipage}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+
+\subsection{Discussion}
+
+
+\subsection{Main Takeaways}
 
 
 
 \miniframeson
-\begin{frame}[c]{Main Takeaways: More Questions Than Answers}
+\begin{frame}[c]{More Questions Than Answers}
   \begin{itemize}
     \item Hipotetizamos que los \emph{electoral losers} estarian mas dispuestos a apoyar acciones no-democraticas (protestas anti-sistemicas).
     \item Registramos esta hipotesis.
@@ -523,6 +628,7 @@ test
     \item {\color{red}Preguntas para ustedes}: {\bf cometimos un error en mezclar a la derecha con ``protestas''?}
   \end{itemize}
 \end{frame}
+
 
 \miniframesoff
 \begin{frame}[c]{Thank you}

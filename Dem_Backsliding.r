@@ -2480,6 +2480,22 @@ p1 = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth() + t
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
 
+p1.b = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election free and fair") + theme(
+  panel.grid.major.x = element_blank(),
+  panel.grid.major.y = element_blank(),
+  legend.position="bottom",
+  aspect.ratio=1,
+  axis.text.y = element_text(size=35), 
+  axis.text.x = element_text(size=35), 
+  axis.title.y = element_text(size=35), 
+  axis.title.x = element_text(size=35), 
+  legend.text=element_text(size=35), 
+  legend.title=element_text(size=35),
+  plot.title = element_text(size=35),
+  strip.text.x = element_text(size=35)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "")
+
 p2 = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election losers accept results") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
@@ -2495,6 +2511,23 @@ p2 = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth() + t
   strip.text.x = element_text(size=14)) +
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
+
+p2.b = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election losers accept results") + theme(
+  panel.grid.major.x = element_blank(),
+  panel.grid.major.y = element_blank(),
+  legend.position="bottom",
+  aspect.ratio=1,
+  axis.text.y = element_text(size=35), 
+  axis.text.x = element_text(size=35), 
+  axis.title.y = element_text(size=35), 
+  axis.title.x = element_text(size=35), 
+  legend.text=element_text(size=35), 
+  legend.title=element_text(size=35),
+  plot.title = element_text(size=35),
+  strip.text.x = element_text(size=35)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "")
+
 
 p5 = ggplot(vdem.d, aes(year, v2exrescon, col=country_name)) + geom_smooth() + theme_light() + labs(y="Executive respects constitution") + theme(
   panel.grid.major.x = element_blank(),
@@ -2544,6 +2577,22 @@ p39 = ggplot(vdem.d, aes(year, v2caassemb, col=country_name)) + geom_smooth() + 
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
 
+p39.b = ggplot(vdem.d, aes(year, v2caassemb, col=country_name)) + geom_smooth() + theme_light() + labs(y="Freedom of peaceful assembly") + theme(
+  panel.grid.major.x = element_blank(),
+  panel.grid.major.y = element_blank(),
+  legend.position="bottom",
+  aspect.ratio=1,
+  axis.text.y = element_text(size=35), 
+  axis.text.x = element_text(size=35), 
+  axis.title.y = element_text(size=35), 
+  axis.title.x = element_text(size=35), 
+  legend.text=element_text(size=35), 
+  legend.title=element_text(size=35),
+  plot.title = element_text(size=35),
+  strip.text.x = element_text(size=35)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "")
+
 p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth() + theme_light() + labs(y="Mobilization for autocracy") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
@@ -2562,6 +2611,11 @@ p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth() + 
 
 vdem.chile.estonia.p = cowplot::plot_grid(p1,p2,p5,p13,p39,p43, align = "hv",axis = "b", ncol = 3) 
 ggsave(vdem.chile.estonia.p, file="VD_Chile_Estonia.pdf", width=15, height=10)
+
+# for presentation, below graphs
+ggsave(p1.b, file="VD_Chile_Estonia_ElecFree.pdf", width=10, height=10)
+ggsave(p2.b, file="VD_Chile_Estonia_LosersConsent.pdf", width=10, height=10)
+ggsave(p39.b, file="VD_Chile_Estonia_FreedomAssam.pdf", width=10, height=10)
 
 
 ##########
