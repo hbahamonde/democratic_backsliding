@@ -327,10 +327,10 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
     \begin{column}{0.5\textwidth} % Left column and width
         \begin{itemize}
-            \item<1-> Political elites typically accept election outcomes in stable democracies.
-            \item<2-> Yet, actions by Trump's and Bolsonaro's supporters question the acceptance of defeat.
+            \item<1-> Political elites in stable democracies typically accept electoral losses.
+            \item<2-> Yet, actions by Trump's and Bolsonaro's supporters seriously questioned their acceptance of defeat.
             \item<3-> Research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
-            \item<4-> Still, {\bf we know little about the losing side's \emph{commitment to democracy among voters}}; ``systemic support'' \scriptsize{{\color{gray}(Easton, 1965)}}.
+            \item<4-> Still, {\bf we know little about voters' ``systemic support'' when they lose elections} \scriptsize{{\color{gray}(Easton, 1965)}}.
         \end{itemize}
     \end{column}
 
@@ -352,16 +352,16 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \framesubtitle{Electoral Losses and Institutional Heterogeneities}
 
   \begin{itemize}
-    \item We analyze the level of system support among electoral ``losers'' using data from a novel conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
+    \item We analyze the level of system support among electoral ``losers'' using novel data from a conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
 
     \item We exploit institutional heterogeneities in presidential and parliamentary systems, which effectively shift the \emph{costs} of losing/winning an election.
 
     \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
       
     \begin{itemize}
-      \item \only<1>{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}\only<3>{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
+      \item[H1] \only<1>{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}\only<3>{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
            \only<2>{\textcolor{americanrose}{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}}
-      \item \only<1-2>{This tendency is stronger in presidential versus parliamentary systems.}
+      \item[H2] \only<1-2>{This tendency is stronger in presidential versus parliamentary systems.}
            \only<3>{\textcolor{amber}{This tendency is stronger in presidential versus parliamentary systems.}}
     \end{itemize}
 
@@ -380,11 +380,11 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \framesubtitle{Electoral Losses and Institutional Heterogeneities}
 
   \begin{enumerate}
-    \item Citizens' support for anti-system mobilizations varies between electoral winners and losers.
+    \item Citizens' support for violent protests varies between electoral winners and losers.
 
       \begin{itemize}
         
-        \item \emph{``Enraged'' losers} might be more willing to support anti-systemic politicians {\tiny{\color{gray}(Bowler, Donovan, and Karp 2007)}}.
+        \item \emph{``Angry'' losers} might be more willing to support anti-systemic politicians {\tiny{\color{gray}(Bowler, Donovan, and Karp 2007)}}.
  
         \item Winners should oppose politicians supporting anti-systemic actions.
      
@@ -508,9 +508,9 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \begin{column}[T]{0.45\textwidth}
     \begin{minipage}[c][.6\textheight][c]{\linewidth}
     \begin{itemize}
-        \item {\only<2>{\leavevmode\color{Red}}Candidates favoring anti-systemic protests are systematically {\bf rejected} by {\bf both} winners and losers}
+        \item {\only<2>{\leavevmode\color{Red}}Candidates favoring anti-systemic protests are systematically {\bf rejected} by {\bf both} winners and losers.}
 
-        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers} show even {\bf stronger disapproval} of such candidates.}
+        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of such candidates.}
 
         \item {\only<4>{\leavevmode\color{Red}}Effects might be driven by the legacies of the 2019-20 protests (\emph{Estallido Social})?}
 
@@ -534,7 +534,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \end{frame}
 
 
-\subsection{Exploratory Analysis (MM): Partisanship/Ideology}
+\subsection{Subgroup Marginal Means (MM): Partisanship/Ideology}
 
 
 \miniframeson
@@ -569,7 +569,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \end{frame}
 
 
-\subsection{Discussion}
+\section{Discussion}
 
 
 \subsection{Main Takeaways}
@@ -579,10 +579,22 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \miniframeson
 \begin{frame}[c]{More Questions Than Answers}
   \begin{itemize}
-    \item Hipotetizamos que los \emph{electoral losers} estarian mas dispuestos a apoyar acciones no-democraticas (protestas anti-sistemicas).
-    \item Registramos esta hipotesis.
-    \item Sin embargo, no encontramos resultados que vayan en linea con nuestras expectativas iniciales.
-    \item {\color{red}Preguntas para ustedes}: {\bf cometimos un error en mezclar a la derecha con ``protestas''?}
+    \item We hypothesized (and pre-registered) that:
+      \begin{enumerate}
+          \item[H1] \emph{Electoral losers} were \emph{more} willing to support anti-systemic protests. 
+          \item[H2] This effect would be \emph{stronger} in Presidential systems \\ {\scriptsize(because of its zero-sum power sharing structure, {\bf losses are more catastrophic})}.
+      \end{enumerate}
+    
+    \item While we did not find support in favor of our hypotheses, we still found some other interesting results.
+
+    \begin{itemize}
+      \item {\bf Chile}: {\color{blue}Extreme-right} supporters are {\color{blue}less} likely to support extreme anti-system protests.
+      \item {\bf Estonia}: the {\color{blue}loser effects} are mainly {\color{blue}driven by extreme-right} supporters.
+    \end{itemize}
+
+
+    \item Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)? {\bf Let me know what you think}.
+
   \end{itemize}
 \end{frame}
 
