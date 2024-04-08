@@ -284,7 +284,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 
 
 
-\date{\today}
+\date{Apr. 7th 2024}
 
 %to to see shadows of previous blocks
 %\setbeamercovered{dynamic}
