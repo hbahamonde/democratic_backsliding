@@ -284,7 +284,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
 
 
 
-\date{Apr. 7th 2024}
+\date{May 16th 2024}
 
 %to to see shadows of previous blocks
 %\setbeamercovered{dynamic}
@@ -328,9 +328,9 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
     \begin{column}{0.5\textwidth} % Left column and width
         \begin{itemize}
             \item<1-> Political elites in stable democracies typically accept electoral losses.
-            \item<2-> Yet, actions by Trump's and Bolsonaro's supporters seriously questioned their acceptance of defeat.
+            \item<2-> However, actions by Trump's and Bolsonaro's supporters seriously questioned their acceptance of defeat.
             \item<3-> Research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
-            \item<4-> Still, {\bf we know little about voters' ``systemic support'' when they lose elections} \scriptsize{{\color{gray}(Easton, 1965)}}.
+            \item<4-> {\bf We know little about voters' ``systemic support'' when they lose elections} \scriptsize{{\color{gray}(Easton, 1965)}}.
         \end{itemize}
     \end{column}
 
@@ -359,10 +359,10 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
     \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
       
     \begin{itemize}
-      \item[H1] \only<1>{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}\only<3>{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
-           \only<2>{\textcolor{americanrose}{Election ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}}
-      \item[H2] \only<1-2>{This tendency is stronger in presidential versus parliamentary systems.}
-           \only<3>{\textcolor{amber}{This tendency is stronger in presidential versus parliamentary systems.}}
+      \item[H1] \only<1>{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}\only<3>{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
+           \only<2>{\textcolor{amber}{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}}
+      \item[H2] \only<1-2>{This tendency is stronger in presidential than in parliamentary systems.}
+           \only<3>{\textcolor{americanrose}{This tendency is stronger in presidential than in parliamentary systems.}}
     \end{itemize}
 
 \end{itemize}
@@ -474,6 +474,38 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \end{table}
 \end{frame}
 
+\miniframesoff
+\begin{frame}[c]{Conjoint Experiment: An Hypothetical Example}
+
+\begin{itemize}
+  \item Respondents were asked to choose between two options. For {\bf example}:
+\end{itemize}
+
+\begin{table}[h]
+%\begin{footnotesize}
+\scalebox{0.7}{
+\begin{tabular}{p{0.5\linewidth} | p{0.5\linewidth}}
+\toprule
+\textbf{Candidate 1} & \textbf{Candidate 2} \\
+\midrule
+Female & Female \\
+Over 50 & Between 35-50 \\
+The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government & The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government \\
+The candidate OPPOSES increases in pensions for the elderly & The candidate OPPOSES increases in pensions for the elderly\\ 
+\midrule
+\multicolumn{2}{c}{\texttt{Please, choose one candidate}}\\
+\bottomrule
+\end{tabular}}
+%\end{footnotesize}
+\end{table}
+
+\begin{itemize}
+  \item Respondents repeated this process 8 times.
+  \item {\bf \color{blue}Every time, cells change their content at random}.
+\end{itemize}
+
+\end{frame}
+
 \subsection{Questioner}
 
 \miniframeson
@@ -481,7 +513,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
   \begin{itemize}
     \item Included questions on socio-demographics and support for democracy.
-    \item {\only<2>{\leavevmode\color{Red}}{\bf Losers}}/{\only<3>{\leavevmode\color{ForestGreen}}{\bf Winners}}: asked who respondents voted for.
+    \item {\only<2>{\leavevmode\color{Red}}{\bf Losers}}/{\only<3>{\leavevmode\color{ForestGreen}}{\bf Winners}}: asked who respondents voted for {\bf in the last (real) election}.
 
       \begin{itemize}
         \item {\bf Chile}: ``\emph{Which candidate did you vote for in the 2nd round of the December 2021 presidential election?}'' 
@@ -512,9 +544,9 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
         \item {\only<3>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of such candidates.}
 
-        \item {\only<4>{\leavevmode\color{Red}}Effects might be driven by the legacies of the 2019-20 protests (\emph{Estallido Social})?}
+        %\item {\only<4>{\leavevmode\color{Red}}Effects might be driven by the legacies of the 2019-20 protests (\emph{Estallido Social})?}
 
-        \item {\only<5>{\leavevmode\color{Red}}{\bf Estonia}: results support H1}.
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Estonia}: results support H1}.
 
 
     \end{itemize} 
@@ -547,7 +579,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
     \begin{itemize}
         \item {\only<2>{\leavevmode\color{Red}}Voters generally reject candidates favoring protests.}
 
-        \item {\only<3>{\leavevmode\color{Red}}Extreme right voters (\emph{Rep. Party}) are especially likely to reject candidates associated with anti-systemic protest.}
+        \item {\only<3>{\leavevmode\color{Red}}Extreme right voters are especially likely to reject candidates associated with anti-systemic protest.}
 
         \item {\only<4>{\leavevmode\color{Red}}{\bf Estonia}: loser effects are largely driven by the extreme right}.
 
@@ -577,7 +609,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
 
 \miniframeson
-\begin{frame}[c]{More Questions Than Answers}
+\begin{frame}[c]{Discussion: More Questions Than Answers}
   \begin{itemize}
     \item We hypothesized (and pre-registered) that:
       \begin{enumerate}
@@ -589,12 +621,12 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
     \begin{itemize}
       \item {\bf Chile}: {\color{blue}Extreme-right} supporters are {\color{blue}less} likely to support extreme anti-system protests.
-      \item {\bf Estonia}: the {\color{blue}loser effects} are mainly {\color{blue}driven by extreme-right} supporters.\pause
+      \item {\bf Estonia}: the {\color{blue}loser effects} are mainly {\color{blue}driven by extreme-right} supporters.
     \end{itemize}
 
-      \begin{exampleblock}{Motivating Questions for Q\&A}
-    Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)? {\bf Let me know what you think}.
-      \end{exampleblock}
+    %  \begin{exampleblock}{Motivating Questions for Q\&A}
+    %Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)? {\bf Let me know what you think}.
+    %  \end{exampleblock}
 
 
 
