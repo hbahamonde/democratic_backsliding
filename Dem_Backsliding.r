@@ -1665,6 +1665,71 @@ mm_DemSatis.p = ggplot(mm_DemSatis.d,
 
 ggsave(mm_DemSatis.p, file="Conjoint_DemSatis.pdf", width=12, height=10)
 
+########################################################
+# Marginal Means // Subgroup Analyses: 
+# Q9_1: # Democratic satisfaction (short)
+# HERE
+########################################################
+mm_DemSatis_Chile.short.r <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest, 
+                                                 id = ~respondent, 
+                                                 estimate = "mm", 
+                                                 by = ~Q9_1))
+
+mm_DemSatis_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest, 
+                                             id = ~respondent, 
+                                             estimate = "mm", 
+                                             by = ~Q9_1))
+
+
+# mm_DemSatis_Chile.short.r$Country <- "Chile"
+# mm_DemSatis_Estonia.r$Country <- "Estonia"
+# mm_DemSatis.d.r = rbind(mm_DemSatis_Chile.short.r, mm_DemSatis_Estonia.r)
+# mm_DemSatis.p.r <- plot(mm_DemSatis.d.r, group = "Q9_1", vline = 0.5)
+# mm_DemSatis.p.r %+% facet_wrap(~Country)
+
+mm_DemSatis_Chile.short.r$Country <- "Chile"
+mm_DemSatis_Estonia.r$Country <- "Estonia"
+
+mm_DemSatis.d = rbind(mm_DemSatis_Chile.short.r, mm_DemSatis_Estonia.r)
+# mm_DemSatis.p <- plot(mm_DemSatis.d, group = "winners.losers", vline = 0.5)
+# mm_DemSatis.p %+% facet_wrap(~Country)
+
+## Recode
+mm_DemSatis.d$level <- recode_factor(mm_DemSatis.d$level, 
+                                     `The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government` = "The candidate OPPOSES post-electoral protests", 
+                                     `The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government` = "The candidate SUPPORTS post-electoral protests")
+
+
+p_load(ggplot2)
+mm_DemSatis.short.p = ggplot(mm_DemSatis.d,
+                       aes(factor(level),
+                           y=estimate,
+                           ymin=lower,
+                           ymax=upper,
+                           color=factor(Q9_1))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_DemSatis.short.p, file="Conjoint_DemSatis_short.pdf", width=12, height=10)
+
+
 #####################################################
 # Marginal Means // Subgroup Analyses
 # Q10_1 # Democracy might have problems but it's better...
