@@ -1729,6 +1729,61 @@ mm_DemSatis.short.p = ggplot(mm_DemSatis.d,
 
 ggsave(mm_DemSatis.short.p, file="Conjoint_DemSatis_short.pdf", width=12, height=10)
 
+# amce
+
+f1 <- chosen ~ attr.Gender + attr.Age + attr.Protest
+
+amce_DemSatis_Chile.short.r <- suppressWarnings(cj(conjoint.d.chile, f1, 
+                                                   id = ~respondent, 
+                                                   estimate = "amce"))
+
+amce_DemSatis_Estonia.r <- suppressWarnings(cj(conjoint.d.estonia, f1, 
+                                               id = ~respondent, 
+                                               estimate = "amce"))
+
+
+# amce_DemSatis_Chile.short.r$Country <- "Chile"
+# amce_DemSatis_Estonia.r$Country <- "Estonia"
+# amce_DemSatis.d.r = rbind(amce_DemSatis_Chile.short.r, amce_DemSatis_Estonia.r)
+# amce_DemSatis.p.r <- plot(amce_DemSatis.d.r, group = "Q9_1", vline = 0.5)
+# amce_DemSatis.p.r %+% facet_wrap(~Country)
+
+amce_DemSatis_Chile.short.r$Country <- "Chile"
+amce_DemSatis_Estonia.r$Country <- "Estonia"
+
+amce_DemSatis.d = rbind(amce_DemSatis_Chile.short.r, amce_DemSatis_Estonia.r)
+# amce_DemSatis.p <- plot(amce_DemSatis.d, group = "winners.losers", vline = 0.5)
+# amce_DemSatis.p %+% facet_wrap(~Country)
+
+## Recode
+amce_DemSatis.d$level <- recode_factor(amce_DemSatis.d$level, 
+                                       `The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government` = "The candidate OPPOSES post-electoral protests", 
+                                       `The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government` = "The candidate SUPPORTS post-electoral protests")
+
+p_load(ggplot2)
+amce_DemSatis.short.p = ggplot(amce_DemSatis.d, aes(y=estimate, x=level)) + 
+  geom_hline(yintercept = 0, colour = "black", lty = 2) +
+  geom_pointrange(aes(ymin = lower, ymax = upper)) +
+  facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="bottom",
+    axis.text.y = element_text(size=14), 
+    axis.text.x = element_text(size=14), 
+    axis.title.y = element_text(size=14), 
+    axis.title.x = element_text(size=14), 
+    legend.text=element_text(size=14), 
+    legend.title=element_text(size=14),
+    plot.title = element_text(size=14),
+    strip.text.x = element_text(size = 14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "", y = "")
+
+ggsave(amce_DemSatis.short.p, file="Conjoint_DemSatis_short_AMCE.pdf", width=12, height=10)
+
 
 #####################################################
 # Marginal Means // Subgroup Analyses
