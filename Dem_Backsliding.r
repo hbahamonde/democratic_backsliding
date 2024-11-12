@@ -176,6 +176,19 @@ dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Q13,
                                          `Muu` = "Other",
                                          .ordered = TRUE)
 
+# Add a new factor variable for political position (left, center, right)
+dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Vote.Choice,
+                                                `Social Democratic Party` = "Left",
+                                                `Estonia 200` = "Center",
+                                                `Estonian Centre Party` = "Center",
+                                                `Estonian Conservative People\'s Party` = "Right",
+                                                `Estonian Reform Party` = "Right",
+                                                `Pro Patria Party` = "Right",
+                                                `Other` = "Other",
+                                                `I did not vote` = "Did not vote",
+                                                .ordered = TRUE)
+
+
 # Language (Q7) // Only for Estonia data
 dat.estonia$Language <- recode_factor(dat.estonia$Q7,
                                       `Eesti` = "Estonian", #  561  
@@ -1267,12 +1280,12 @@ p_load(ggplot2)
 # Winners.Losers
 #####################################################
 
-mm_Winner_Loser_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_Winner_Loser_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Protest + attr.Gender + attr.Age + attr.Pensions, 
                                                id = ~ respondent, 
                                                estimate = "mm", 
                                                by = ~winners.losers))
 
-mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Gender + attr.Age + attr.Protest + attr.Pensions, 
+mm_Winner_Loser_Estonia <- suppressWarnings(cj(conjoint.d.estonia, chosen ~ attr.Protest + attr.Gender + attr.Age + attr.Pensions, 
                                                id = ~ respondent, 
                                                estimate = "mm", 
                                                by = ~winners.losers))
@@ -1284,6 +1297,22 @@ mm_Winner_Loser_Estonia$Country <- "Estonia"
 mm_Winner_Loser.d = rbind(mm_Winner_Loser_Chile, mm_Winner_Loser_Estonia)
 # mm_Winner_Loser.p <- plot(mm_Winner_Loser.d, group = "winners.losers", vline = 0.5)
 # mm_Winner_Loser.p %+% facet_wrap(~Country)
+
+# desired_order
+desired_order <- c(
+  "Younger than 35 years old",
+  "Between 35-50 years old",
+  "Over 50 years old",
+  "The candidate OPPOSES increases in pensions for the elderly",
+  "The candidate SUPPORTS increases in pensions for the elderly",
+  "Man",
+  "Woman",
+  "The candidate OPPOSES anti-government protest\nthat will seek to de-destabilize the current government",
+  "The candidate SUPPORTS anti-government protest\nthat will seek to de-destabilize the current government"
+)
+
+mm_Winner_Loser.d$level <- factor(mm_Winner_Loser.d$level, levels = desired_order)
+
 
 p_load(ggplot2)
 mm_Winner_Loser.p = ggplot(mm_Winner_Loser.d,
@@ -1341,35 +1370,48 @@ mm_Vote_Choice.d = rbind(mm_Vote_Choice_Chile, mm_Vote_Choice_Estonia)
 # mm_Vote_Choice.p <- plot(mm_Vote_Choice.d, group = "winners.losers", vline = 0.5)
 # mm_Vote_Choice.p %+% facet_wrap(~Country)
 
+mm_Vote_Choice.d$level <- factor(mm_Vote_Choice.d$level, levels = desired_order)
+
+
 p_load(ggplot2)
 mm_Vote_Choice.p = ggplot(mm_Vote_Choice.d,
                           aes(factor(level),
-                              y=estimate,
-                              ymin=lower,
-                              ymax=upper,
-                              color=factor(Vote.Choice))) + 
+                              y = estimate,
+                              ymin = lower,
+                              ymax = upper,
+                              color = factor(Vote.Choice))) + 
   geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
-  geom_pointrange(position = position_dodge(width = 0.5), size=0.25)+
+  geom_pointrange(position = position_dodge(width = 0.5), size = 0.25) +
   facet_wrap(~Country) +
   coord_flip() +
   theme_bw() +
   theme(
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_blank(),
-    legend.position="bottom",
-    axis.text.y = element_text(size=14), 
-    axis.text.x = element_text(size=14), 
-    axis.title.y = element_text(size=14), 
-    axis.title.x = element_text(size=14), 
-    legend.text=element_text(size=14), 
-    legend.title=element_text(size=14),
-    plot.title = element_text(size=14),
-    strip.text.x = element_text(size = 14)) +
-  guides(colour=guide_legend(title="")) + 
+    legend.position = "bottom",
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14), 
+    axis.title.y = element_text(size = 14), 
+    axis.title.x = element_text(size = 14), 
+    legend.text = element_text(size = 14), 
+    legend.title = element_text(size = 14),
+    plot.title = element_text(size = 14),
+    strip.text.x = element_text(size = 14)
+  ) +
+  guides(colour = guide_legend(title = "")) + 
   labs(x = "", y = "") +
-  scale_color_brewer(palette="Paired")
+  scale_color_manual(values = c(
+    "Left" = "red",               # Red for left
+    "Center-Left" = "purple",     # Blended color between red and blue for center-left
+    "Center" = "darkgrey",        # Neutral color for center
+    "Center-Right" = "lightblue", # Blended color between blue and red for center-right
+    "Right" = "blue",             # Blue for right
+    "Far-Right" = "darkblue",     # Darker blue for far-right
+    "I did not vote" = "orange",  # Characteristic color for non-voters
+    "Other" = "green"             # Characteristic color for other
+  ))
 
-ggsave(mm_Vote_Choice.p, file="Conjoint_Vote_Choice.pdf", width=20, height=10)
+ggsave(mm_Vote_Choice.p, file="Conjoint_Vote_Choice.pdf", width=12, height=7)
 
 #####################################################
 # Marginal Means // Subgroup Analyses: 
@@ -2250,56 +2292,6 @@ ggsave(mm_IncomeHighMidLow.p, file="Conjoint_IncomeHighMidLow.pdf", width=12, he
 
 
 
-
-
-## ---- descriptive:data:plot ----
-p_load(lattice)
-
-# left-right
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/left_right.pdf") # The height of the plot in inches
-lattice::histogram(as.numeric(dat$Q8_1), 
-                   type = "percent", 
-                   breaks=seq(from=1,to=10,by=1),
-                   xlab="Left-Right",
-                   aspect.ratio=1) # left-right
-dev.off()
-
-# Dem might have problems but it's better than other forms of government
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/dem_better.pdf") # The height of the plot in inches
-
-lattice::histogram(as.factor(dat$Q10_1), 
-                   type = "percent", 
-                   scales=list(y=list(rot=45), x=list(rot=45),
-                               type = "percent"),
-                   xlab="Dem might have problems but\nit's better than other\nforms of government",
-                   aspect.ratio=1)
-dev.off()
-
-# Democracy is not an effective form of government...better a strong leader.
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/strong_leader.pdf") # The height of the plot in inches
-
-lattice::histogram(as.factor(dat$Q10_2), 
-                   type = "percent", 
-                   scales=list(y=list(rot=45), x=list(rot=45)),
-                   xlab="Democracy is not an effective form\nof government...better a strong leader",
-                   aspect.ratio=1) 
-
-
-dev.off()
-
-# free press...
-pdf(file = "/Users/hectorbahamonde/research/democratic_backsliding/free_press.pdf") # The height of the plot in inches
-
-lattice::histogram(as.factor(dat$Q10_4), type = "percent", scales=list(y=list(rot=45), x=list(rot=45)),
-                   xlab="It is important to have a free press",
-                   aspect.ratio=1)
-
-dev.off()
-
-## ----
-
-
-
 ################
 #### ABSTRACT
 ################
@@ -2356,6 +2348,9 @@ vdem.d <- readRDS("/Users/hectorbahamonde/research/democratic_backsliding/data/v
 
 # Keep Chile and Estonia
 vdem.d <- vdem.d[which(vdem.d$country_name=='Chile'  | vdem.d$country_name=='Estonia'),]
+
+# restrict series 1990 to today
+vdem.d <- vdem.d[which(vdem.d$year>=1990),]
 
 # free up memory
 gc()
@@ -2473,7 +2468,7 @@ p14 = ggplot(vdem.d, aes(year, v2dlengage, col=country_name)) + geom_smooth() + 
 p15 = ggplot(vdem.d, aes(year, v2dlencmps, col=country_name)) + geom_smooth() + theme_light() + 
   labs(y="Particularistic or public goods") + theme(legend.position = "none", aspect.ratio=1)
 p16 = ggplot(vdem.d, aes(year, v2jupoatck, col=country_name)) + geom_smooth() + theme_light() + 
-  abs(y="Government attacks on judiciary") + theme(legend.position = "bottom", aspect.ratio=1)
+  labs(y="Government attacks on judiciary") + theme(legend.position = "bottom", aspect.ratio=1)
 #
 p17 = ggplot(vdem.d, aes(year, v2clrspct, col=country_name)) + geom_smooth() + theme_light() + 
   labs(y="Rigorous and impartial public administration") + theme(legend.position = "none", aspect.ratio=1)
@@ -2576,15 +2571,16 @@ p64 = ggplot(vdem.d, aes(year, e_polcomp, col=country_name)) + geom_smooth() + t
 p65 = ggplot(vdem.d, aes(year, e_ti_cpi, col=country_name)) + geom_smooth() + theme_light() + 
   labs(y="Corruption perception index") + theme(legend.position = "bottom", aspect.ratio=1)
 
+p_load(cowplot)
 cowplot::plot_grid(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16, align = "hv",axis = "b", ncol = 4) 
 cowplot::plot_grid(p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, align = "hv",axis = "b", ncol = 4) 
 cowplot::plot_grid(p33, p34, p35, p36, p37, p38, p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, align = "hv",axis = "b", ncol = 4) 
 cowplot::plot_grid(p49, p50, p51, p52, p53, p55, p56, p57, p58, p59, p60, p61, p62, p63, p64, p65, align = "hv",axis = "b", ncol = 4) 
 
-# selection of 9 dimensions for paper
+# selection of 2 dimensions for paper
 p_load(ggplot2)
 
-p1 = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election free and fair") + theme(
+p1 = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Election free and fair") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
   legend.position="none",
@@ -2616,10 +2612,10 @@ p1.b = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth() +
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
 
-p2 = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election losers accept results") + theme(
+p2 = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Election losers accept results") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
-  legend.position="none",
+  legend.position="bottom",
   aspect.ratio=1,
   axis.text.y = element_text(size=14), 
   axis.text.x = element_text(size=14), 
@@ -2632,7 +2628,7 @@ p2 = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth() + t
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
 
-p2.b = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth() + theme_light() + labs(y="Election losers accept results") + theme(
+p2.b = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Election losers accept results") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
   legend.position="bottom",
@@ -2713,7 +2709,7 @@ p39.b = ggplot(vdem.d, aes(year, v2caassemb, col=country_name)) + geom_smooth() 
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
 
-p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth() + theme_light() + labs(y="Mobilization for autocracy") + theme(
+p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Mobilization for autocracy") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
   legend.position="none",
@@ -2729,8 +2725,8 @@ p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth() + 
   guides(colour=guide_legend(title="")) + 
   labs(x = "",  caption = "Source: VDEM Data V12 2022 (Coppedge et al., 2022).")
 
-vdem.chile.estonia.p = cowplot::plot_grid(p1,p2,p5,p13,p39,p43, align = "hv",axis = "b", ncol = 3) 
-ggsave(vdem.chile.estonia.p, file="VD_Chile_Estonia.pdf", width=15, height=10)
+vdem.chile.estonia.p = cowplot::plot_grid(p1,p2,p43, align = "hv",axis = "b", ncol = 3) 
+ggsave(vdem.chile.estonia.p, file="VD_Chile_Estonia.pdf", width=12, height=6)
 
 # for presentation, below graphs
 ggsave(p1.b, file="VD_Chile_Estonia_ElecFree.pdf", width=10, height=10)
