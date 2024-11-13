@@ -177,16 +177,16 @@ dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Q13,
                                          .ordered = TRUE)
 
 # Add a new factor variable for political position (left, center, right)
-dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Vote.Choice,
-                                                `Social Democratic Party` = "Left",
-                                                `Estonia 200` = "Center",
-                                                `Estonian Centre Party` = "Center",
-                                                `Estonian Conservative People\'s Party` = "Right",
-                                                `Estonian Reform Party` = "Right",
-                                                `Pro Patria Party` = "Right",
-                                                `Other` = "Other",
-                                                `I did not vote` = "Did not vote",
-                                                .ordered = TRUE)
+#dat.estonia$Vote.Choice <- recode_factor(dat.estonia$Vote.Choice,
+#                                                `Social Democratic Party` = "Left",
+#                                                `Estonia 200` = "Center",
+#                                                `Estonian Centre Party` = "Center",
+#                                                `Estonian Conservative People\'s Party` = "Right",
+#                                                `Estonian Reform Party` = "Right",
+#                                                `Pro Patria Party` = "Right",
+#                                                `Other` = "Other",
+#                                                `I did not vote` = "Did not vote",
+#                                                .ordered = TRUE)
 
 
 # Language (Q7) // Only for Estonia data
@@ -202,11 +202,11 @@ dat.estonia$Language <- recode_factor(dat.estonia$Q7,
 # Vote.Choice (Q32) # Chile
 ## Coding https://www.cambridge.org/core/product/identifier/S104909652300104X/type/journal_article
 dat.chile$Vote.Choice <- recode_factor(dat.chile$Q32,
-                                       `PARTIDO DE LA GENTE (LISTA A)` = "Right",
-                                       `TODO POR CHILE (LISTA B) (Partido por la Democracia (PPD), Democracia Cristiana, y Partido Radical)` = "Center",
-                                       `PARTIDO REPUBLICANO DE CHILE (LISTA C)` = "Far-Right",
-                                       `UNIDAD PARA CHILE (LISTA D) (Partido Socialista, Partido Comunista, Partido Liberal, Convergencia Social, Revolución Democrática, Comunes, Acción Humanista y FRSV)` = "Left",
-                                       `CHILE SEGURO (LISTA E) (UDI, Renovación Nacional (RN) y Evópoli)` = "Right",
+                                       `PARTIDO DE LA GENTE (LISTA A)`= "Partido de la Gente", #"Right",
+                                       `TODO POR CHILE (LISTA B) (Partido por la Democracia (PPD), Democracia Cristiana, y Partido Radical)` = "PPD-DC-PR", #"Center",
+                                       `PARTIDO REPUBLICANO DE CHILE (LISTA C)` = "Republicano", #"Far-Right",
+                                       `UNIDAD PARA CHILE (LISTA D) (Partido Socialista, Partido Comunista, Partido Liberal, Convergencia Social, Revolución Democrática, Comunes, Acción Humanista y FRSV)` = "Unidad Para Chile",# "Left",
+                                       `CHILE SEGURO (LISTA E) (UDI, Renovación Nacional (RN) y Evópoli)` = "UDI-RN-Evopoli", #"Right",
                                        `Votó en blanco` = "I did not vote",
                                        `Votó nulo` = "I did not vote",
                                        `No sabe / No contesta` = "Other",
@@ -1362,6 +1362,102 @@ mm_Vote_Choice_Chile <- suppressWarnings(cj(conjoint.d.chile, chosen ~ attr.Gend
 
 # plot(mm_Vote_Choice_Estonia, group = "Vote.Choice", vline = 0.5)
 # plot(mm_Vote_Choice_Chile, group = "Vote.Choice", vline = 0.5)
+
+#######
+# One plot per country
+#######
+
+
+# Chile plot
+mm_Vote_Choice_Chile$level <- factor(mm_Vote_Choice_Chile$level, levels = desired_order)
+mm_Vote_Choice_Chile = mm_Vote_Choice_Chile %>% filter(feature == "attr.Protest")
+
+
+p_load(ggplot2)
+mm_Vote_Choice_Chile.p = ggplot(mm_Vote_Choice_Chile,
+                                aes(factor(level),
+                                    y = estimate,
+                                    ymin = lower,
+                                    ymax = upper,
+                                    color = factor(Vote.Choice))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size = 0.25) +
+  #facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = "bottom",
+    axis.text.y = element_text(size = 12), 
+    axis.text.x = element_text(size = 12), 
+    axis.title.y = element_text(size = 12), 
+    axis.title.x = element_text(size = 12), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(size = 12),
+    plot.title = element_text(size = 12),
+    strip.text.x = element_text(size = 12)
+  ) +
+  guides(colour = guide_legend(title = "Chile")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_Vote_Choice_Chile.p, file="Conjoint_Vote_Choice_Chile.pdf", width=12, height=7)
+
+# Estonia Plot
+mm_Vote_Choice_Estonia$level <- factor(mm_Vote_Choice_Estonia$level, levels = desired_order)
+mm_Vote_Choice_Estonia = mm_Vote_Choice_Estonia %>% filter(feature == "attr.Protest")
+
+p_load(ggplot2)
+mm_Vote_Choice_Estonia.p = ggplot(mm_Vote_Choice_Estonia,
+                                  aes(factor(level),
+                                      y = estimate,
+                                      ymin = lower,
+                                      ymax = upper,
+                                      color = factor(Vote.Choice))) + 
+  geom_hline(yintercept = 0.5, colour = "black", lty = 2) +
+  geom_pointrange(position = position_dodge(width = 0.5), size = 0.25) +
+  #facet_wrap(~Country) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = "bottom",
+    axis.text.y = element_text(size = 12), 
+    axis.text.x = element_text(size = 12), 
+    axis.title.y = element_text(size = 12), 
+    axis.title.x = element_text(size = 12), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(size = 12),
+    plot.title = element_text(size = 12),
+    strip.text.x = element_text(size = 12)
+  ) +
+  guides(colour = guide_legend(title = "Estonia")) + 
+  labs(x = "", y = "")
+
+ggsave(mm_Vote_Choice_Estonia.p, file="Conjoint_Vote_Choice_Estonia.pdf", width=12, height=7)
+
+#
+p_load(ggpubr)
+theme_set(theme_pubr())
+
+mm_Vote_Choice_Separate.p = ggarrange(mm_Vote_Choice_Chile.p, mm_Vote_Choice_Estonia.p,
+          labels = c("Chile", "Estonia"),
+          ncol = 1,
+          nrow = 2,
+          widths = c(500),
+          heights = c(1500, 1500))
+
+ggexport(mm_Vote_Choice_Separate.p, filename = "mm_Vote_Choice_Separate_p.pdf",
+         width = 15,
+         #height = 480,
+         #pointsize = 12,
+         res = 250,
+         verbose = F)
+
+#######
+# Combining both countries in one plot
+#######
 
 mm_Vote_Choice_Chile$Country <- "Chile"
 mm_Vote_Choice_Estonia$Country <- "Estonia"
