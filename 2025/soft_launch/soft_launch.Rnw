@@ -1,0 +1,74 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
+load(file="dat_t.RData") 
+@
+
+
+
+
+<<>>=
+table(dat.t$Q5) # Geographical distribution
+table(dat.t$Q6) # Education
+table(dat.t$Q3) # Age
+table(dat.t$Q4) # gender
+lattice::histogram(dat.t$Q8_1) # Dem satisf
+
+table(dat.t$Q10_1) # Democracy may have its problems, but it is better than other forms of government
+table(dat.t$Q10_2) # Democracy is not an effective form of government, and it would be better if Finland were led by a strong leader who did not have to worry about elections
+table(dat.t$Q10_3) # It is important that Finland has a free and politically independent media.
+table(dat.t$Q10_4) # The right of citizens to political participation should not be restricted
+table(dat.t$Q10_5) # There should be no political pressure on the judiciary
+
+
+table(dat.t$Q11) # Interest in politics
+table(dat.t$Q15) # Voted for
+
+table(dat.t$Q13_1) # The government must be able to censor media that are unduly critical of the government.
+table(dat.t$Q13_2) # The right to demonstrate must be protected, even if it makes life difficult for others.
+table(dat.t$Q13_3) # The government should be able to ignore court decisions that it considers politically biased.
+table(dat.t$Q13_4) # Members of parliament should be able to question and scrutinise government decisions, even if it slows down their implementation.
+table(dat.t$Q13_5) # The government should be able to stretch the limits of legislation to solve urgent social problems.
+table(dat.t$Q13_6) # Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.
+table(dat.t$Q13_7) # Our country would work better if political decisions were left to successful business leaders instead of politicians
+@
+
+Currently, there are 7 respondents (identified below) that rank pretty high with their don't know" answers. For example subject $R_8qdy9IJs4Ep0YgX$ ranks 63 don't knows.  
+
+
+<<>>=
+# Don't knows ISSUE
+library("tidyverse")
+dont_know_variations <- c("Other/Don't know", "I don't know")
+
+# Count the occurrences of "don't know" responses per respondent
+library("tidyverse")
+dont_know_count <- dat.t %>% 
+  select(-ResponseId) %>%  # Exclude the ResponseId column
+  mutate_all(~ . %in% dont_know_variations) %>%  # Check for "don't know" variations
+  rowSums()  # Count "don't know" responses per respondent
+
+# Combine with ResponseId for reference
+respondent_dont_know <- data.frame(
+  ResponseId = dat.t$ResponseId,
+  DontKnowCount = dont_know_count
+)
+
+# Identify the respondents with the most "don't know" responses
+most_dont_know <- respondent_dont_know %>%
+  arrange(desc(DontKnowCount)) %>%
+  filter(DontKnowCount > 0)  # Optional: Exclude respondents with no "don't know" answers
+
+
+head(most_dont_know)
+@
+
+
+
+
+
+
+\end{document}
