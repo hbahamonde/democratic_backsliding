@@ -61,7 +61,17 @@
 \end{kframe}
 \end{knitrout}
 
-
+Sample size is n = 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{nrow}\hldef{(dat.t)}
+\end{alltt}
+\begin{verbatim}
+## [1] 20
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 \begin{knitrout}
@@ -71,12 +81,10 @@
 \end{alltt}
 \begin{verbatim}
 ## 
-##                                      Helsinki and Uusimaa 
-##                            0                            7 
-## Northern and Eastern Finland             Southern Finland 
-##                            7                            7 
-##              Western Finland 
-##                           11
+##         Helsinki and Uusimaa Northern and Eastern Finland 
+##                            6                            2 
+##             Southern Finland              Western Finland 
+##                            4                            8
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q6)} \hlcom{# Education}
@@ -85,14 +93,12 @@
 ## 
 ##                    Matriculation examination 
 ##                                            2 
-##                             Other/Don't know 
-##                                            9 
 ##                  Primary school (grades 1-9) 
-##                                            3 
+##                                            2 
 ##                   Professional qualification 
 ##                                           12 
 ##                            University degree 
-##                                            4 
+##                                            2 
 ## Upper secondary school or polytechnic degree 
 ##                                            2
 \end{verbatim}
@@ -101,33 +107,33 @@
 \end{alltt}
 \begin{verbatim}
 ## 
-## 18-24 25-34 35-44 45-54     5   55+ 
-##     2     7    10     5     5     3
+## 18-24 25-34 35-44 45-54   55+ 
+##     1     5     8     4     2
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q4)} \hlcom{# gender}
 \end{alltt}
 \begin{verbatim}
 ## 
-##                   Female                     Male Other/do not want to say 
-##                       10                       14                        8
+## Female   Male 
+##      7     13
 \end{verbatim}
 \begin{alltt}
 \hldef{lattice}\hlopt{::}\hlkwd{histogram}\hldef{(dat.t}\hlopt{$}\hldef{Q8_1)} \hlcom{# Dem satisf}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_1)} \hlcom{# Democracy may have its problems, but it is better than other forms of government}
 \end{alltt}
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          6                          6 
+##                          1                          4 
 ##             Somewhat agree          Somewhat disagree 
-##                          7                          3 
+##                          6                          2 
 ##              Totally agree 
-##                          8
+##                          7
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_2)} \hlcom{# Democracy is not an effective form of government, and it would be better if Finland were led by a strong leader who did not have to worry about elections}
@@ -135,11 +141,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          6                          4 
+##                          0                          3 
 ##             Somewhat agree          Somewhat disagree 
-##                          4                          4 
+##                          4                          2 
 ##              Totally agree           Totally disagree 
-##                          5                          7
+##                          5                          6
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_3)} \hlcom{# It is important that Finland has a free and politically independent media.}
@@ -147,9 +153,9 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          7                          7 
+##                          0                          6 
 ##             Somewhat agree              Totally agree 
-##                          5                         11
+##                          5                          9
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_4)} \hlcom{# The right of citizens to political participation should not be restricted}
@@ -157,11 +163,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          6                          4 
+##                          0                          3 
 ##             Somewhat agree          Somewhat disagree 
-##                         11                          2 
+##                          9                          2 
 ##              Totally agree 
-##                          7
+##                          6
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_5)} \hlcom{# There should be no political pressure on the judiciary}
@@ -169,21 +175,21 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          6                          6 
+##                          0                          5 
 ##             Somewhat agree          Somewhat disagree 
-##                          7                          2 
+##                          7                          1 
 ##              Totally agree 
-##                          9
+##                          7
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q11)} \hlcom{# Interest in politics}
 \end{alltt}
 \begin{verbatim}
 ## 
-##             I don't know    Not at all interested Only a little interested 
-##                        8                        3                        5 
-##            Some interest          Very interested 
-##                        9                        7
+##    Not at all interested Only a little interested            Some interest 
+##                        3                        5                        7 
+##          Very interested 
+##                        5
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q15)} \hlcom{# Voted for}
@@ -195,25 +201,17 @@
 ##      Christian Democrats of Finland (KD) 
 ##                                        1 
 ##                    Green Alliance (VIHR) 
-##                                        4 
+##                                        2 
 ##                           I did not vote 
-##                                        7 
-##                             I don't know 
-##                                        2 
+##                                        6 
 ##                      Left Alliance (VAS) 
-##                                        4 
-##                             Movement Now 
-##                                        1 
+##                                        3 
 ##           National Coalition Party (NCP) 
-##                                        3 
-##                  Other party or grouping 
-##                                        2 
-## Social Democratic Party of Finland (SDP) 
-##                                        3 
-##  Swedish People's Party of Finland (RKP) 
 ##                                        1 
+## Social Democratic Party of Finland (SDP) 
+##                                        2 
 ##                          True Finns (PS) 
-##                                        4
+##                                        3
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_1)} \hlcom{# The government must be able to censor media that are unduly critical of the government.}
@@ -221,11 +219,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          8                          6 
+##                          1                          5 
 ##             Somewhat agree          Somewhat disagree 
 ##                          2                          2 
 ##              Totally agree           Totally disagree 
-##                          3                         10
+##                          3                          7
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_2)} \hlcom{# The right to demonstrate must be protected, even if it makes life difficult for others.}
@@ -233,11 +231,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          8                          6 
+##                          2                          5 
 ##             Somewhat agree          Somewhat disagree 
-##                          6                          3 
+##                          4                          2 
 ##              Totally agree           Totally disagree 
-##                          4                          4
+##                          4                          3
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_3)} \hlcom{# The government should be able to ignore court decisions that it considers politically biased.}
@@ -245,11 +243,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          9                          8 
+##                          2                          7 
 ##             Somewhat agree          Somewhat disagree 
 ##                          6                          2 
 ##              Totally agree           Totally disagree 
-##                          1                          5
+##                          1                          2
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_4)} \hlcom{# Members of parliament should be able to question and scrutinise government decisions, even if it slows down their implementation.}
@@ -257,11 +255,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          9                          8 
+##                          2                          7 
 ##             Somewhat agree          Somewhat disagree 
-##                          6                          3 
+##                          5                          2 
 ##              Totally agree           Totally disagree 
-##                          3                          2
+##                          2                          2
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_5)} \hlcom{# The government should be able to stretch the limits of legislation to solve urgent social problems.}
@@ -269,9 +267,9 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                         11                          5 
+##                          3                          4 
 ##             Somewhat agree          Somewhat disagree 
-##                          5                          4 
+##                          5                          2 
 ##              Totally agree           Totally disagree 
 ##                          4                          2
 \end{verbatim}
@@ -281,9 +279,9 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          8                          9 
+##                          1                          6 
 ##             Somewhat agree          Somewhat disagree 
-##                          7                          2 
+##                          7                          1 
 ##              Totally agree           Totally disagree 
 ##                          3                          2
 \end{verbatim}
@@ -293,11 +291,11 @@
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                         10                          8 
+##                          2                          6 
 ##             Somewhat agree          Somewhat disagree 
 ##                          3                          1 
 ##              Totally agree           Totally disagree 
-##                          4                          6
+##                          4                          4
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -333,23 +331,27 @@ Currently, there are 7 respondents (identified below) that rank pretty high with
 \hldef{most_dont_know} \hlkwb{<-} \hldef{respondent_dont_know} \hlopt{%>%}
   \hlkwd{arrange}\hldef{(}\hlkwd{desc}\hldef{(DontKnowCount))} \hlopt{%>%}
   \hlkwd{filter}\hldef{(DontKnowCount} \hlopt{>} \hlnum{0}\hldef{)}  \hlcom{# Optional: Exclude respondents with no "don't know" answers}
-
-
-\hlkwd{head}\hldef{(most_dont_know)}
 \end{alltt}
-\begin{verbatim}
-##           ResponseId DontKnowCount
-## 14 R_8qdy9IJs4Ep0YgX            63
-## 15 R_8qi1mr3iAoENvl7            63
-## 9  R_8yrTuvvG4HmDPty            62
-## 8  R_8wETTqPyqsaME44            53
-## 5  R_8Qn1yxs3NYfN53r            38
-## 3  R_2FCwwry8WmZEWVx            37
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hldef{(most_dont_know)}
+\end{alltt}
+\begin{verbatim}
+##          ResponseId DontKnowCount
+## 1 R_2yrIeaojWCBPgXf            20
+## 2 R_2BaGiG5cUnbAoXT            18
+## 3 R_2IXXJO0WJJVPOp7             4
+## 4 R_8Sp14Qg07VUrbMn             4
+## 5 R_8Mbc06PCxjRN5JT             1
+## 6 R_2E4W2PbxHlPW2nl             1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 

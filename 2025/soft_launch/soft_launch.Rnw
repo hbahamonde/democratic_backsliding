@@ -7,7 +7,10 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
 load(file="dat_t.RData") 
 @
 
-
+Sample size is n = 
+<<>>=
+nrow(dat.t)
+@
 
 
 <<>>=
@@ -62,11 +65,12 @@ most_dont_know <- respondent_dont_know %>%
   arrange(desc(DontKnowCount)) %>%
   filter(DontKnowCount > 0)  # Optional: Exclude respondents with no "don't know" answers
 
-
-head(most_dont_know)
 @
 
 
+<<>>=
+head(most_dont_know)
+@
 
 
 

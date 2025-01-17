@@ -66,6 +66,10 @@ dat.t$Q10_3 = as.factor(dat.t$Q10_3)
 dat.t$Q10_4 = as.factor(dat.t$Q10_4)
 dat.t$Q10_5 = as.factor(dat.t$Q10_5)
 
+# exclude survey preview
+p_load("tidyverse")
+dat.t = dat.t %>% filter(Status != "Survey preview")
+
 # saves dat.t
 save(dat.t, file="dat_t.RData")
 write.csv(dat.t, "dat_t.csv")
