@@ -39,7 +39,6 @@ table(dat.t$Q13_6) # Our country would work better if political decisions were l
 table(dat.t$Q13_7) # Our country would work better if political decisions were left to successful business leaders instead of politicians
 @
 
-Currently, there are 7 respondents (identified below) that rank pretty high with their don't know" answers. For example subject $R_8qdy9IJs4Ep0YgX$ ranks 63 don't knows.  
 
 
 <<>>=
@@ -67,12 +66,31 @@ most_dont_know <- respondent_dont_know %>%
 
 @
 
+Currently, there are \Sexpr{table((most_dont_know$DontKnowCount)>10)["TRUE"]} respondents (identified below) that rank pretty high with their don't know" answers. For example subject $\Sexpr{c(most_dont_know$ResponseId[(most_dont_know$DontKnowCount)>10])[1]}$ ranks $\Sexpr{max(most_dont_know$DontKnowCount)}$ don't knows.  
 
 <<>>=
 head(most_dont_know)
 @
 
+Now the question that shows the priming condition is called dat.t\$DisplayOrder. The problem is that it has \Sexpr{length(c(is.na(dat.t$DisplayOrder)[is.na(dat.t$DisplayOrder)]))} missing values. See plot below.
 
+
+
+<<>>=
+dat.t$DisplayOrder = as.factor(dat.t$DisplayOrder)
+table(dat.t$DisplayOrder)
+
+library(tidyr, ggplot2)
+
+ggplot(dat.t, aes(x = Q13_1, fill = DisplayOrder)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "Response",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+@
 
 
 \end{document}

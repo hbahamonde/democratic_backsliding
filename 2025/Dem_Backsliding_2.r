@@ -7,11 +7,12 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
 # Import Data
-dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/2025/soft_launch/dat.csv")
+dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/2025/soft_launch/dat.csv", sep=";")
 
 #
 install.packages("devtools")
-devtools::install_github("zumbov2/deeplr")
+#devtools::install_github("zumbov2/deeplr")
+library(deeplr)
 
 # FI    Finnish
 # EN    English
@@ -57,7 +58,6 @@ dat.t <- dat.t %>% mutate_all(na_if,"")
 
 # cleaning
 dat.t$Q5 = as.factor(dat.t$Q5)
-plot(dat.t$Q5)
 dat.t$Q8_1 = as.numeric(dat.t$Q8_1)
 
 dat.t$Q10_1 = as.factor(dat.t$Q10_1)
@@ -98,7 +98,20 @@ most_dont_know <- respondent_dont_know %>%
 
 head(most_dont_know)
 
+# Question that shows the priming condition is "dat.t$DisplayOrder"
 
+dat.t$DisplayOrder = as.factor(dat.t$DisplayOrder)
+table(dat.t$DisplayOrder)
 
+p_load(tidyr, ggplot2)
+
+ggplot(dat.t, aes(x = Q13_1, fill = DisplayOrder)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "Response",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 

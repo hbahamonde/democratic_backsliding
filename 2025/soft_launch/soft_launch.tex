@@ -68,7 +68,7 @@ Sample size is n =
 \hlkwd{nrow}\hldef{(dat.t)}
 \end{alltt}
 \begin{verbatim}
-## [1] 20
+## [1] 39
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -82,9 +82,9 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##         Helsinki and Uusimaa Northern and Eastern Finland 
-##                            6                            2 
+##                           13                            4 
 ##             Southern Finland              Western Finland 
-##                            4                            8
+##                            7                           15
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q6)} \hlcom{# Education}
@@ -92,15 +92,15 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##                    Matriculation examination 
-##                                            2 
+##                                            4 
 ##                  Primary school (grades 1-9) 
-##                                            2 
+##                                            4 
 ##                   Professional qualification 
-##                                           12 
+##                                           21 
 ##                            University degree 
-##                                            2 
+##                                            4 
 ## Upper secondary school or polytechnic degree 
-##                                            2
+##                                            6
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q3)} \hlcom{# Age}
@@ -108,7 +108,7 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ## 18-24 25-34 35-44 45-54   55+ 
-##     1     5     8     4     2
+##     1     8    13    11     6
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q4)} \hlcom{# gender}
@@ -116,7 +116,7 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ## Female   Male 
-##      7     13
+##     15     24
 \end{verbatim}
 \begin{alltt}
 \hldef{lattice}\hlopt{::}\hlkwd{histogram}\hldef{(dat.t}\hlopt{$}\hldef{Q8_1)} \hlcom{# Dem satisf}
@@ -129,57 +129,55 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          1                          4 
+##                          1                          8 
 ##             Somewhat agree          Somewhat disagree 
-##                          6                          2 
+##                         13                          3 
 ##              Totally agree 
-##                          7
+##                         14
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_2)} \hlcom{# Democracy is not an effective form of government, and it would be better if Finland were led by a strong leader who did not have to worry about elections}
 \end{alltt}
 \begin{verbatim}
 ## 
-##               I don't know Neither agree nor disagree 
-##                          0                          3 
-##             Somewhat agree          Somewhat disagree 
-##                          4                          2 
-##              Totally agree           Totally disagree 
-##                          5                          6
+## Neither agree nor disagree             Somewhat agree 
+##                          7                          9 
+##          Somewhat disagree              Totally agree 
+##                          8                          4 
+##           Totally disagree 
+##                         11
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_3)} \hlcom{# It is important that Finland has a free and politically independent media.}
 \end{alltt}
 \begin{verbatim}
 ## 
-##               I don't know Neither agree nor disagree 
-##                          0                          6 
-##             Somewhat agree              Totally agree 
-##                          5                          9
+## Neither agree nor disagree             Somewhat agree 
+##                          7                         10 
+##          Somewhat disagree              Totally agree 
+##                          1                         21
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_4)} \hlcom{# The right of citizens to political participation should not be restricted}
 \end{alltt}
 \begin{verbatim}
 ## 
-##               I don't know Neither agree nor disagree 
-##                          0                          3 
-##             Somewhat agree          Somewhat disagree 
-##                          9                          2 
-##              Totally agree 
-##                          6
+## Neither agree nor disagree             Somewhat agree 
+##                          3                         18 
+##          Somewhat disagree              Totally agree 
+##                          1                         16 
+##           Totally disagree 
+##                          1
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_5)} \hlcom{# There should be no political pressure on the judiciary}
 \end{alltt}
 \begin{verbatim}
 ## 
-##               I don't know Neither agree nor disagree 
-##                          0                          5 
-##             Somewhat agree          Somewhat disagree 
-##                          7                          1 
-##              Totally agree 
-##                          7
+## Neither agree nor disagree             Somewhat agree 
+##                          5                         14 
+##          Somewhat disagree              Totally agree 
+##                          3                         17
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q11)} \hlcom{# Interest in politics}
@@ -187,9 +185,9 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##    Not at all interested Only a little interested            Some interest 
-##                        3                        5                        7 
+##                        3                        8                       16 
 ##          Very interested 
-##                        5
+##                       12
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q15)} \hlcom{# Voted for}
@@ -197,21 +195,25 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##           Centre Party of Finland (KESK) 
-##                                        2 
+##                                        3 
 ##      Christian Democrats of Finland (KD) 
 ##                                        1 
 ##                    Green Alliance (VIHR) 
-##                                        2 
-##                           I did not vote 
-##                                        6 
-##                      Left Alliance (VAS) 
 ##                                        3 
-##           National Coalition Party (NCP) 
+##                           I did not vote 
+##                                        7 
+##                      Left Alliance (VAS) 
+##                                        5 
+##                             Movement Now 
 ##                                        1 
-## Social Democratic Party of Finland (SDP) 
+##           National Coalition Party (NCP) 
 ##                                        2 
+## Social Democratic Party of Finland (SDP) 
+##                                        6 
+##  Swedish People's Party of Finland (RKP) 
+##                                        1 
 ##                          True Finns (PS) 
-##                                        3
+##                                       10
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_1)} \hlcom{# The government must be able to censor media that are unduly critical of the government.}
@@ -219,11 +221,11 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          1                          5 
+##                          2                          5 
 ##             Somewhat agree          Somewhat disagree 
-##                          2                          2 
+##                          4                          4 
 ##              Totally agree           Totally disagree 
-##                          3                          7
+##                          3                         21
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_2)} \hlcom{# The right to demonstrate must be protected, even if it makes life difficult for others.}
@@ -231,11 +233,11 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          2                          5 
+##                          3                          6 
 ##             Somewhat agree          Somewhat disagree 
-##                          4                          2 
+##                         15                          5 
 ##              Totally agree           Totally disagree 
-##                          4                          3
+##                          7                          3
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_3)} \hlcom{# The government should be able to ignore court decisions that it considers politically biased.}
@@ -243,11 +245,11 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          2                          7 
+##                          2                         12 
 ##             Somewhat agree          Somewhat disagree 
-##                          6                          2 
+##                          8                          4 
 ##              Totally agree           Totally disagree 
-##                          1                          2
+##                          7                          6
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_4)} \hlcom{# Members of parliament should be able to question and scrutinise government decisions, even if it slows down their implementation.}
@@ -257,9 +259,9 @@ Sample size is n =
 ##               I don't know Neither agree nor disagree 
 ##                          2                          7 
 ##             Somewhat agree          Somewhat disagree 
-##                          5                          2 
+##                         13                          3 
 ##              Totally agree           Totally disagree 
-##                          2                          2
+##                         11                          3
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_5)} \hlcom{# The government should be able to stretch the limits of legislation to solve urgent social problems.}
@@ -267,11 +269,11 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          3                          4 
+##                          3                          8 
 ##             Somewhat agree          Somewhat disagree 
-##                          5                          2 
+##                          9                          5 
 ##              Totally agree           Totally disagree 
-##                          4                          2
+##                         10                          4
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_6)} \hlcom{# Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.}
@@ -279,11 +281,11 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          1                          6 
+##                          1                         10 
 ##             Somewhat agree          Somewhat disagree 
-##                          7                          1 
+##                         16                          1 
 ##              Totally agree           Totally disagree 
-##                          3                          2
+##                          8                          3
 \end{verbatim}
 \begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q13_7)} \hlcom{# Our country would work better if political decisions were left to successful business leaders instead of politicians}
@@ -291,16 +293,15 @@ Sample size is n =
 \begin{verbatim}
 ## 
 ##               I don't know Neither agree nor disagree 
-##                          2                          6 
+##                          3                         10 
 ##             Somewhat agree          Somewhat disagree 
-##                          3                          1 
+##                         10                          8 
 ##              Totally agree           Totally disagree 
-##                          4                          4
+##                          3                          5
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
-Currently, there are 7 respondents (identified below) that rank pretty high with their don't know" answers. For example subject $R_8qdy9IJs4Ep0YgX$ ranks 63 don't knows.  
 
 
 \begin{knitrout}
@@ -335,6 +336,7 @@ Currently, there are 7 respondents (identified below) that rank pretty high with
 \end{kframe}
 \end{knitrout}
 
+Currently, there are 3 respondents (identified below) that rank pretty high with their don't know" answers. For example subject $R_2yrIeaojWCBPgXf$ ranks $20$ don't knows.  
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -345,15 +347,44 @@ Currently, there are 7 respondents (identified below) that rank pretty high with
 ##          ResponseId DontKnowCount
 ## 1 R_2yrIeaojWCBPgXf            20
 ## 2 R_2BaGiG5cUnbAoXT            18
-## 3 R_2IXXJO0WJJVPOp7             4
-## 4 R_8Sp14Qg07VUrbMn             4
-## 5 R_8Mbc06PCxjRN5JT             1
-## 6 R_2E4W2PbxHlPW2nl             1
+## 3 R_8WL6Uf9RyRSaGqJ            16
+## 4 R_2whsFZDOCh1RHgh             5
+## 5 R_2IXXJO0WJJVPOp7             4
+## 6 R_8Sp14Qg07VUrbMn             4
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
+Now the question that shows the priming condition is called dat.t\$DisplayOrder. The problem is that it has 20 missing values. See plot below.
 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{dat.t}\hlopt{$}\hldef{DisplayOrder} \hlkwb{=} \hlkwd{as.factor}\hldef{(dat.t}\hlopt{$}\hldef{DisplayOrder)}
+\hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{DisplayOrder)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Q17 Q25 
+##   9  10
+\end{verbatim}
+\begin{alltt}
+\hlkwd{library}\hldef{(tidyr, ggplot2)}
+
+\hlkwd{ggplot}\hldef{(dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Q13_1,} \hlkwc{fill} \hldef{= DisplayOrder))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Distribution of Responses by Framing Condition"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Response"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Count"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Framing Condition"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{axis.text.x} \hldef{=} \hlkwd{element_text}\hldef{(}\hlkwc{angle} \hldef{=} \hlnum{45}\hldef{,} \hlkwc{hjust} \hldef{=} \hlnum{1}\hldef{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\end{knitrout}
 
 
 \end{document}
