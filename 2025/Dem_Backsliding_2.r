@@ -6,13 +6,29 @@ setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
 # Pacman
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 
-# Import Data
-dat <- read.csv("/Users/hectorbahamonde/research/democratic_backsliding/2025/soft_launch/dat.csv", sep=";")
+p_load(qualtRics)
+
+# this should be run just ONCE per machine
+# qualtrics_api_credentials(api_key = "UPU8fMH4I7Yr5Bz23zuZSPj7RUxRdbEPmB3ubbNo", 
+#                          base_url = "fra1.qualtrics.com",
+#                          install = TRUE,
+#                          overwrite=TRUE)
+
+surveys <- all_surveys() # to find out each survey id.
+
+# download data
+options(scipen=999999)
+dat <- fetch_survey(surveyID = surveys$id[surveys$name=='Winners and Losers_survey'], verbose = FALSE)
+
+# cleaning
+df <-  as.data.frame(dat)
 
 #
-install.packages("devtools")
-#devtools::install_github("zumbov2/deeplr")
-library(deeplr)
+# install.packages("devtools")
+# devtools::install_github("zumbov2/deeplr")
+# library(deeplr)
+
+p_load(deeplr)
 
 # FI    Finnish
 # EN    English
