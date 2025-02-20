@@ -18,46 +18,68 @@ surveys <- all_surveys() # to find out each survey id.
 
 # download data
 options(scipen=999999)
+# download data
 dat <- fetch_survey(surveyID = surveys$id[surveys$name=='Winners and Losers_survey'], verbose = FALSE)
 
-# cleaning
-df <-  as.data.frame(dat)
+# Translating Data
 
-#
 # install.packages("devtools")
 # devtools::install_github("zumbov2/deeplr")
 # library(deeplr)
 
-p_load(deeplr)
+# Load required packages
+p_load(deeplr,progress)
 
-# FI    Finnish
-# EN    English
-
-# Create an empty list to store translated columns
-translated_columns <- list()
-
-# Loop through each column of the dataset
-for (col in names(dat)) {
-  # Translate the entire column
-  translated_column <- sapply(dat[[col]], function(text) {
-    if (!is.na(text)) {
-      # Translate only non-NA values
-      deeplr::translate(text = text,
-                        source_lang = "FI",
-                        target_lang = "EN",
-                        auth_key = "048783fe-31b8-4d6c-bfbc-0a5fd51f9c46")
-    } else {
-      # Return NA for missing values
-      NA
-    }
-  })
-  
-  # Add the translated column to the list
-  translated_columns[[col]] <- translated_column
+# Function to translate text with progress bar
+translate_text <- function(text, pb) {
+  if (!is.na(text) && is.character(text) && nzchar(text)) {  # Ensure it is a character
+    tryCatch({
+      result <- deeplr::translate(text = text,
+                                  source_lang = "FI",
+                                  target_lang = "EN",
+                                  auth_key = "048783fe-31b8-4d6c-bfbc-0a5fd51f9c46")
+      if (!pb$finished) pb$tick()  # Only tick if progress is not finished
+      return(result)
+    }, error = function(e) {
+      warning(paste("Translation error:", e$message))
+      if (!pb$finished) pb$tick()  # Prevent over-ticking
+      return(text) # Return original text if translation fails
+    })
+  } else {
+    if (!pb$finished) pb$tick()  # Update progress bar for NA or non-character values
+    return(text)
+  }
 }
 
+dat.fi = dat
+
+# Ensure all columns are character type before translation
+dat.fi <- dat.fi %>%
+  mutate(across(where(is.factor), as.character)) %>%  # Convert factors to characters
+  mutate(across(where(is.numeric), as.character))    # Convert numbers to characters
+
+# Correctly count the number of translatable elements (only character and non-NA values)
+num_elements <- sum(sapply(dat.fi, function(col) sum(!is.na(col) & is.character(col))))
+
+# Initialize progress bar
+pb <- progress_bar$new(
+  format = "  Translating [:bar] :percent ETA: :eta",
+  total = num_elements,
+  clear = FALSE,
+  width = 60
+)
+
+# Apply translation function with progress bar (only on character columns)
+dat.fi <- dat.fi %>%
+  mutate(across(where(is.character), ~ sapply(., function(x) translate_text(x, pb))))
+
+# Ensure progress bar is marked as finished
+if (!pb$finished) pb$terminate()
+
+
+
 # Combine the translated columns into a new data frame
-dat.t <- as.data.frame(translated_columns)
+dat.t <- as.data.frame(dat.fi)
 
 # deletes row names
 rownames(dat.t) <- NULL
