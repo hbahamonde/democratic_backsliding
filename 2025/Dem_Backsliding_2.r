@@ -76,23 +76,26 @@ dat.fi <- dat.fi %>%
 # Ensure progress bar is marked as finished
 if (!pb$finished) pb$terminate()
 
-
-
-# Combine the translated columns into a new data frame
-dat.t <- as.data.frame(dat.fi)
+dat.t = dat.fi # duplicating
+dat.t <- as.data.frame(dat.fi) # formatting
+dat.t = dat.t[-c(1:12), ] # excluding pre-test
 
 # deletes row names
 rownames(dat.t) <- NULL
 
+
+# save
+save(dat.t, file="/Users/hectorbahamonde/research/democratic_backsliding/2025/dat_t.RData")
+
+
+# HERE
+
+
+
 # codebook
 codebook <- c(dat.t[1,])
 
-# deletes second row
-dat.t <- dat.t[-c(1,2), ]
 
-# introduces NA when cell is empty
-p_load("tidyverse")
-dat.t <- dat.t %>% mutate_all(na_if,"")
 
 # cleaning
 dat.t$Q5 = as.factor(dat.t$Q5)
@@ -104,13 +107,6 @@ dat.t$Q10_3 = as.factor(dat.t$Q10_3)
 dat.t$Q10_4 = as.factor(dat.t$Q10_4)
 dat.t$Q10_5 = as.factor(dat.t$Q10_5)
 
-# exclude survey preview
-p_load("tidyverse")
-dat.t = dat.t %>% filter(Status != "Survey preview")
-
-# saves dat.t
-save(dat.t, file="dat_t.RData")
-write.csv(dat.t, "dat_t.csv")
 
 # Don't knows ISSUE
 dont_know_variations <- c("Other/Don't know", "I don't know")

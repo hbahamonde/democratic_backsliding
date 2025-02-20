@@ -3,8 +3,7 @@
 \begin{document}
 
 <<>>=
-setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
-load(file="dat_t.RData") 
+load(file="/Users/hectorbahamonde/research/democratic_backsliding/2025/dat_t.RData") 
 @
 
 Sample size is n = 
