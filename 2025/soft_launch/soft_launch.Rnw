@@ -3,13 +3,13 @@
 \begin{document}
 
 <<>>=
+# load data
 load(file="/Users/hectorbahamonde/research/democratic_backsliding/2025/dat_t.RData") 
+# Pacman
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
 @
 
-Sample size is n = 
-<<>>=
-nrow(dat.t)
-@
+Sample size is n = \Sexpr{nrow(dat.t)}
 
 
 <<>>=
@@ -17,7 +17,7 @@ table(dat.t$Q5) # Geographical distribution
 table(dat.t$Q6) # Education
 table(dat.t$Q3) # Age
 table(dat.t$Q4) # gender
-lattice::histogram(dat.t$Q8_1) # Dem satisf
+lattice::histogram(as.factor(dat.t$Q8_1), main = "Dem Satis") # Dem satisf
 
 table(dat.t$Q10_1) # Democracy may have its problems, but it is better than other forms of government
 table(dat.t$Q10_2) # Democracy is not an effective form of government, and it would be better if Finland were led by a strong leader who did not have to worry about elections
@@ -71,25 +71,231 @@ Currently, there are \Sexpr{table((most_dont_know$DontKnowCount)>10)["TRUE"]} re
 head(most_dont_know)
 @
 
-Now the question that shows the priming condition is called dat.t\$DisplayOrder. The problem is that it has \Sexpr{length(c(is.na(dat.t$DisplayOrder)[is.na(dat.t$DisplayOrder)]))} missing values. See plot below.
 
+<<>>=
+### Map of respondents
+# setting "<NA>" to NA
+p_load(dplyr)
+dat.t <- dat.t %>% mutate(across(where(is.character), ~ ifelse(. == "<NA>", NA, .)))
+
+
+dat.t <- dat.t %>%
+  mutate(
+    LocationLatitude = as.numeric(LocationLatitude),
+    LocationLongitude = as.numeric(LocationLongitude)
+  )
+
+
+p_load(ggplot2, sf, rnaturalearth, rnaturalearthdata)
+
+# Load world map
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Define Finland's bounding box
+finland_xlim <- c(19, 32)  # Approximate longitude range of Finland
+finland_ylim <- c(59.5, 70)  # Approximate latitude range of Finland
+
+# Create the map
+ggplot() +
+  geom_sf(data = world, fill = "gray90", color = "gray50") +
+  geom_point(data = dat.t, aes(x = LocationLongitude, y = LocationLatitude),
+             color = "red", alpha = 0.6, size = 2) +
+  coord_sf(xlim = finland_xlim, ylim = finland_ylim) +
+  labs(title = "Survey Respondent Locations",
+       x = "Longitude", y = "Latitude") +
+  theme_minimal()
+@
 
 
 <<>>=
-dat.t$DisplayOrder = as.factor(dat.t$DisplayOrder)
-table(dat.t$DisplayOrder)
+dat.t$Priming <- factor(ifelse(is.na(dat.t$DisplayOrder), "Control", dat.t$DisplayOrder))
+p_load("tidyverse")
+dat.t$Priming <- recode_factor(dat.t$DisplayOrder, 
+                               `Q25` = "Loser", 
+                               `Q17` = "Winner",
+                               .default = "Control",
+                               .missing = "Control")  
 
-library(tidyr, ggplot2)
 
-ggplot(dat.t, aes(x = Q13_1, fill = DisplayOrder)) +
+# plots
+p_load(tidyr, ggplot2)
+
+ggplot(dat.t, aes(x = Q13_1, fill = Priming)) +
   geom_bar(position = "dodge") + 
   labs(title = "Distribution of Responses by Framing Condition",
-       x = "Response",
+       x = "The Gov't must be able to censor media that are unduly critical of the Gov't",
        y = "Count",
        fill = "Framing Condition") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(dat.t, aes(x = Q13_3, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "The government should be able to ignore court decisions that it considers politically biased",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(dat.t, aes(x = Q13_5, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "Government should be able to stretch the limits of legislation to solve pressing social problems",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(dat.t, aes(x = Q13_6, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "Our country would work better if political decisions were left to independent, non-elected experts instead of politicians",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 @
 
+Sampling
+
+<<>>=
+# Quota plots
+
+## REGION
+fi.eurostat.region <- data.frame(
+  Region = c(
+    "Helsinki and Uusimaa",
+    "Northern and Eastern Finland",
+    "Southern Finland", 
+    "Western Finland"),
+  Population_Percentage = c(29.9,24.0,21.0,25.1)
+)
+
+# Survey data
+fi.survey.data.region <- dat.t %>%
+  count(Q5) %>%
+  mutate(Survey_Percentage = (n / sum(n)) * 100)
+
+# Combine the data
+fi.combined.data.region <- fi.eurostat.region %>%
+  left_join(fi.survey.data.region, by = c("Region" = "Q5")) %>%
+  select(Region, Population_Percentage, Survey_Percentage)
+
+# Correct pivot_longer with updated column names
+fi.plot.data.region <- fi.combined.data.region %>%
+  pivot_longer(cols = c("Population_Percentage", "Survey_Percentage"),
+               names_to = "Source",
+               values_to = "Percentage") %>%
+  mutate(Source = recode(Source, 
+                         "Population_Percentage" = "Statistics Finland", 
+                         "Survey_Percentage" = "Survey"))
+
+# Plot the data
+ggplot(fi.plot.data.region, aes(x = reorder(Region, -Percentage), y = Percentage, fill = Source)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Survey Quotas with Statistics Finland Data",
+       x = "Region",
+       y = "Percentage",
+       fill = "Data Source") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+## Gender
+
+p_load(dplyr, ggplot2)
+
+# 
+fi.survey.gender <- dat.t %>%
+  group_by(Q4) %>%
+  summarise(Count = n()) %>%
+  mutate(Percentage = (Count / sum(Count)) * 100)
+
+# 
+fi.eurostat.gender <- data.frame(
+  Gender = c("Male", "Female"),
+  Percentage = c(50.0, 49.4),
+  Source = "Statistics Finland"
+)
+
+
+# 
+fi.survey.gender <- fi.survey.gender %>%
+  rename(Gender = Q4) %>%
+  mutate(Source = "Survey") %>%
+  select(Gender, Percentage, Source)
+
+combined_gender_data.fi <- bind_rows(fi.eurostat.gender, fi.survey.gender)
+
+
+# Create comparison plot
+ggplot(combined_gender_data.fi, aes(x = Gender, y = Percentage, fill = Source)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Survey Gender with Statistics Finland Data",
+       x = "Gender",
+       y = "Percentage",
+       fill = "Data Source") +
+  theme_minimal() 
+
+# Age
+
+## Age
+p_load(dplyr, ggplot2, tidyr)
+
+# Statistics Finland age distribution
+fi.eurostat.age <- data.frame(
+  Age_Group = c("18-29 years", "30-39 years", "40-49 years", 
+                "50-59 years", "60-69 years", "65-99 years"),
+  Population_Percentage = c(9.00, 15.00, 15.00, 17.00, 18.00, 26.00)
+)
+
+# Group survey responses to match Statistics Finland's age categories
+fi.survey.data.age <- dat.t %>%
+  mutate(Age_Group = case_when(
+    Q3 %in% c("18-24", "25-34") ~ "18-29 years",  # Merge 18-24 and 25-34 into 18-29
+    Q3 == "35-44" ~ "30-39 years",  # Adjusting based on available categories
+    Q3 == "45-54" ~ "40-49 years",
+    Q3 == "55+" ~ "50-59 years",  # Assuming 55+ mostly falls into 50-59
+    TRUE ~ NA_character_  # Catch-all for unexpected values
+  )) %>%
+  filter(!is.na(Age_Group)) %>%
+  count(Age_Group) %>%
+  mutate(Survey_Percentage = (n / sum(n)) * 100)
+
+# Merge survey and Statistics Finland data
+fi.combined.data.age <- fi.eurostat.age %>%
+  left_join(fi.survey.data.age, by = "Age_Group") %>%
+  select(Age_Group, Population_Percentage, Survey_Percentage)
+
+# Convert to long format for plotting
+fi.plot.data.age <- fi.combined.data.age %>%
+  pivot_longer(cols = c("Population_Percentage", "Survey_Percentage"),
+               names_to = "Source",
+               values_to = "Percentage") %>%
+  mutate(Source = recode(Source, 
+                         "Population_Percentage" = "Statistics Finland", 
+                         "Survey_Percentage" = "Survey"))
+
+# Reorder Age_Group for proper plotting order
+fi.plot.data.age <- fi.plot.data.age %>%
+  mutate(Age_Group = factor(Age_Group, 
+                            levels = c("18-29 years", 
+                                       "30-39 years", 
+                                       "40-49 years", 
+                                       "50-59 years",
+                                       "60-69 years",
+                                       "65-99 years")))
+
+# Generate comparison plot
+ggplot(fi.plot.data.age, aes(x = Age_Group, y = Percentage, fill = Source)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Survey Age Distribution with Statistics Finland Data",
+       x = "Age Group",
+       y = "Percentage",
+       fill = "Data Source") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+@
 
 \end{document}

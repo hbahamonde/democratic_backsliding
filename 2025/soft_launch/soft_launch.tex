@@ -55,22 +55,17 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{# load data}
 \hlkwd{load}\hldef{(}\hlkwc{file}\hldef{=}\hlsng{"/Users/hectorbahamonde/research/democratic_backsliding/2025/dat_t.RData"}\hldef{)}
+\hlcom{# Pacman}
+\hlkwa{if} \hldef{(}\hlopt{!}\hlkwd{require}\hldef{(}\hlsng{"pacman"}\hldef{))} \hlkwd{install.packages}\hldef{(}\hlsng{"pacman"}\hldef{);} \hlkwd{library}\hldef{(pacman)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: pacman}}\end{kframe}
 \end{knitrout}
 
-Sample size is n = 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{nrow}\hldef{(dat.t)}
-\end{alltt}
-\begin{verbatim}
-## [1] 1515
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+Sample size is n = 1515
 
 
 \begin{knitrout}
@@ -122,11 +117,11 @@ Sample size is n =
 ##                      763                      747                        5
 \end{verbatim}
 \begin{alltt}
-\hldef{lattice}\hlopt{::}\hlkwd{histogram}\hldef{(dat.t}\hlopt{$}\hldef{Q8_1)} \hlcom{# Dem satisf}
+\hldef{lattice}\hlopt{::}\hlkwd{histogram}\hldef{(}\hlkwd{as.factor}\hldef{(dat.t}\hlopt{$}\hldef{Q8_1),} \hlkwc{main} \hldef{=} \hlsng{"Dem Satis"}\hldef{)} \hlcom{# Dem satisf}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in UseMethod("{}histogram"{}): no applicable method for 'histogram' applied to an object of class "{}character"{}}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+\begin{kframe}\begin{alltt}
 \hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{Q10_1)} \hlcom{# Democracy may have its problems, but it is better than other forms of government}
 \end{alltt}
 \begin{verbatim}
@@ -366,28 +361,66 @@ Currently, there are 136 respondents (identified below) that rank pretty high wi
 \end{kframe}
 \end{knitrout}
 
-Now the question that shows the priming condition is called dat.t\$DisplayOrder. The problem is that it has 306 missing values. See plot below.
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{### Map of respondents}
+\hlcom{# setting "<NA>" to NA}
+\hlkwd{p_load}\hldef{(dplyr)}
+\hldef{dat.t} \hlkwb{<-} \hldef{dat.t} \hlopt{%>%} \hlkwd{mutate}\hldef{(}\hlkwd{across}\hldef{(}\hlkwd{where}\hldef{(is.character),} \hlopt{~} \hlkwd{ifelse}\hldef{(.} \hlopt{==} \hlsng{"<NA>"}\hldef{,} \hlnum{NA}\hldef{, .)))}
+
+
+\hldef{dat.t} \hlkwb{<-} \hldef{dat.t} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}
+    \hlkwc{LocationLatitude} \hldef{=} \hlkwd{as.numeric}\hldef{(LocationLatitude),}
+    \hlkwc{LocationLongitude} \hldef{=} \hlkwd{as.numeric}\hldef{(LocationLongitude)}
+  \hldef{)}
+
+
+\hlkwd{p_load}\hldef{(ggplot2, sf, rnaturalearth, rnaturalearthdata)}
+
+\hlcom{# Load world map}
+\hldef{world} \hlkwb{<-} \hlkwd{ne_countries}\hldef{(}\hlkwc{scale} \hldef{=} \hlsng{"medium"}\hldef{,} \hlkwc{returnclass} \hldef{=} \hlsng{"sf"}\hldef{)}
+
+\hlcom{# Define Finland's bounding box}
+\hldef{finland_xlim} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlnum{19}\hldef{,} \hlnum{32}\hldef{)}  \hlcom{# Approximate longitude range of Finland}
+\hldef{finland_ylim} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlnum{59.5}\hldef{,} \hlnum{70}\hldef{)}  \hlcom{# Approximate latitude range of Finland}
+
+\hlcom{# Create the map}
+\hlkwd{ggplot}\hldef{()} \hlopt{+}
+  \hlkwd{geom_sf}\hldef{(}\hlkwc{data} \hldef{= world,} \hlkwc{fill} \hldef{=} \hlsng{"gray90"}\hldef{,} \hlkwc{color} \hldef{=} \hlsng{"gray50"}\hldef{)} \hlopt{+}
+  \hlkwd{geom_point}\hldef{(}\hlkwc{data} \hldef{= dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= LocationLongitude,} \hlkwc{y} \hldef{= LocationLatitude),}
+             \hlkwc{color} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{alpha} \hldef{=} \hlnum{0.6}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{2}\hldef{)} \hlopt{+}
+  \hlkwd{coord_sf}\hldef{(}\hlkwc{xlim} \hldef{= finland_xlim,} \hlkwc{ylim} \hldef{= finland_ylim)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Survey Respondent Locations"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Longitude"}\hldef{,} \hlkwc{y} \hldef{=} \hlsng{"Latitude"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\end{knitrout}
 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{dat.t}\hlopt{$}\hldef{DisplayOrder} \hlkwb{=} \hlkwd{as.factor}\hldef{(dat.t}\hlopt{$}\hldef{DisplayOrder)}
-\hlkwd{table}\hldef{(dat.t}\hlopt{$}\hldef{DisplayOrder)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Q17 Q25 
-## 547 662
-\end{verbatim}
-\begin{alltt}
-\hlkwd{library}\hldef{(tidyr, ggplot2)}
+\hldef{dat.t}\hlopt{$}\hldef{Priming} \hlkwb{<-} \hlkwd{factor}\hldef{(}\hlkwd{ifelse}\hldef{(}\hlkwd{is.na}\hldef{(dat.t}\hlopt{$}\hldef{DisplayOrder),} \hlsng{"Control"}\hldef{, dat.t}\hlopt{$}\hldef{DisplayOrder))}
+\hlkwd{p_load}\hldef{(}\hlsng{"tidyverse"}\hldef{)}
+\hldef{dat.t}\hlopt{$}\hldef{Priming} \hlkwb{<-} \hlkwd{recode_factor}\hldef{(dat.t}\hlopt{$}\hldef{DisplayOrder,}
+                               \hlkwc{`Q25`} \hldef{=} \hlsng{"Loser"}\hldef{,}
+                               \hlkwc{`Q17`} \hldef{=} \hlsng{"Winner"}\hldef{,}
+                               \hlkwc{.default} \hldef{=} \hlsng{"Control"}\hldef{,}
+                               \hlkwc{.missing} \hldef{=} \hlsng{"Control"}\hldef{)}
 
-\hlkwd{ggplot}\hldef{(dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Q13_1,} \hlkwc{fill} \hldef{= DisplayOrder))} \hlopt{+}
+
+\hlcom{# plots}
+\hlkwd{p_load}\hldef{(tidyr, ggplot2)}
+
+\hlkwd{ggplot}\hldef{(dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Q13_1,} \hlkwc{fill} \hldef{= Priming))} \hlopt{+}
   \hlkwd{geom_bar}\hldef{(}\hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
   \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Distribution of Responses by Framing Condition"}\hldef{,}
-       \hlkwc{x} \hldef{=} \hlsng{"Response"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"The Gov't must be able to censor media that are unduly critical of the Gov't"}\hldef{,}
        \hlkwc{y} \hldef{=} \hlsng{"Count"}\hldef{,}
        \hlkwc{fill} \hldef{=} \hlsng{"Framing Condition"}\hldef{)} \hlopt{+}
   \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
@@ -395,7 +428,195 @@ Now the question that shows the priming condition is called dat.t\$DisplayOrder.
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\begin{kframe}\begin{alltt}
+\hlkwd{ggplot}\hldef{(dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Q13_3,} \hlkwc{fill} \hldef{= Priming))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Distribution of Responses by Framing Condition"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"The government should be able to ignore court decisions that it considers politically biased"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Count"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Framing Condition"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{axis.text.x} \hldef{=} \hlkwd{element_text}\hldef{(}\hlkwc{angle} \hldef{=} \hlnum{45}\hldef{,} \hlkwc{hjust} \hldef{=} \hlnum{1}\hldef{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-2} 
+\begin{kframe}\begin{alltt}
+\hlkwd{ggplot}\hldef{(dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Q13_5,} \hlkwc{fill} \hldef{= Priming))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Distribution of Responses by Framing Condition"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Government should be able to stretch the limits of legislation to solve pressing social problems"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Count"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Framing Condition"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{axis.text.x} \hldef{=} \hlkwd{element_text}\hldef{(}\hlkwc{angle} \hldef{=} \hlnum{45}\hldef{,} \hlkwc{hjust} \hldef{=} \hlnum{1}\hldef{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-3} 
+\begin{kframe}\begin{alltt}
+\hlkwd{ggplot}\hldef{(dat.t,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Q13_6,} \hlkwc{fill} \hldef{= Priming))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Distribution of Responses by Framing Condition"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Our country would work better if political decisions were left to independent, non-elected experts instead of politicians"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Count"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Framing Condition"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{axis.text.x} \hldef{=} \hlkwd{element_text}\hldef{(}\hlkwc{angle} \hldef{=} \hlnum{45}\hldef{,} \hlkwc{hjust} \hldef{=} \hlnum{1}\hldef{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-4} 
 \end{knitrout}
 
+Sampling
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Quota plots}
+
+\hlcom{## REGION}
+\hldef{fi.eurostat.region} \hlkwb{<-} \hlkwd{data.frame}\hldef{(}
+  \hlkwc{Region} \hldef{=} \hlkwd{c}\hldef{(}
+    \hlsng{"Helsinki and Uusimaa"}\hldef{,}
+    \hlsng{"Northern and Eastern Finland"}\hldef{,}
+    \hlsng{"Southern Finland"}\hldef{,}
+    \hlsng{"Western Finland"}\hldef{),}
+  \hlkwc{Population_Percentage} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{29.9}\hldef{,}\hlnum{24.0}\hldef{,}\hlnum{21.0}\hldef{,}\hlnum{25.1}\hldef{)}
+\hldef{)}
+
+\hlcom{# Survey data}
+\hldef{fi.survey.data.region} \hlkwb{<-} \hldef{dat.t} \hlopt{%>%}
+  \hlkwd{count}\hldef{(Q5)} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Survey_Percentage} \hldef{= (n} \hlopt{/} \hlkwd{sum}\hldef{(n))} \hlopt{*} \hlnum{100}\hldef{)}
+
+\hlcom{# Combine the data}
+\hldef{fi.combined.data.region} \hlkwb{<-} \hldef{fi.eurostat.region} \hlopt{%>%}
+  \hlkwd{left_join}\hldef{(fi.survey.data.region,} \hlkwc{by} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Region"} \hldef{=} \hlsng{"Q5"}\hldef{))} \hlopt{%>%}
+  \hlkwd{select}\hldef{(Region, Population_Percentage, Survey_Percentage)}
+
+\hlcom{# Correct pivot_longer with updated column names}
+\hldef{fi.plot.data.region} \hlkwb{<-} \hldef{fi.combined.data.region} \hlopt{%>%}
+  \hlkwd{pivot_longer}\hldef{(}\hlkwc{cols} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Population_Percentage"}\hldef{,} \hlsng{"Survey_Percentage"}\hldef{),}
+               \hlkwc{names_to} \hldef{=} \hlsng{"Source"}\hldef{,}
+               \hlkwc{values_to} \hldef{=} \hlsng{"Percentage"}\hldef{)} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Source} \hldef{=} \hlkwd{recode}\hldef{(Source,}
+                         \hlsng{"Population_Percentage"} \hldef{=} \hlsng{"Statistics Finland"}\hldef{,}
+                         \hlsng{"Survey_Percentage"} \hldef{=} \hlsng{"Survey"}\hldef{))}
+
+\hlcom{# Plot the data}
+\hlkwd{ggplot}\hldef{(fi.plot.data.region,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{=} \hlkwd{reorder}\hldef{(Region,} \hlopt{-}\hldef{Percentage),} \hlkwc{y} \hldef{= Percentage,} \hlkwc{fill} \hldef{= Source))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{stat} \hldef{=} \hlsng{"identity"}\hldef{,} \hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Comparison of Survey Quotas with Statistics Finland Data"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Region"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Percentage"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Data Source"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{axis.text.x} \hldef{=} \hlkwd{element_text}\hldef{(}\hlkwc{angle} \hldef{=} \hlnum{45}\hldef{,} \hlkwc{hjust} \hldef{=} \hlnum{1}\hldef{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+\begin{kframe}\begin{alltt}
+\hlcom{## Gender}
+
+\hlkwd{p_load}\hldef{(dplyr, ggplot2)}
+
+\hlcom{# }
+\hldef{fi.survey.gender} \hlkwb{<-} \hldef{dat.t} \hlopt{%>%}
+  \hlkwd{group_by}\hldef{(Q4)} \hlopt{%>%}
+  \hlkwd{summarise}\hldef{(}\hlkwc{Count} \hldef{=} \hlkwd{n}\hldef{())} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Percentage} \hldef{= (Count} \hlopt{/} \hlkwd{sum}\hldef{(Count))} \hlopt{*} \hlnum{100}\hldef{)}
+
+\hlcom{# }
+\hldef{fi.eurostat.gender} \hlkwb{<-} \hlkwd{data.frame}\hldef{(}
+  \hlkwc{Gender} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Male"}\hldef{,} \hlsng{"Female"}\hldef{),}
+  \hlkwc{Percentage} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{50.0}\hldef{,} \hlnum{49.4}\hldef{),}
+  \hlkwc{Source} \hldef{=} \hlsng{"Statistics Finland"}
+\hldef{)}
+
+
+\hlcom{# }
+\hldef{fi.survey.gender} \hlkwb{<-} \hldef{fi.survey.gender} \hlopt{%>%}
+  \hlkwd{rename}\hldef{(}\hlkwc{Gender} \hldef{= Q4)} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Source} \hldef{=} \hlsng{"Survey"}\hldef{)} \hlopt{%>%}
+  \hlkwd{select}\hldef{(Gender, Percentage, Source)}
+
+\hldef{combined_gender_data.fi} \hlkwb{<-} \hlkwd{bind_rows}\hldef{(fi.eurostat.gender, fi.survey.gender)}
+
+
+\hlcom{# Create comparison plot}
+\hlkwd{ggplot}\hldef{(combined_gender_data.fi,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Gender,} \hlkwc{y} \hldef{= Percentage,} \hlkwc{fill} \hldef{= Source))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{stat} \hldef{=} \hlsng{"identity"}\hldef{,} \hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Comparison of Survey Gender with Statistics Finland Data"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Gender"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Percentage"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Data Source"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-2} 
+\begin{kframe}\begin{alltt}
+\hlcom{# Age}
+
+\hlcom{## Age}
+\hlkwd{p_load}\hldef{(dplyr, ggplot2, tidyr)}
+
+\hlcom{# Statistics Finland age distribution}
+\hldef{fi.eurostat.age} \hlkwb{<-} \hlkwd{data.frame}\hldef{(}
+  \hlkwc{Age_Group} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"18-29 years"}\hldef{,} \hlsng{"30-39 years"}\hldef{,} \hlsng{"40-49 years"}\hldef{,}
+                \hlsng{"50-59 years"}\hldef{,} \hlsng{"60-69 years"}\hldef{,} \hlsng{"65-99 years"}\hldef{),}
+  \hlkwc{Population_Percentage} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{9.00}\hldef{,} \hlnum{15.00}\hldef{,} \hlnum{15.00}\hldef{,} \hlnum{17.00}\hldef{,} \hlnum{18.00}\hldef{,} \hlnum{26.00}\hldef{)}
+\hldef{)}
+
+\hlcom{# Group survey responses to match Statistics Finland's age categories}
+\hldef{fi.survey.data.age} \hlkwb{<-} \hldef{dat.t} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Age_Group} \hldef{=} \hlkwd{case_when}\hldef{(}
+    \hldef{Q3} \hlopt{%in%} \hlkwd{c}\hldef{(}\hlsng{"18-24"}\hldef{,} \hlsng{"25-34"}\hldef{)} \hlopt{~} \hlsng{"18-29 years"}\hldef{,}  \hlcom{# Merge 18-24 and 25-34 into 18-29}
+    \hldef{Q3} \hlopt{==} \hlsng{"35-44"} \hlopt{~} \hlsng{"30-39 years"}\hldef{,}  \hlcom{# Adjusting based on available categories}
+    \hldef{Q3} \hlopt{==} \hlsng{"45-54"} \hlopt{~} \hlsng{"40-49 years"}\hldef{,}
+    \hldef{Q3} \hlopt{==} \hlsng{"55+"} \hlopt{~} \hlsng{"50-59 years"}\hldef{,}  \hlcom{# Assuming 55+ mostly falls into 50-59}
+    \hlnum{TRUE} \hlopt{~} \hlnum{NA_character_}  \hlcom{# Catch-all for unexpected values}
+  \hldef{))} \hlopt{%>%}
+  \hlkwd{filter}\hldef{(}\hlopt{!}\hlkwd{is.na}\hldef{(Age_Group))} \hlopt{%>%}
+  \hlkwd{count}\hldef{(Age_Group)} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Survey_Percentage} \hldef{= (n} \hlopt{/} \hlkwd{sum}\hldef{(n))} \hlopt{*} \hlnum{100}\hldef{)}
+
+\hlcom{# Merge survey and Statistics Finland data}
+\hldef{fi.combined.data.age} \hlkwb{<-} \hldef{fi.eurostat.age} \hlopt{%>%}
+  \hlkwd{left_join}\hldef{(fi.survey.data.age,} \hlkwc{by} \hldef{=} \hlsng{"Age_Group"}\hldef{)} \hlopt{%>%}
+  \hlkwd{select}\hldef{(Age_Group, Population_Percentage, Survey_Percentage)}
+
+\hlcom{# Convert to long format for plotting}
+\hldef{fi.plot.data.age} \hlkwb{<-} \hldef{fi.combined.data.age} \hlopt{%>%}
+  \hlkwd{pivot_longer}\hldef{(}\hlkwc{cols} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Population_Percentage"}\hldef{,} \hlsng{"Survey_Percentage"}\hldef{),}
+               \hlkwc{names_to} \hldef{=} \hlsng{"Source"}\hldef{,}
+               \hlkwc{values_to} \hldef{=} \hlsng{"Percentage"}\hldef{)} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Source} \hldef{=} \hlkwd{recode}\hldef{(Source,}
+                         \hlsng{"Population_Percentage"} \hldef{=} \hlsng{"Statistics Finland"}\hldef{,}
+                         \hlsng{"Survey_Percentage"} \hldef{=} \hlsng{"Survey"}\hldef{))}
+
+\hlcom{# Reorder Age_Group for proper plotting order}
+\hldef{fi.plot.data.age} \hlkwb{<-} \hldef{fi.plot.data.age} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{Age_Group} \hldef{=} \hlkwd{factor}\hldef{(Age_Group,}
+                            \hlkwc{levels} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"18-29 years"}\hldef{,}
+                                       \hlsng{"30-39 years"}\hldef{,}
+                                       \hlsng{"40-49 years"}\hldef{,}
+                                       \hlsng{"50-59 years"}\hldef{,}
+                                       \hlsng{"60-69 years"}\hldef{,}
+                                       \hlsng{"65-99 years"}\hldef{)))}
+
+\hlcom{# Generate comparison plot}
+\hlkwd{ggplot}\hldef{(fi.plot.data.age,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= Age_Group,} \hlkwc{y} \hldef{= Percentage,} \hlkwc{fill} \hldef{= Source))} \hlopt{+}
+  \hlkwd{geom_bar}\hldef{(}\hlkwc{stat} \hldef{=} \hlsng{"identity"}\hldef{,} \hlkwc{position} \hldef{=} \hlsng{"dodge"}\hldef{)} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Comparison of Survey Age Distribution with Statistics Finland Data"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Age Group"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Percentage"}\hldef{,}
+       \hlkwc{fill} \hldef{=} \hlsng{"Data Source"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{axis.text.x} \hldef{=} \hlkwd{element_text}\hldef{(}\hlkwc{angle} \hldef{=} \hlnum{45}\hldef{,} \hlkwc{hjust} \hldef{=} \hlnum{1}\hldef{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 2 rows containing missing values or values outside the scale range\\\#\# (`geom\_bar()`).}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-3} 
+\end{knitrout}
 
 \end{document}
