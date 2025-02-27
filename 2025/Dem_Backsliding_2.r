@@ -89,7 +89,7 @@ translate_text <- function(text, pb) {
 
 
 ##########################################################################################
-# Data Analyses
+# Data Cleaning
 ##########################################################################################
 
 cat("\014")
@@ -108,12 +108,144 @@ dat.t <- dat.t %>% mutate(across(where(is.character), ~ ifelse(. == "<NA>", NA, 
 
 # cleaning
 dat.t$Q5 = as.factor(dat.t$Q5) # region
-dat.t$Q8_1 = as.numeric(dat.t$Q8_1)
-dat.t$Q10_1 = as.factor(dat.t$Q10_1)
-dat.t$Q10_2 = as.factor(dat.t$Q10_2)
-dat.t$Q10_3 = as.factor(dat.t$Q10_3)
-dat.t$Q10_4 = as.factor(dat.t$Q10_4)
-dat.t$Q10_5 = as.factor(dat.t$Q10_5)
+dat.t$Q8_1 = as.numeric(dat.t$Q8_1) # dem satisfaction
+dat.t$Q10_1 = as.factor(dat.t$Q10_1) # dem might have problems, but...
+dat.t$Q10_2 = as.factor(dat.t$Q10_2) # dem is not effective, better a strong leader
+dat.t$Q10_3 = as.factor(dat.t$Q10_3) # importance of media
+dat.t$Q10_4 = as.factor(dat.t$Q10_4) # pol participation 
+dat.t$Q10_5 = as.factor(dat.t$Q10_5) # no pressure on the judiciary
+dat.t$Q11 = as.factor(dat.t$Q11) # Interest in politics
+dat.t$Q15 = as.factor(dat.t$Q15)
+
+
+### Democracy Support and Priming Variable
+
+# Question that shows the priming condition is "dat.t$DisplayOrder"
+
+#table(dat.t$DisplayOrder)
+# 25: loser
+# 17: winner
+# NA: control
+
+# 
+dat.t$Priming <- factor(ifelse(is.na(dat.t$DisplayOrder), "Control", dat.t$DisplayOrder))
+p_load("tidyverse")
+dat.t$Priming <- recode_factor(dat.t$DisplayOrder, 
+                               `Q25` = "Loser", 
+                               `Q17` = "Winner",
+                               #.default = "Control",
+                               .missing = "Control")
+
+
+
+####################
+# Coalition Govt Var
+####################
+
+# Define coalition parties based on the current Finnish government
+coalition_parties <- c("National Coalition Party (NCP)", 
+                       "True Finns (PS)", 
+                       "Swedish People's Party of Finland (RKP)", 
+                       "Christian Democrats of Finland (KD)")
+
+# Create the new variable
+dat.t$CoalitionPartyVote <- ifelse(dat.t$Q15 %in% coalition_parties, "Coalition",
+                                   ifelse(dat.t$Q15 %in% c("I did not vote", "I don't know"), "Other", "Non-Coalition"))
+
+# Convert to factor for ordered categories
+dat.t$CoalitionPartyVote <- factor(dat.t$CoalitionPartyVote, levels = c("Coalition", "Non-Coalition", "Other"))
+
+
+
+
+####################
+# Talking Points (Inga)
+####################
+table(dat.t$CoalitionPartyVote, dat.t$Q15)
+table(dat.t$Priming, dat.t$CoalitionPartyVote)
+
+
+as.data.frame(dat.t %>%
+                dplyr::arrange(desc(Q15)) %>%
+                dplyr::filter(Priming == "Control" & CoalitionPartyVote == "Coalition") %>% 
+                dplyr::select(Q15, Priming, CoalitionPartyVote, DisplayOrder))
+
+as.data.frame(dat.t %>%
+                dplyr::arrange(desc(Q15)) %>%
+                dplyr::filter(Priming == "Control" & CoalitionPartyVote == "Non-Coalition") %>% 
+                dplyr::select(Q15, Priming, CoalitionPartyVote, DisplayOrder))
+
+# concern: self-selection. the effects can be because of their party pref. // loser/winning condition, and 
+# not the priming.
+####################
+
+# plots
+p_load(tidyr, ggplot2)
+
+ggplot(dat.t, aes(x = Q13_1, fill = Q15)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Party",
+       x = "The Gov't must be able to censor media that are unduly critical of the Gov't",
+       y = "Count",
+       fill = "Party Choice") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+ggplot(dat.t, aes(x = Q13_1, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "The Gov't must be able to censor media that are unduly critical of the Gov't",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(dat.t, aes(x = Q13_3, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "The government should be able to ignore court decisions that it considers politically biased",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(dat.t, aes(x = Q13_5, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "Government should be able to stretch the limits of legislation to solve pressing social problems",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(dat.t, aes(x = Q13_6, fill = Priming)) +
+  geom_bar(position = "dodge") + 
+  labs(title = "Distribution of Responses by Framing Condition",
+       x = "Our country would work better if political decisions were left to independent, non-elected experts instead of politicians",
+       y = "Count",
+       fill = "Framing Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+##
+
+
+
+##############################
+# Analyses
+##############################
+p_load(jtools)
+# dem satisfaction
+fit = lm(Q8_1 ~ Priming, data = dat.t)
+summary(fit)
+effect_plot(fit, pred = Priming, interval = TRUE)
+
+
+
+##############################
+# Data / quota checks
+##############################
 
 # Don't knows ISSUE
 dont_know_variations <- c("Other/Don't know", "I don't know")
@@ -166,67 +298,6 @@ ggplot() +
   labs(title = "Survey Respondent Locations",
        x = "Longitude", y = "Latitude") +
   theme_minimal()
-
-
-
-### Democracy Support and Priming Variable
-
-# Question that shows the priming condition is "dat.t$DisplayOrder"
-
-#table(dat.t$DisplayOrder)
-# 25: loser
-# 17: winner
-# NA: control
-
-# 
-dat.t$Priming <- factor(ifelse(is.na(dat.t$DisplayOrder), "Control", dat.t$DisplayOrder))
-p_load("tidyverse")
-dat.t$Priming <- recode_factor(dat.t$DisplayOrder, 
-                               `Q25` = "Loser", 
-                               `Q17` = "Winner",
-                               .default = "Control",
-                               .missing = "Control")  
-
-
-
-# plots
-p_load(tidyr, ggplot2)
-
-ggplot(dat.t, aes(x = Q13_1, fill = Priming)) +
-  geom_bar(position = "dodge") + 
-  labs(title = "Distribution of Responses by Framing Condition",
-       x = "The Gov't must be able to censor media that are unduly critical of the Gov't",
-       y = "Count",
-       fill = "Framing Condition") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot(dat.t, aes(x = Q13_3, fill = Priming)) +
-  geom_bar(position = "dodge") + 
-  labs(title = "Distribution of Responses by Framing Condition",
-       x = "The government should be able to ignore court decisions that it considers politically biased",
-       y = "Count",
-       fill = "Framing Condition") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot(dat.t, aes(x = Q13_5, fill = Priming)) +
-  geom_bar(position = "dodge") + 
-  labs(title = "Distribution of Responses by Framing Condition",
-       x = "Government should be able to stretch the limits of legislation to solve pressing social problems",
-       y = "Count",
-       fill = "Framing Condition") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot(dat.t, aes(x = Q13_6, fill = Priming)) +
-  geom_bar(position = "dodge") + 
-  labs(title = "Distribution of Responses by Framing Condition",
-       x = "Our country would work better if political decisions were left to independent, non-elected experts instead of politicians",
-       y = "Count",
-       fill = "Framing Condition") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # Quota plots
 
