@@ -330,7 +330,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
             \item<1-> Political elites in stable democracies typically accept electoral losses.
             \item<2-> However, actions by Trump's and Bolsonaro's supporters seriously questioned their acceptance of defeat.
             \item<3-> Research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
-            \item<4-> {\bf We know little about voters' ``systemic support'' when they lose elections} \scriptsize{{\color{gray}(Easton, 1965)}}.
+            \item<4-> Unfortunately, the ``losers' consent'' literature has not studied the propensity to support anti-systemic protests.
         \end{itemize}
     \end{column}
 
@@ -352,15 +352,15 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \framesubtitle{Electoral Losses and Institutional Heterogeneities}
 
   \begin{itemize}
-    \item We analyze the level of system support among electoral ``losers'' using novel data from a conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
+    \item We analyze the level of system support among electoral losers using novel data from a conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
 
     \item We exploit institutional heterogeneities in presidential and parliamentary systems.%,which effectively shift the \emph{costs} of losing/winning an election.
 
     \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
       
     \begin{itemize}
-      \item[H1] \only<1>{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}\only<3>{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}
-           \only<2>{\textcolor{amber}{Electoral ``losers'' favor candidates endorsing anti-systemic actions more than ``winners.''}}
+      \item[H1] \only<1>{Electoral losers favor candidates endorsing anti-systemic actions more than winners}\only<3>{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}
+           \only<2>{\textcolor{amber}{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}}
       \item[H2] \only<1-2>{This tendency is stronger in presidential than in parliamentary systems.}
            \only<3>{\textcolor{americanrose}{This tendency is stronger in presidential than in parliamentary systems.}}
     \end{itemize}
@@ -386,7 +386,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
         
         \item \emph{``Angry'' losers} might be more willing to support anti-systemic politicians.\\ {\tiny{\color{gray}(Bowler, Donovan, and Karp 2007)}}
  
-        \item Winners should oppose politicians supporting anti-systemic actions.
+        \item Winners (who draw instrumental benefits from the system) should oppose politicians supporting anti-systemic actions.
      
       \end{itemize}
 
@@ -424,7 +424,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
         \item {\bf Most dissimilar cases}: maximize variance regarding government system (Presidential and Parliamentary).
 
-        \item {\bf Most similar cases}: minimize variance regarding critical V-Dem variables.
+        \item {\bf Most similar cases} (two consolidated Third-wave democracies): minimize variance regarding critical V-Dem variables.
     \end{itemize} 
     \end{minipage}}
 \end{column}
@@ -529,7 +529,41 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
 
 \section{Results}
 
-\subsection{Subgroup Marginal Means (MM): Boric, Kast}
+\subsection{Subgroup Marginal Means (MM): Estonia}
+
+
+\miniframeson
+\begin{frame}
+
+\begin{columns}
+
+\begin{column}[T]{0.45\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{\linewidth}
+    \begin{itemize}
+        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates favoring anti-systemic protests are systematically {\bf supported} by (actual) losers.}
+
+        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: largely driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
+
+  
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: did not vote in the last Parliamentary elections favor candidates proposing violent protests.}    
+
+    \end{itemize} 
+    \end{minipage}
+\end{column}
+
+\begin{column}[T]{0.65\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
+        \begin{center}
+          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.295, center]{Conjoint_Winner_Loser.pdf}
+        \end{center}
+    \end{minipage}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\subsection{Subgroup Marginal Means (MM): Chile}
 
 
 \miniframeson
@@ -540,13 +574,11 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
 \begin{column}[T]{0.45\textwidth}
     \begin{minipage}[c][.6\textheight][c]{\linewidth}
     \begin{itemize}
-        \item {\only<2>{\leavevmode\color{Red}}Candidates favoring anti-systemic protests are systematically {\bf rejected} by {\bf both} winners and losers.}
+        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates favoring anti-systemic protests are systematically {\bf rejected} by {\bf both} winners and losers.}
 
         \item {\only<3>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of such candidates.}
 
-        %\item {\only<4>{\leavevmode\color{Red}}Effects might be driven by the legacies of the 2019-20 protests (\emph{Estallido Social})?}
-
-        \item {\only<4>{\leavevmode\color{Red}}{\bf Estonia}: results support H1}.
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Legacy effects}: results are driven by the legacies of the 2019-20 protests (\emph{Social Unrest}).}
 
 
     \end{itemize} 
