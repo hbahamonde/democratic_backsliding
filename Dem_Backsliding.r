@@ -2708,6 +2708,22 @@ p1.b = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth() +
   guides(colour=guide_legend(title="")) + 
   labs(x = "")
 
+p1.c = ggplot(vdem.d, aes(year, v2elfrfair, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Election free and fair") + theme(
+  panel.grid.major.x = element_blank(),
+  panel.grid.major.y = element_blank(),
+  legend.position="bottom",
+  aspect.ratio=1,
+  axis.text.y = element_text(size=14), 
+  axis.text.x = element_text(size=14), 
+  axis.title.y = element_text(size=14), 
+  axis.title.x = element_text(size=14), 
+  legend.text=element_text(size=14), 
+  legend.title=element_text(size=14),
+  plot.title = element_text(size=14),
+  strip.text.x = element_text(size=14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "")
+
 p2 = ggplot(vdem.d, aes(year, v2elaccept, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Election losers accept results") + theme(
   panel.grid.major.x = element_blank(),
   panel.grid.major.y = element_blank(),
@@ -2821,8 +2837,30 @@ p43 = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth(se=F
   guides(colour=guide_legend(title="")) + 
   labs(x = "",  caption = "Source: VDEM Data V12 2022 (Coppedge et al., 2022).")
 
+p43.c = ggplot(vdem.d, aes(year, v2caautmob, col=country_name)) + geom_smooth(se=F) + theme_light() + labs(y="Mobilization for autocracy") + theme(
+  panel.grid.major.x = element_blank(),
+  panel.grid.major.y = element_blank(),
+  legend.position="bottom",
+  aspect.ratio=1,
+  axis.text.y = element_text(size=14), 
+  axis.text.x = element_text(size=14), 
+  axis.title.y = element_text(size=14), 
+  axis.title.x = element_text(size=14), 
+  legend.text=element_text(size=14), 
+  legend.title=element_text(size=14),
+  plot.title = element_text(size=14),
+  strip.text.x = element_text(size=14)) +
+  guides(colour=guide_legend(title="")) + 
+  labs(x = "")
+
 vdem.chile.estonia.p = cowplot::plot_grid(p1,p2,p43, align = "hv",axis = "b", ncol = 3) 
 ggsave(vdem.chile.estonia.p, file="VD_Chile_Estonia.pdf", width=12, height=6)
+
+vdem.chile.estonia.p.present = cowplot::plot_grid(p1.c,p2,p43.c, align = "hv",axis = "b", ncol = 3) 
+ggsave(p1.c, file="VD_Chile_Estonia_present_1.pdf", width=12, height=6)
+ggsave(p2, file="VD_Chile_Estonia_present_2.pdf", width=12, height=6)
+ggsave(p43.c, file="VD_Chile_Estonia_present_3.pdf", width=12, height=6)
+
 
 # for presentation, below graphs
 ggsave(p1.b, file="VD_Chile_Estonia_ElecFree.pdf", width=10, height=10)
