@@ -388,7 +388,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
  
         \item Winners (who draw instrumental benefits from the system) should oppose politicians supporting anti-systemic actions.
 
-        \item[{\color{red}\Pointinghand}] Introduce the case of {\bf violent protests}.
+        \item[{\color{red}\Pointinghand}] Introduce the case of {\bf violent protests}.\pause
      
       \end{itemize}
 
@@ -399,6 +399,9 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
         \item  {\bf Presidential}: losers have little input outside of the electoral cycle. 
 
         \item {\bf Parliamentary}: losers’ interests can be represented through a variety of power sharing institutions. 
+
+        \item[{\color{red}\Pointinghand}] Thus, in presidential systems ``\emph{losers lose more},'' having more incentives to oppose the government via {\bf violent protests}.
+
      
       \end{itemize}
 
@@ -524,7 +527,7 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
 
 
 
-\subsection{Questioner}
+\subsection{Winning and Losing Statuses}
 
 \miniframeson
 \begin{frame}[c]{Winning and Losing Statuses: How we measured them}
@@ -556,15 +559,14 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
 
 \begin{column}[T]{0.45\textwidth}
     \begin{minipage}[c][.6\textheight][c]{\linewidth}
+     {\Large\textbf{Estonia}} % ← bold left-side title
     \begin{itemize}
-        \item[]{\bf Estonia}:
-
         \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf supported} by (actual) losers.}
 
         \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: largely driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
 
   
-        \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: did not vote in the last Parliamentary elections favor candidates proposing violent protests.}    
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: favor candidates proposing violent protests.}    
 
     \end{itemize} 
     \end{minipage}
@@ -592,14 +594,15 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
 
 \begin{column}[T]{0.45\textwidth}
     \begin{minipage}[c][.6\textheight][c]{\linewidth}
+         {\Large\textbf{Chile}} % ← bold left-side title
+
     \begin{itemize}
-                \item[]{\bf Chile}:
 
-        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf rejected} by {\bf both} winners and losers.}
+        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf rejected} by (actual) winners \emph{and} losers.}
 
-        \item {\only<4>{\leavevmode\color{Red}}{\bf Legacy effects}: results are driven by the legacies of the 2019-20 protests (\emph{Social Unrest}).}
+        \item {\only<3>{\leavevmode\color{Red}}{\bf Legacy effects}: results are driven by the legacies of the 2019-20 protests (\emph{`Social Unrest'}).}
 
-        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of such candidates.}
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of violent protests.}
 
 
 
@@ -636,11 +639,11 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
           \item[H2] This effect would be \emph{stronger} in Presidential systems \\ {\scriptsize(because of its zero-sum power sharing structure, {\bf losses are more catastrophic})}.
       \end{enumerate}
     
-    \item While we did not find support in favor of our hypotheses, we still found some other interesting results.
+    \item While we did not find support in favor of our hypotheses, we still found other interesting results.
 
     \begin{itemize}
-      \item {\bf Chile}: {\color{blue}Extreme-right} supporters are {\color{blue}less} likely to support extreme anti-system protests.
-      \item {\bf Estonia}: the {\color{blue}loser effects} are mainly {\color{blue}driven by extreme-right} supporters.
+      \item {\bf Chile}: {\color{blue}Extreme-right} supporters (winners) are {\color{blue}less} likely to support violent protests.
+      \item {\bf Estonia}: {\color{blue}Extreme-right} supporters (losers) are {\color{blue}more} likely to support violent protests.
     \end{itemize}
 
     %  \begin{exampleblock}{Motivating Questions for Q\&A}
