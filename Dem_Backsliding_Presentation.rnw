@@ -331,8 +331,8 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
         \begin{itemize}
             \item<1-> Political elites in stable democracies typically accept electoral losses.
             \item<2-> However, actions by Trump's and Bolsonaro's supporters seriously questioned their acceptance of defeat.
-            \item<3-> Research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
-            \item<4-> Unfortunately, the ``{\bf \color{red}losers' consent}'' {\bf \color{red}literature has not studied the propensity to support anti-systemic protests}.
+            \item<3-> While research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
+            \item<4->  The ``{\bf \color{red}losers' consent}'' {\bf \color{red}literature has not studied the propensity to support \underline{anti-systemic protests}}.
         \end{itemize}
     \end{column}
 
@@ -360,7 +360,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
     \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
       
     \begin{itemize}
-      \item[H1] \only<1>{Electoral {\color{blue}losers} favor candidates endorsing {\color{blue}anti-systemic protests} more than winners}\only<3>{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}
+      \item[H1] \only<1>{Electoral {\color{blue}losers} favor candidates endorsing {\color{blue}anti-systemic protests} more than winners.}\only<3>{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}
            \only<2>{\textcolor{amber}{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}}
       \item[H2] \only<1-2>{This tendency is stronger in {\color{blue}presidential} than in parliamentary systems.}
            \only<3>{\textcolor{americanrose}{This tendency is stronger in presidential than in parliamentary systems.}}
@@ -388,7 +388,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
  
         \item Winners (who draw instrumental benefits from the system) should oppose politicians supporting anti-systemic actions.
 
-        \item[{\color{red}\Pointinghand}] Introduce the case of {\bf violent protests}.\pause
+        \item[{\color{red}\Pointinghand}] Loser's consent: introduce the case of {\bf violent protests}.\pause
      
       \end{itemize}
 
@@ -457,7 +457,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
   \begin{itemize}
     \item Designed an unconstrained, fully randomized conjoint experiment. 
 
-    \item We explored if {\bf hypothetical} (conjoint) {\bf candidates} who support violent protests receive different levels of support from {\bf actual election winners and losers} (participants).
+    \item We explored if {\bf hypothetical} (conjoint) {\bf candidates} who support violent protests receive different levels of support from {\bf actual winning and losing participants}.
 
     %{\tiny\parencite{Hainmueller2014}}.
     \item We depart from standard AMCE analyses {\color{gray}{\tiny\parencite{Hainmueller2014}}} and instead compute {\bf subgroup marginal means} {\color{gray}{\tiny\parencite{Leeper2020a}}}.
@@ -642,8 +642,8 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
     \item While we did not find support in favor of our hypotheses, we still found other interesting results.
 
     \begin{itemize}
-      \item {\bf Chile}: {\color{blue}Extreme-right} supporters (winners) are {\color{blue}less} likely to support violent protests.
-      \item {\bf Estonia}: {\color{blue}Extreme-right} supporters (losers) are {\color{blue}more} likely to support violent protests.
+      \item {\bf Chile}: {\color{blue}Extreme-right} supporters (\underline{losers}) are {\color{blue}less} likely to support violent protests.
+      \item {\bf Estonia}: {\color{blue}Extreme-right} supporters (\underline{losers}) are {\color{red}more} likely to support violent protests.
     \end{itemize}
 
     %  \begin{exampleblock}{Motivating Questions for Q\&A}
