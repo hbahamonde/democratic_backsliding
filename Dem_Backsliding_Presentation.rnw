@@ -330,7 +330,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
     \begin{column}{0.5\textwidth} % Left column and width
         \begin{itemize}
             \item<1-> Political elites in stable democracies typically accept electoral losses.
-            \item<2-> However, actions by Trump's and Bolsonaro's supporters seriously questioned their acceptance of defeat.
+            \item<2-> However, this pattern has been disrupted: Trump's and Bolsonaro's supporters did not accept their defeat and engaged in violent protests.            
             \item<3-> While research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
             \item<4->  The ``{\bf \color{red}losers' consent}'' {\bf \color{red}literature has not studied the propensity to support \underline{anti-systemic protests}}.
         \end{itemize}
@@ -353,7 +353,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \begin{frame}[c]{Our Contribution}
 
   \begin{itemize}
-    \item We analyze the level of system support among electoral losers using novel data from a conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
+    \item {\color{blue}We analyze the level of system support among electoral losers using novel data from a conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size})}.
 
     \item We exploit institutional heterogeneities (presidential v. parliamentary systems).%,which effectively shift the \emph{costs} of losing/winning an election.
 
@@ -400,8 +400,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
         \item {\bf Parliamentary}: losers’ interests can be represented through a variety of power sharing institutions. 
 
-        \item[{\color{red}\Pointinghand}] Thus, in presidential systems ``\emph{losers lose more},'' having more incentives to oppose the government via {\bf violent protests}.
-
+        \item[{\color{red}\Pointinghand}] Thus, in presidential systems, the stakes are higher, creating more incentives to oppose the government via {\bf violent protests}.
      
       \end{itemize}
 
@@ -457,7 +456,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
   \begin{itemize}
     \item Designed an unconstrained, fully randomized conjoint experiment. 
 
-    \item We explored if {\bf hypothetical} (conjoint) {\bf candidates} who support violent protests receive different levels of support from {\bf actual winning and losing participants}.
+    \item {\color{blue}We explored if {\bf hypothetical} (conjoint) {\bf candidates} who support violent protests receive different levels of support from {\bf actual winning and losing participants}}.
 
     %{\tiny\parencite{Hainmueller2014}}.
     \item We depart from standard AMCE analyses {\color{gray}{\tiny\parencite{Hainmueller2014}}} and instead compute {\bf subgroup marginal means} {\color{gray}{\tiny\parencite{Leeper2020a}}}.
@@ -470,7 +469,7 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 
 
 \miniframesoff
-\begin{frame}[c]{Conjoint Experiment}
+\begin{frame}[c]{Attribute Set}
 
 \begin{table}[h]
 %\begin{footnotesize}
@@ -538,7 +537,7 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
       \begin{itemize}
         \item {\bf Chile}: ``\emph{Which candidate did you vote for in the 2nd round of the December 2021 presidential election?}'' 
         \\ {\only<2>{\leavevmode\color{Red}}\texttt{Kast}}, {\only<3>{\leavevmode\color{ForestGreen}}\texttt{Boric}}, \texttt{Others} {\tiny(\texttt{Blank/Spoiled}, \texttt{I did not vote}, \texttt{Prefer not to say})}.
-        \item {\bf Estonia}: ``\emph{Which political party did you vote for in the last elections?}'' \\ {\tiny \texttt{List of Estonian political parties that participated in the March 2023 parliamentary election}.}
+        \item {\bf Estonia}: ``\emph{Which political party did you vote for in the [March 2023 parliamentary election]?}'' %\\ {\tiny \texttt{List of Estonian political parties that participated in the March 2023 parliamentary election}.}
       \end{itemize}
  
   \end{itemize}
@@ -563,7 +562,7 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
     \begin{itemize}
         \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf supported} by (actual) losers.}
 
-        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: largely driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
+        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: mainly driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
 
   
         \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: favor candidates proposing violent protests.}    
@@ -636,7 +635,7 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
     \item We hypothesized (and pre-registered) that:
       \begin{enumerate}
           \item[H1] \emph{Electoral losers} were \emph{more} willing to support anti-systemic protests. 
-          \item[H2] This effect would be \emph{stronger} in Presidential systems \\ {\scriptsize(because of its zero-sum power sharing structure, {\bf losses are more catastrophic})}.
+          \item[H2] This effect would be \emph{stronger} in Presidential systems. \\ {\scriptsize{\bf Losses are more catastrophic.}}
       \end{enumerate}
     
     \item While we did not find support in favor of our hypotheses, we still found other interesting results.
