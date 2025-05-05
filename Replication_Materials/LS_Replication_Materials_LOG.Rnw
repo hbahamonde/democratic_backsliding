@@ -1,3 +1,8 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
 # BEGIN
 #####################################################
 cat("\014")
@@ -368,3 +373,8 @@ CRT_fatigueeffect.chile$p_val
 
 #####################################################
 # END
+@
+
+
+
+\end{document}

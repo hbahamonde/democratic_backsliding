@@ -1,0 +1,15 @@
+# Explanatory Memo
+
+This folder contains the following files:
+
+1.	Supplementary Information_Losers consent.docx: Referenced in the main paper. Contains robustness checks for the conjoint experiment.
+
+2.	dat_chile.RData: Dataset for the Chile experiment.
+
+3.	dat_estonia.RData: Dataset for the Estonia experiment.
+
+4.	LS_Replication_Materials.R: The R script that replicates all figures and statistical tests reported in the main paper and in the “Supplementary Information_Losers consent.docx”.
+
+5.	LS_Replication_Materials_LOG.Rnw: The same R script (“LS_Replication_Materials.R”) formatted as an RNW (Sweave) file to produce a full log of both the code and its output.
+
+6.	LS_Replication_Materials_LOG.pdf: The PDF output generated from “LS_Replication_Materials_LOG.Rnw”, containing all the code and corresponding output.
