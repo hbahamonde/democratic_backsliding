@@ -268,7 +268,9 @@
 %           DOCUMENT ID
 % % % % % % % % % % % % % % %
 
-\title{\input{title.txt}\unskip} % 
+
+\title{Losers' Consent and Anti-Systemic Protest: Experimental Evidence from Chile}% %\title{\input{title.txt}\unskip}% 
+
 
 
 
@@ -350,10 +352,12 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \subsection{Our Paper}
 
 \miniframeson
-\begin{frame}[c]{Our Contribution}
+\begin{frame}[c]{Our Contribution: A descriptive experimental study of Chile, and a ``Shadow Case''}
 
   \begin{itemize}
-    \item {\color{blue}We analyze the level of system support among electoral losers using novel data from a conjoint experiment in Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size})}.
+    \item {\color{blue}We analyze the level of system support among electoral losers using novel data from a conjoint experiment in Chile} (N=\Sexpr{chile.sample.size}).
+
+    \item[{\color{red}\Pointinghand}] We use the Estonian (N=\Sexpr{estonia.sample.size}) case as a {\bf \emph{shadow case}} to contrast the Chilean case {\color{gray}\footnotesize(Mahoney \& Goertz, 2006)}.
 
     \item We exploit institutional heterogeneities (presidential v. parliamentary systems).%,which effectively shift the \emph{costs} of losing/winning an election.
 
@@ -548,41 +552,6 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
 
 \section{Results}
 
-\subsection{Subgroup Marginal Means (MM): Estonia}
-
-
-\miniframeson
-\begin{frame}
-
-\begin{columns}
-
-\begin{column}[T]{0.45\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{\linewidth}
-     {\Large\textbf{Estonia}} % ← bold left-side title
-    \begin{itemize}
-        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf supported} by (actual) losers.}
-
-        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: mainly driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
-
-  
-        \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: favor candidates proposing violent protests.}    
-
-    \end{itemize} 
-    \end{minipage}
-\end{column}
-
-\begin{column}[T]{0.65\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
-        \begin{center}
-          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.295, center]{Conjoint_Winner_Loser.pdf}
-        \end{center}
-    \end{minipage}
-\end{column}
-
-\end{columns}
-
-\end{frame}
-
 \subsection{Subgroup Marginal Means (MM): Chile}
 
 
@@ -604,6 +573,41 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
         \item {\only<4>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of violent protests.}
 
 
+
+    \end{itemize} 
+    \end{minipage}
+\end{column}
+
+\begin{column}[T]{0.65\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
+        \begin{center}
+          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.295, center]{Conjoint_Winner_Loser.pdf}
+        \end{center}
+    \end{minipage}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\subsection{Subgroup Marginal Means (MM): Estonia}
+
+
+\miniframeson
+\begin{frame}
+
+\begin{columns}
+
+\begin{column}[T]{0.45\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{\linewidth}
+     {\Large\textbf{Estonia}} % ← bold left-side title
+    \begin{itemize}
+        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf supported} by (actual) losers.}
+
+        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: mainly driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
+
+  
+        \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: favor candidates proposing violent protests.}    
 
     \end{itemize} 
     \end{minipage}
@@ -649,10 +653,24 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
     %Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)? {\bf Let me know what you think}.
     %  \end{exampleblock}
 
-
-
-
   \end{itemize}
+\end{frame}
+
+
+\miniframesoff
+\begin{frame}[c]{Experimento Fallido? Metimos la pata?}
+
+  \begin{exampleblock}{De una manera, es un experimento fallido:}
+    Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)?
+  \end{exampleblock}
+
+  \begin{itemize}
+    \item Qu\'e otras maneras ven de ``salvar'' el paper?
+    \item Actualmente, el paper est\'a \emph{framed} {\bf no como un error en la selecci\'on de caso}, pero s\'i como un {\bf \emph{red flag}} de lo potente que fue la herencia del \emph{Estallido Social}.
+    \item El paper esta {\bf enviado} en \emph{Research \& Politics}.
+    \item {\bf \color{blue}Thoughts?}
+  \end{itemize}
+
 \end{frame}
 
 
