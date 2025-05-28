@@ -283,7 +283,7 @@ Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphab
                       \inst{2} \textnormal{Åbo Akademi}, Finland \and
                       \inst{3} Tecn\'ologico de Monterrey, Mexico}
 
-
+%
 
 
 \date{\today}
