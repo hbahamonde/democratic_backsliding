@@ -319,363 +319,234 @@ read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/Dem_Backslidi
 \titlepage
 \end{frame}
 
+% Translated and adapted content only (slides)
 
-\section{Introduction}
+\section{Introducción}
 
+\subsection{Motivación}
 
-\subsection{Motivation}
-
-\miniframeson
 \begin{frame}[c]{``Losers' Consent'': A Weak Assumption}
-\begin{columns}[T] % The [T] option aligns column content at the top
-
-    \begin{column}{0.5\textwidth} % Left column and width
+\begin{columns}[T]
+    \begin{column}{0.5\textwidth}
         \begin{itemize}
-            \item<1-> Political elites in stable democracies typically accept electoral losses.
-            \item<2-> However, this pattern has been disrupted: Trump's and Bolsonaro's supporters did not accept their defeat and engaged in violent protests.            
-            \item<3-> While research has looked into ``losers' consent,'' focusing on satisfaction, trust, and efficacy.
-            \item<4->  The ``{\bf \color{red}losers' consent}'' {\bf \color{red}literature has not studied the propensity to support \underline{anti-systemic protests}}.
+            \item<1-> Las élites políticas en democracias estables típicamente aceptan perder elecciones.
+            \item<2-> Sin embargo, este patrón se ha roto: los seguidores de Trump y Bolsonaro no aceptaron sus derrotas y participaron en protestas violentas.
+            \item<3-> Aunque se ha estudiado el ``Losers' Consent'', la literatura se ha centrado en satisfacción, confianza y eficacia.
+            \item<4-> La literatura sobre {\bf \color{red}``Losers' Consent''} {\bf \color{red}no ha estudiado la propensión a apoyar \underline{protestas anti-sistémicas}}.
         \end{itemize}
     \end{column}
-
-    \begin{column}{0.5\textwidth} % Right column and width
-        % Show the first figure only with the first item
+    \begin{column}{0.5\textwidth}
         \begin{figure}
-            \includegraphics<2,3,4>[scale=0.4]{Brasil_US_storming.jpeg} % Adjust path and size as needed
+            \includegraphics<2,3,4>[scale=0.4]{Brasil_US_storming.jpeg}
         \end{figure}
     \end{column}
-    
 \end{columns}
 \end{frame}
 
+\subsection{Nuestro Estudio}
 
-\subsection{Our Paper}
-
-\miniframeson
-\begin{frame}[c]{Our Contribution: A descriptive experimental study of Chile, and a ``Shadow Case''}
-
+\begin{frame}[c]{Nuestra contribución: Un experimento descriptivo en Chile y un ``shadow case''}
   \begin{itemize}
-    \item {\color{blue}We analyze the level of system support among electoral losers using novel data from a conjoint experiment in Chile} (N=\Sexpr{chile.sample.size}).
-
-    \item[{\color{red}\Pointinghand}] We use the Estonian (N=\Sexpr{estonia.sample.size}) case as a {\bf \emph{shadow case}} to contrast the Chilean case {\color{gray}\footnotesize(Mahoney \& Goertz, 2006)}.
-
-    \item We exploit institutional heterogeneities (presidential v. parliamentary systems).%,which effectively shift the \emph{costs} of losing/winning an election.
-
-    \item We pre-registered the following hypotheses: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
-      
+    \item {\color{blue}Analizamos el apoyo al sistema entre perdedores electorales con datos nuevos de un experimento tipo conjoint en Chile} (N=\Sexpr{chile.sample.size}).
+    \item[{\color{red}\Pointinghand}] Utilizamos el caso de Estonia (N=\Sexpr{estonia.sample.size}) como un {\bf ``\emph{shadow case}''} para contrastar con Chile {\color{gray}\footnotesize(Mahoney \& Goertz, 2006)}.
+    \item Aprovechamos heterogeneidades institucionales (presidencialismo vs parlamentarismo).
+    \item Hipótesis pre-registradas: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
     \begin{itemize}
-      \item[H1] \only<1>{Electoral {\color{blue}losers} favor candidates endorsing {\color{blue}anti-systemic protests} more than winners.}\only<3>{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}
-           \only<2>{\textcolor{amber}{Electoral losers favor candidates endorsing anti-systemic actions more than winners.}}
-      \item[H2] \only<1-2>{This tendency is stronger in {\color{blue}presidential} than in parliamentary systems.}
-           \only<3>{\textcolor{americanrose}{This tendency is stronger in presidential than in parliamentary systems.}}
-    \end{itemize}
+  \item[H1] 
+    \only<1>{Los {\color{blue}perdedores electorales} apoyan más a candidatos que respaldan {\color{blue}protestas anti-sistémicas} que los ganadores.}
+    \only<2>{\textcolor{amber}{Los perdedores electorales apoyan más a candidatos que respaldan protestas anti-sistémicas que los ganadores.}}
+    \only<3>{Los perdedores electorales apoyan más a candidatos que respaldan acciones anti-sistémicas que los ganadores.}
 
+  \item[H2] 
+    \only<1-2>{Esta tendencia es más fuerte en sistemas {\color{blue}presidenciales} que en parlamentarios.}
+    \only<3>{\textcolor{americanrose}{Esta tendencia es más fuerte en sistemas {\color{americanrose}presidenciales} que en parlamentarios.}}
 \end{itemize}
-
+  \end{itemize}
 \end{frame}
 
-\section{Theory}
+\section{Marco Teórico}
 
-\subsection{Soc. Movements and Institutional Literature}
+\subsection{Literatura de Movimientos Sociales e Instituciones}
 
-
-
-\miniframeson
-\begin{frame}[c]{Theoretical Background}
-
+\begin{frame}[c]{Antecedentes Teóricos}
   \begin{enumerate}
-    \item {\bf Social movements}:
-
+    \item {\bf Movimientos sociales}:
       \begin{itemize}
-        
-        \item \emph{``Angry'' losers} might be more willing to support anti-systemic politicians.\\ {\tiny{\color{gray}(Bowler, Donovan, and Karp 2007)}}
- 
-        \item Winners (who draw instrumental benefits from the system) should oppose politicians supporting anti-systemic actions.
-
-        \item[{\color{red}\Pointinghand}] Loser's consent: introduce the case of {\bf violent protests}.\pause
-     
+        \item Los \emph{``angry losers''} podrían estar más dispuestos a apoyar a políticos anti-sistémicos.\\ {\tiny{\color{gray}(Bowler, Donovan y Karp 2007)}}
+        \item Los ganadores (que obtienen beneficios del sistema) deberían rechazar a políticos que promueven acciones anti-sistémicas.
+        \item[{\color{red}\Pointinghand}] Losers' Consent: introducir el caso de las {\bf protestas violentas}.
       \end{itemize}
-
-  \item {\bf Institutional literature}: institutional setups affect differently the costs of losing an election \tiny{{\color{gray}(Lijphart, 2012)}}.
-
-        \begin{itemize}
-        
-        \item  {\bf Presidential}: losers have little input outside of the electoral cycle. 
-
-        \item {\bf Parliamentary}: losers’ interests can be represented through a variety of power sharing institutions. 
-
-        \item[{\color{red}\Pointinghand}] Thus, in presidential systems, the stakes are higher, creating more incentives to oppose the government via {\bf violent protests}.
-     
+    \item {\bf Literatura institucional}: la configuración institucional afecta los costos de perder una elección {\tiny{\color{gray}(Lijphart, 2012)}}.
+      \begin{itemize}
+        \item {\bf Presidencialismo}: los perdedores tienen poca influencia fuera del ciclo electoral.
+        \item {\bf Parlamentarismo}: los perdedores pueden estar representados a través de instituciones de reparto de poder.
+        \item[{\color{red}\Pointinghand}] Por lo tanto, en sistemas presidenciales, hay más en juego, y más incentivos para oponerse al gobierno vía {\bf protestas violentas}.
       \end{itemize}
-
-\end{enumerate}
-
+  \end{enumerate}
 \end{frame}
 
+\section{Diseño de Investigación}
 
+\subsection{Selección de Casos}
 
-\section{Research Design}
-
-\subsection{Case Selection}
-
-\miniframeson
-\begin{frame}[c]{Case Selection}
-
-
+\begin{frame}[c]{Selección de Casos}
 \begin{columns}
-
-\onslide<1->{
 \begin{column}[T]{0.45\textwidth}
     \begin{minipage}[c][.6\textheight][c]{\linewidth}
     \begin{itemize}
-
-        \item Collected novel data from Chile (N=\Sexpr{chile.sample.size}) and Estonia (N=\Sexpr{estonia.sample.size}).
-
-        \item {\bf Most dissimilar cases}: maximize variance regarding government system (Presidential and Parliamentary).
-
-        \item {\bf Most similar cases}: two consolidated Third-wave democracies.
-    \end{itemize} 
-    \end{minipage}}
-\end{column}
-
-\begin{column}[T]{0.65\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
-    \centering{\includegraphics<2>[width=1\textwidth]{VD_Chile_Estonia_present_1.pdf}}
-    \centering{\includegraphics<3>[width=1\textwidth]{VD_Chile_Estonia_present_2.pdf}}
-    \centering{\includegraphics<4>[width=1\textwidth]{VD_Chile_Estonia_present_3.pdf}}
+        \item Recolectamos datos nuevos de Chile (N=\Sexpr{chile.sample.size}) y Estonia (N=\Sexpr{estonia.sample.size}).
+        \item {\bf ``Most similar cases''}: maximizamos varianza en sistemas de gobierno (presidencial vs parlamentario).
+        \item {\bf ``Most disimilar cases''}: ambas son democracias consolidadas de la tercera ola.
+    \end{itemize}
     \end{minipage}
 \end{column}
 
+\begin{column}[T]{0.65\textwidth}
+    \vbox to 0.6\textheight{\centering
+        \only<2>{\includegraphics[width=1\textwidth]{VD_Chile_Estonia_present_1.pdf}}%
+        \only<3>{\includegraphics[width=1\textwidth]{VD_Chile_Estonia_present_2.pdf}}%
+        \only<4>{\includegraphics[width=1\textwidth]{VD_Chile_Estonia_present_3.pdf}}%
+        \vfill
+    }
+\end{column}
 \end{columns}
-
 \end{frame}
+\subsection{Diseño Experimental}
 
-
-
-\subsection{Experimental Design}
-
-\miniframeson
-\begin{frame}[c]{Conjoint Experiment}
-
+\begin{frame}[c]{Experimento tipo Conjoint}
   \begin{itemize}
-    \item Designed an unconstrained, fully randomized conjoint experiment. 
-
-    \item {\color{blue}We explored if {\bf hypothetical} (conjoint) {\bf candidates} who support violent protests receive different levels of support from {\bf actual winning and losing participants}}.
-
-    %{\tiny\parencite{Hainmueller2014}}.
-    \item We depart from standard AMCE analyses {\color{gray}{\tiny\parencite{Hainmueller2014}}} and instead compute {\bf subgroup marginal means} {\color{gray}{\tiny\parencite{Leeper2020a}}}.
-    %\item In practice, when using marginal means, there's no need to set a reference category.
-    %\item ``In a forced-choice conjoint design, the grand mean is by definition 0.5'' {\scriptsize\parencite[p. 209]{Leeper2020a}}.
-
+    \item Diseñamos un experimento tipo conjoint completamente aleatorizado.
+    \item {\color{blue}Exploramos si candidatos \textbf{hipotéticos} que apoyan protestas violentas reciben distinto nivel de apoyo según si los encuestados son \textbf{ganadores o perdedores reales}.}
+    \item En lugar de usar AMCEs tradicionales {\color{gray}{\tiny\parencite{Hainmueller2014}}}, estimamos \textbf{``marginal means'' por subgrupo} {\color{gray}{\tiny\parencite{Leeper2020a}}}.
   \end{itemize}
-
 \end{frame}
-
 
 \miniframesoff
-\begin{frame}[c]{Attribute Set}
-
+\begin{frame}[c]{Atributos del experimento}
 \begin{table}[h]
-%\begin{footnotesize}
 \scalebox{0.7}{
-\begin{tabular}{  c |  p{0.6\linewidth} }
+\begin{tabular}{c | p{0.6\linewidth}}
 \toprule
-\textbf{Dimension} & \textbf{Attribute Set} \\
+\textbf{Dimensión} & \textbf{Atributos} \\
 \midrule
-{\only<2,3>{\leavevmode\color{blue}}Gender} & {\only<2>{\leavevmode\color{red}}Male}, {\only<3>{\leavevmode\color{red}}Female}. \\
-{\only<4,5,6>{\leavevmode\color{blue}}Age} & {\only<4>{\leavevmode\color{red}}Younger than 35}, {\only<5>{\leavevmode\color{red}}Between 35-50}, {\only<6>{\leavevmode\color{red}}Over 50}. \\
-{\only<7,8>{\leavevmode\color{blue}}Protest} & {\only<7>{\leavevmode\color{red}}The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government}, {\only<8>{\leavevmode\color{red}}The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government} \\
-{\only<9,10>{\leavevmode\color{blue}}Pensions} & {\only<9>{\leavevmode\color{red}}The candidate OPPOSES increases in pensions for the elderly}, {\only<10>{\leavevmode\color{red}}The candidate SUPPORTS increases in pensions for the elderly}\\ 
+{\only<2,3>{\leavevmode\color{blue}}Género} & {\only<2>{\leavevmode\color{red}}Hombre}, {\only<3>{\leavevmode\color{red}}Mujer}. \\
+{\only<4,5,6>{\leavevmode\color{blue}}Edad} & {\only<4>{\leavevmode\color{red}}Menor de 35}, {\only<5>{\leavevmode\color{red}}Entre 35 y 50}, {\only<6>{\leavevmode\color{red}}Mayor de 50}. \\
+{\only<7,8>{\leavevmode\color{blue}}Protestas} & {\only<7>{\leavevmode\color{red}}El/la candidato/a SE OPONE a protestas anti-gobierno que buscan desestabilizar}, {\only<8>{\leavevmode\color{red}}El/la candidato/a APOYA protestas anti-gobierno que buscan desestabilizar}. \\
+{\only<9,10>{\leavevmode\color{blue}}Pensiones} & {\only<9>{\leavevmode\color{red}}El/la candidato/a SE OPONE a aumentar las pensiones}, {\only<10>{\leavevmode\color{red}}El/la candidato/a APOYA aumentar las pensiones}. \\
 \bottomrule
 \end{tabular}}
-%\end{footnotesize}
 \end{table}
 \end{frame}
 
-
-
 \miniframesoff
-\begin{frame}[c]{Conjoint Experiment: An Hypothetical Example}
-
+\begin{frame}[c]{Ejemplo hipotético}
 \begin{itemize}
-  \item Respondents were asked to choose between two options. For {\bf example}:
+  \item Participantes eligen entre dos opciones. Por \textbf{ejemplo}:
 \end{itemize}
-
 \begin{table}[h]
-%\begin{footnotesize}
 \scalebox{0.7}{
 \begin{tabular}{p{0.5\linewidth} | p{0.5\linewidth}}
 \toprule
-\textbf{Candidate 1} & \textbf{Candidate 2} \\
+\textbf{Candidato/a 1} & \textbf{Candidato/a 2} \\
 \midrule
-Female & Female \\
-Over 50 & Between 35-50 \\
-The candidate OPPOSES anti-government protest that will seek to de-destabilize the current government & The candidate SUPPORTS anti-government protest that will seek to de-destabilize the current government \\
-The candidate OPPOSES increases in pensions for the elderly & The candidate OPPOSES increases in pensions for the elderly\\ 
+Mujer & Mujer \\
+Mayor de 50 & Entre 35 y 50 \\
+Se opone a protestas violentas & Apoya protestas violentas \\
+Se opone a aumentar pensiones & Se opone a aumentar pensiones \\
 \midrule
-\multicolumn{2}{c}{\texttt{Please, choose one candidate}}\\
+\multicolumn{2}{c}{\texttt{Por favor, elija una opción}} \\
 \bottomrule
 \end{tabular}}
-%\end{footnotesize}
 \end{table}
-
 \begin{itemize}
-  \item Respondents repeated this process 8 times.
-  \item {\bf \color{blue}Every time, cells change their content at random}.
+  \item El proceso se repite 8 veces.
+  \item {\bf \color{blue}Cada vez, los atributos cambian aleatoriamente}.
 \end{itemize}
-
 \end{frame}
 
+\subsection{Ganadores y Perdedores}
 
-
-
-
-\subsection{Winning and Losing Statuses}
-
-\miniframeson
-\begin{frame}[c]{Winning and Losing Statuses: How we measured them}
-
+\begin{frame}[c]{Ganadores y Perdedores: ¿Cómo los medimos?}
+\begin{itemize}
+  \item {\only<2>{\leavevmode\color{Red}}{\bf Perdedores}}/{\only<3>{\leavevmode\color{ForestGreen}}{\bf Ganadores}}: preguntamos por quién votaron en la {\bf última elección real}.
   \begin{itemize}
-    \item {\only<2>{\leavevmode\color{Red}}{\bf Losers}}/{\only<3>{\leavevmode\color{ForestGreen}}{\bf Winners}}: asked who respondents voted for {\bf in the last (real) election}.
-
-      \begin{itemize}
-        \item {\bf Chile}: ``\emph{Which candidate did you vote for in the 2nd round of the December 2021 presidential election?}'' 
-        \\ {\only<2>{\leavevmode\color{Red}}\texttt{Kast}}, {\only<3>{\leavevmode\color{ForestGreen}}\texttt{Boric}}, \texttt{Others} {\tiny(\texttt{Blank/Spoiled}, \texttt{I did not vote}, \texttt{Prefer not to say})}.
-        \item {\bf Estonia}: ``\emph{Which political party did you vote for in the [March 2023 parliamentary election]?}'' %\\ {\tiny \texttt{List of Estonian political parties that participated in the March 2023 parliamentary election}.}
-      \end{itemize}
- 
+    \item {\bf Chile}: ``\emph{¿Por qué candidato votaste en la segunda vuelta de la elección presidencial de diciembre de 2021?}'' \\
+    {\only<2>{\leavevmode\color{Red}}\texttt{Kast}}, {\only<3>{\leavevmode\color{ForestGreen}}\texttt{Boric}}, \texttt{Otros} {\tiny(\texttt{Blanco/Nulo}, \texttt{No votó}, \texttt{Prefiero no responder})}.
+    \item {\bf Estonia}: ``\emph{¿Por qué partido votaste en la elección parlamentaria de marzo de 2023?}''
   \end{itemize}
-
+\end{itemize}
 \end{frame}
 
-
-
-\section{Results}
-
-\subsection{Subgroup Marginal Means (MM): Chile}
-
+\section{Resultados}
 
 \miniframeson
-\begin{frame}[c]%{Losers' Consent and Democratic Stability}
+\subsection{Chile}
 
-\begin{columns}
-
-\begin{column}[T]{0.45\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{\linewidth}
-         {\Large\textbf{Chile}} % ← bold left-side title
-
-    \begin{itemize}
-
-        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf rejected} by (actual) winners \emph{and} losers.}
-
-        \item {\only<3>{\leavevmode\color{Red}}{\bf Legacy effects}: results are driven by the legacies of the 2019-20 protests (\emph{`Social Unrest'}).}
-
-        \item {\only<4>{\leavevmode\color{Red}}{\bf Losers (Kast)} show even {\bf stronger disapproval} of violent protests.}
-
-
-
-    \end{itemize} 
-    \end{minipage}
-\end{column}
-
-\begin{column}[T]{0.65\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
-        \begin{center}
-          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.295, center]{Conjoint_Winner_Loser.pdf}
-        \end{center}
-    \end{minipage}
-\end{column}
-
-\end{columns}
-
-\end{frame}
-
-\subsection{Subgroup Marginal Means (MM): Estonia}
-
-
-\miniframeson
 \begin{frame}
-
 \begin{columns}
-
 \begin{column}[T]{0.45\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{\linewidth}
-     {\Large\textbf{Estonia}} % ← bold left-side title
-    \begin{itemize}
-        \item {\only<2>{\leavevmode\color{Red}}(Hypothetical) Candidates {\bf favoring violent protests} are systematically {\bf supported} by (actual) losers.}
-
-        \item {\only<3>{\leavevmode\color{Red}}{\bf Losers' Effect}: mainly driven by anti-migrant and anti-LGBT extreme right EKRE voters.}
-
-  
-        \item {\only<4>{\leavevmode\color{Red}}{\bf Disengaged citizens}: favor candidates proposing violent protests.}    
-
-    \end{itemize} 
-    \end{minipage}
+\begin{itemize}
+  \item Candidatos hipotéticos que apoyan protestas violentas son sistemáticamente rechazados por ganadores y perdedores.
+  \item Efectos de legado: influencia del Estallido Social.
+  \item Perdedores (Kast) muestran incluso más desaprobación.
+\end{itemize}
 \end{column}
-
 \begin{column}[T]{0.65\textwidth}
-    \begin{minipage}[c][.6\textheight][c]{1.1\linewidth}
-        \begin{center}
-          \vspace{0.6cm}\hspace{-0.8cm}\includegraphics[scale=.295, center]{Conjoint_Winner_Loser.pdf}
-        \end{center}
-    \end{minipage}
+\includegraphics[scale=.295]{Conjoint_Winner_Loser.pdf}
 \end{column}
-
 \end{columns}
-
 \end{frame}
-
-
-\section{Discussion}
-
-
-\subsection{Main Takeaways}
-
-
 
 \miniframeson
-\begin{frame}[c]{Discussion: More Questions Than Answers}
-  \begin{itemize}
-    \item We hypothesized (and pre-registered) that:
-      \begin{enumerate}
-          \item[H1] \emph{Electoral losers} were \emph{more} willing to support anti-systemic protests. 
-          \item[H2] This effect would be \emph{stronger} in Presidential systems. \\ {\scriptsize{\bf Losses are more catastrophic.}}
-      \end{enumerate}
-    
-    \item While we did not find support in favor of our hypotheses, we still found other interesting results.
+\subsection{Estonia}
 
-    \begin{itemize}
-      \item {\bf Chile}: {\color{blue}Extreme-right} supporters (\underline{losers}) are {\color{blue}less} likely to support violent protests.
-      \item {\bf Estonia}: {\color{blue}Extreme-right} supporters (\underline{losers}) are {\color{red}more} likely to support violent protests.
-    \end{itemize}
-
-    %  \begin{exampleblock}{Motivating Questions for Q\&A}
-    %Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)? {\bf Let me know what you think}.
-    %  \end{exampleblock}
-
-  \end{itemize}
+\begin{frame}
+\begin{columns}
+\begin{column}[T]{0.45\textwidth}
+\begin{itemize}
+  \item Candidatos hipotéticos que apoyan protestas violentas son apoyados por perdedores.
+  \item Efecto de los perdedores: votantes EKRE.
+  \item Ciudadanos desvinculados: más favorables a protestas.
+\end{itemize}
+\end{column}
+\begin{column}[T]{0.65\textwidth}
+\includegraphics[scale=.295]{Conjoint_Winner_Loser.pdf}
+\end{column}
+\end{columns}
 \end{frame}
 
+\section{Discusi\'on}
 
-\miniframesoff
-\begin{frame}[c]{Experimento Fallido? Metimos la pata?}
+\subsection{Discusión} 
 
-  \begin{exampleblock}{De una manera, es un experimento fallido:}
-    Did we make a mistake to think that, {\bf in Chile (!)}, right-wing losers were going to {\bf protests} (!)?
-  \end{exampleblock}
-
+\miniframeson
+\begin{frame}[c]{Discusión: Más preguntas que respuestas}
+\begin{itemize}
+  \item H1: Perdedores apoyan más protestas.
+  \item H2: Efecto mayor en presidencialismo.
+  \item Resultados:
   \begin{itemize}
-    \item Qu\'e otras maneras ven de ``salvar'' el paper?
-    \item Actualmente, el paper est\'a \emph{framed} {\bf no como un error en la selecci\'on de caso}, pero s\'i como un {\bf \emph{red flag}} de lo potente que fue la herencia del \emph{Estallido Social}.
-    \item El paper esta {\bf enviado} en \emph{Research \& Politics}.
-    \item {\bf \color{blue}Thoughts?}
+    \item Chile: derecha radical es menos propensa a apoyar protestas.
+    \item Estonia: derecha radical es más propensa a apoyar protestas.
   \end{itemize}
-
+\end{itemize}
 \end{frame}
 
+\miniframeson
+\begin{frame}[c]{¿Un experimento fallido? ¿Metimos la pata?}
+\begin{exampleblock}{En cierto sentido, es un experimento fallido:}
+¿Nos equivocamos al pensar que en Chile {\bf los perdedores de derecha} (!) iban a protestar?
+\end{exampleblock}
+\begin{itemize}
+  \item ¿Cómo podemos reformular el paper?
+  \item Lo presentamos como una señal del legado del Estallido Social.
+  \item Enviado a Research \& Politics.
+  \item Comentarios bienvenidos.
+\end{itemize}
+\end{frame}
 
 \miniframesoff
-\begin{frame}[c]{Thank you}
+\begin{frame}[c]{Gracias}
         \begin{center}
           \vspace{-0.7cm}\includegraphics[scale=.06, center]{/Users/hectorbahamonde/hbahamonde.github.io/resources/qr-code.pdf}
         \end{center}
@@ -687,13 +558,4 @@ The candidate OPPOSES increases in pensions for the elderly & The candidate OPPO
         \end{itemize}
 \end{frame}
 
-
-
-
-
 \end{document}
-
-
-
-
-                                                                                                                                                                               

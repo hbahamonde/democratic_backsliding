@@ -1,0 +1,604 @@
+\RequirePackage{atbegshi}
+\documentclass[compress,aspectratio=169,usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt} % aspectratio=169
+
+
+% % % % % % % % % % % % % % %
+%             MY PACKAGES 
+% % % % % % % % % % % % % % %
+\usepackage{graphicx}       % Use pdf, png, jpg, or eps with pdflatex; use eps in DVI mode
+\usepackage{dcolumn} % this pack is neccesary to build nicer columns with texreg--dont remove it.
+\usepackage[export]{adjustbox}
+\usepackage{xcolor}[dvipsnames]
+\usepackage{amssymb,amsmath}
+\usepackage{threeparttable} % package to have long notes in reg tables in texreg. 
+\usepackage{graphics}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+\usepgfplotslibrary{fillbetween}
+\usepackage{fontawesome}
+
+\usepackage{marvosym} % \Pointinghand
+
+
+%\usepackage{tipx}
+%\usepackage{tikz}
+%\usetikzlibrary{arrows,shapes,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usepackage{rotating}
+%\usepackage{scalerel} % for inline images
+\usepackage{import}
+%\usepackage{times}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+%\usepackage{textcomp}
+\usepackage{float}
+%\usepackage{setspace}      % \doublespacing \singlespacing \onehalfspacing %doble espacio
+%\label{x:y}                          %ocupar para autoref.
+%\autoref{x:y}                        %ocupar para autoref.
+%\usepackage{nopageno}      %desactivar para p�ginas
+\usepackage{pifont}
+\newcommand{\xmark}{\ding{55}}%
+
+%\usepackage{marvosym} %faces
+
+\usepackage{hyperref}
+\hypersetup{
+    %bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=true,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1} {key2} {key3}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links (change box color with linkbordercolor)
+    citecolor=blue,        % color of links to bibliography
+    filecolor=blue,      % color of file links
+    urlcolor=blue           % color of external links
+}
+
+\hypersetup{
+  colorlinks = true,
+  urlcolor = blue,
+  pdfpagemode = UseNone
+}
+
+
+\usepackage{multirow}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,decorations.pathreplacing}
+
+
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{ %
+  language=R,                     % the language of the code
+  basicstyle=\TINY,           % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=1,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  keywordstyle=\color{blue},      % keyword style
+  commentstyle=\color{dkgreen},   % comment style
+  stringstyle=\color{mauve},      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}            % if you want to add more keywords to the set
+} 
+
+% % % % % % % % % % % % % % %
+%           PACKAGE CUSTOMIZATION
+% % % % % % % % % % % % % % %
+
+% GENERAL CUSTOMIZATION
+\usepackage[math]{iwona}% font
+\usetheme{Singapore}  % template I should use
+%\usetheme{Szeged}  % alternative template
+\usecolortheme{rose}  % color template
+\makeatletter     % to show subsection/section title (1/3)
+\beamer@theme@subsectiontrue % to show subsection/section title (2/3)
+\makeatother      % to show subsection/section title (3/3)
+
+
+
+% THIS BELOW IS TO MAKE NAVIGATION DOTS MARKED DURING PRESENTATION
+\makeatletter
+\def\slideentry#1#2#3#4#5#6{%
+  %section number, subsection number, slide number, first/last frame, page number, part number
+  \ifnum#6=\c@part\ifnum#2>0\ifnum#3>0%
+    \ifbeamer@compress%
+      \advance\beamer@xpos by1\relax%
+    \else%
+      \beamer@xpos=#3\relax%
+      \beamer@ypos=#2\relax%
+    \fi%
+  \hbox to 0pt{%
+    \beamer@tempdim=-\beamer@vboxoffset%
+    \advance\beamer@tempdim by-\beamer@boxsize%
+    \multiply\beamer@tempdim by\beamer@ypos%
+    \advance\beamer@tempdim by -.05cm%
+    \raise\beamer@tempdim\hbox{%
+      \beamer@tempdim=\beamer@boxsize%
+      \multiply\beamer@tempdim by\beamer@xpos%
+      \advance\beamer@tempdim by -\beamer@boxsize%
+      \advance\beamer@tempdim by 1pt%
+      \kern\beamer@tempdim
+      \global\beamer@section@min@dim\beamer@tempdim
+      \hbox{\beamer@link(#4){%
+          \usebeamerfont{mini frame}%
+          \ifnum\c@section>#1%
+            %\usebeamercolor[fg]{mini frame}%
+            %\usebeamertemplate{mini frame}%
+            \usebeamercolor{mini frame}%
+            \usebeamertemplate{mini frame in other subsection}%
+          \else%
+            \ifnum\c@section=#1%
+              \ifnum\c@subsection>#2%
+                \usebeamercolor[fg]{mini frame}%
+                \usebeamertemplate{mini frame}%
+              \else%
+                \ifnum\c@subsection=#2%
+                  \usebeamercolor[fg]{mini frame}%
+                  \ifnum\c@subsectionslide<#3%
+                    \usebeamertemplate{mini frame in current subsection}%
+                  \else%
+                    \usebeamertemplate{mini frame}%
+                  \fi%
+                \else%
+                  \usebeamercolor{mini frame}%
+                  \usebeamertemplate{mini frame in other subsection}%
+                \fi%
+              \fi%
+            \else%
+              \usebeamercolor{mini frame}%
+              \usebeamertemplate{mini frame in other subsection}%
+            \fi%
+          \fi%
+        }}}\hskip-10cm plus 1fil%
+  }\fi\fi%
+  \else%
+  \fakeslideentry{#1}{#2}{#3}{#4}{#5}{#6}%
+  \fi\ignorespaces
+  }
+\makeatother
+
+
+%%% bib begin
+\usepackage[authordate,isbn=false,doi=false,url=false,eprint=false]{biblatex-chicago}
+\DeclareFieldFormat[article]{title}{\mkbibquote{#1}} % make article titles in quotes
+\DeclareFieldFormat[thesis]{title}{\mkbibemph{#1}} % make theses italics
+
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+
+\addbibresource{/Users/hectorbahamonde/Bibliografia_PoliSci/library.bib} 
+
+
+% USAGES
+%% use \textcite to cite normal
+%% \parencite to cite in parentheses
+%% \footcite to cite in footnote
+%% the default can be modified in autocite=FOO, footnote, for ex. 
+%%% bib end
+
+
+
+% % % % % % % % % % % % % % %
+%       To show the TITLE at the Bottom of each slide
+% % % % % % % % % % % % % % %
+
+\beamertemplatenavigationsymbolsempty 
+\makeatletter
+\setbeamertemplate{footline}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=1\paperwidth,ht=2.25ex,dp=2ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=1
+\paperwidth,ht=2.25ex,dp=2ex,center]{date in head/foot}%
+\end{beamercolorbox}}%
+}
+\makeatother
+
+
+
+% to switch off navigation bullets
+%% using \miniframeson or \miniframesoff
+\makeatletter
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
+\def\beamer@writeslidentry@miniframesoff{%
+  \expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+  {%else
+    % removed \addtocontents commands
+    \clearpage\beamer@notesactions%
+  }
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+\makeatother
+
+% Image full size: use 
+%%\begin{frame}
+  %%\fullsizegraphic{monogram.jpg}
+%%\end{frame}
+\newcommand<>{\fullsizegraphic}[1]{
+  \begin{textblock*}{0cm}(-1cm,-3.78cm)
+  \includegraphics[width=\paperwidth]{#1}
+  \end{textblock*}
+}
+
+
+% hyperlinks
+\hypersetup{colorlinks,
+            urlcolor=[rgb]{0.01, 0.28, 1.0},
+            linkcolor=[rgb]{0.01, 0.28, 1.0}}
+
+
+
+%\newcommand{\vitem}[]{\vfill \item}
+
+% % % % % % % % % % % % % % %
+%           DOCUMENT ID
+% % % % % % % % % % % % % % %
+
+
+\title{Losers' Consent and Anti-Systemic Protest: Experimental Evidence from Chile}% %\title{\input{title.txt}\unskip}% 
+
+
+
+
+
+\author[shortname]{
+Hector Bahamonde \inst{1} \and 
+Inga Saikkonen \inst{2} \and 
+Mart Trasberg \inst{3} \\ \vspace{3mm} \scriptsize{\color{gray}Authors in alphabetical order. All contributed equally to this paper.}
+}
+
+\institute[shortinst]{\inst{1} University of Turku, Finland \and %
+                      \inst{2} \textnormal{Åbo Akademi}, Finland \and
+                      \inst{3} Tecn\'ologico de Monterrey, Mexico}
+
+%
+
+
+\date{2 de Junio, 2025}
+
+%to to see shadows of previous blocks
+%\setbeamercovered{dynamic}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\end{knitrout}
+
+% % % % % % % % % % % % % % %
+%           CONTENT
+% % % % % % % % % % % % % % %
+
+%% title frame
+\begin{frame}
+\titlepage
+\end{frame}
+
+% Translated and adapted content only (slides)
+
+\section{Introducción}
+
+\subsection{Motivación}
+
+\begin{frame}[c]{``Losers' Consent'': A Weak Assumption}
+\begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+        \begin{itemize}
+            \item<1-> Las élites políticas en democracias estables típicamente aceptan perder elecciones.
+            \item<2-> Sin embargo, este patrón se ha roto: los seguidores de Trump y Bolsonaro no aceptaron sus derrotas y participaron en protestas violentas.
+            \item<3-> Aunque se ha estudiado el ``Losers' Consent'', la literatura se ha centrado en satisfacción, confianza y eficacia.
+            \item<4-> La literatura sobre {\bf \color{red}``Losers' Consent''} {\bf \color{red}no ha estudiado la propensión a apoyar \underline{protestas anti-sistémicas}}.
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \begin{figure}
+            \includegraphics<2,3,4>[scale=0.4]{Brasil_US_storming.jpeg}
+        \end{figure}
+    \end{column}
+\end{columns}
+\end{frame}
+
+\subsection{Nuestro Estudio}
+
+\begin{frame}[c]{Nuestra contribución: Un experimento descriptivo en Chile y un ``shadow case''}
+  \begin{itemize}
+    \item {\color{blue}Analizamos el apoyo al sistema entre perdedores electorales con datos nuevos de un experimento tipo conjoint en Chile} (N=811).
+    \item[{\color{red}\Pointinghand}] Utilizamos el caso de Estonia (N=639) como un {\bf ``\emph{shadow case}''} para contrastar con Chile {\color{gray}\footnotesize(Mahoney \& Goertz, 2006)}.
+    \item Aprovechamos heterogeneidades institucionales (presidencialismo vs parlamentarismo).
+    \item Hipótesis pre-registradas: \href{https://osf.io/u72z4}{\beamergotobutton{\texttt{link}}}
+    \begin{itemize}
+  \item[H1] 
+    \only<1>{Los {\color{blue}perdedores electorales} apoyan más a candidatos que respaldan {\color{blue}protestas anti-sistémicas} que los ganadores.}
+    \only<2>{\textcolor{amber}{Los perdedores electorales apoyan más a candidatos que respaldan protestas anti-sistémicas que los ganadores.}}
+    \only<3>{Los perdedores electorales apoyan más a candidatos que respaldan acciones anti-sistémicas que los ganadores.}
+
+  \item[H2] 
+    \only<1-2>{Esta tendencia es más fuerte en sistemas {\color{blue}presidenciales} que en parlamentarios.}
+    \only<3>{\textcolor{americanrose}{Esta tendencia es más fuerte en sistemas {\color{americanrose}presidenciales} que en parlamentarios.}}
+\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Marco Teórico}
+
+\subsection{Literatura de Movimientos Sociales e Instituciones}
+
+\begin{frame}[c]{Antecedentes Teóricos}
+  \begin{enumerate}
+    \item {\bf Movimientos sociales}:
+      \begin{itemize}
+        \item Los \emph{``angry losers''} podrían estar más dispuestos a apoyar a políticos anti-sistémicos.\\ {\tiny{\color{gray}(Bowler, Donovan y Karp 2007)}}
+        \item Los ganadores (que obtienen beneficios del sistema) deberían rechazar a políticos que promueven acciones anti-sistémicas.
+        \item[{\color{red}\Pointinghand}] Losers' Consent: introducir el caso de las {\bf protestas violentas}.
+      \end{itemize}
+    \item {\bf Literatura institucional}: la configuración institucional afecta los costos de perder una elección {\tiny{\color{gray}(Lijphart, 2012)}}.
+      \begin{itemize}
+        \item {\bf Presidencialismo}: los perdedores tienen poca influencia fuera del ciclo electoral.
+        \item {\bf Parlamentarismo}: los perdedores pueden estar representados a través de instituciones de reparto de poder.
+        \item[{\color{red}\Pointinghand}] Por lo tanto, en sistemas presidenciales, hay más en juego, y más incentivos para oponerse al gobierno vía {\bf protestas violentas}.
+      \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\section{Diseño de Investigación}
+
+\subsection{Selección de Casos}
+
+\begin{frame}[c]{Selección de Casos}
+\begin{columns}
+\begin{column}[T]{0.45\textwidth}
+    \begin{minipage}[c][.6\textheight][c]{\linewidth}
+    \begin{itemize}
+        \item Recolectamos datos nuevos de Chile (N=811) y Estonia (N=639).
+        \item {\bf ``Most similar cases''}: maximizamos varianza en sistemas de gobierno (presidencial vs parlamentario).
+        \item {\bf ``Most disimilar cases''}: ambas son democracias consolidadas de la tercera ola.
+    \end{itemize}
+    \end{minipage}
+\end{column}
+
+\begin{column}[T]{0.65\textwidth}
+    \vbox to 0.6\textheight{\centering
+        \only<2>{\includegraphics[width=1\textwidth]{VD_Chile_Estonia_present_1.pdf}}%
+        \only<3>{\includegraphics[width=1\textwidth]{VD_Chile_Estonia_present_2.pdf}}%
+        \only<4>{\includegraphics[width=1\textwidth]{VD_Chile_Estonia_present_3.pdf}}%
+        \vfill
+    }
+\end{column}
+\end{columns}
+\end{frame}
+\subsection{Diseño Experimental}
+
+\begin{frame}[c]{Experimento tipo Conjoint}
+  \begin{itemize}
+    \item Diseñamos un experimento tipo conjoint completamente aleatorizado.
+    \item {\color{blue}Exploramos si candidatos \textbf{hipotéticos} que apoyan protestas violentas reciben distinto nivel de apoyo según si los encuestados son \textbf{ganadores o perdedores reales}.}
+    \item En lugar de usar AMCEs tradicionales {\color{gray}{\tiny\parencite{Hainmueller2014}}}, estimamos \textbf{``marginal means'' por subgrupo} {\color{gray}{\tiny\parencite{Leeper2020a}}}.
+  \end{itemize}
+\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Atributos del experimento}
+\begin{table}[h]
+\scalebox{0.7}{
+\begin{tabular}{c | p{0.6\linewidth}}
+\toprule
+\textbf{Dimensión} & \textbf{Atributos} \\
+\midrule
+{\only<2,3>{\leavevmode\color{blue}}Género} & {\only<2>{\leavevmode\color{red}}Hombre}, {\only<3>{\leavevmode\color{red}}Mujer}. \\
+{\only<4,5,6>{\leavevmode\color{blue}}Edad} & {\only<4>{\leavevmode\color{red}}Menor de 35}, {\only<5>{\leavevmode\color{red}}Entre 35 y 50}, {\only<6>{\leavevmode\color{red}}Mayor de 50}. \\
+{\only<7,8>{\leavevmode\color{blue}}Protestas} & {\only<7>{\leavevmode\color{red}}El/la candidato/a SE OPONE a protestas anti-gobierno que buscan desestabilizar}, {\only<8>{\leavevmode\color{red}}El/la candidato/a APOYA protestas anti-gobierno que buscan desestabilizar}. \\
+{\only<9,10>{\leavevmode\color{blue}}Pensiones} & {\only<9>{\leavevmode\color{red}}El/la candidato/a SE OPONE a aumentar las pensiones}, {\only<10>{\leavevmode\color{red}}El/la candidato/a APOYA aumentar las pensiones}. \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Ejemplo hipotético}
+\begin{itemize}
+  \item Participantes eligen entre dos opciones. Por \textbf{ejemplo}:
+\end{itemize}
+\begin{table}[h]
+\scalebox{0.7}{
+\begin{tabular}{p{0.5\linewidth} | p{0.5\linewidth}}
+\toprule
+\textbf{Candidato/a 1} & \textbf{Candidato/a 2} \\
+\midrule
+Mujer & Mujer \\
+Mayor de 50 & Entre 35 y 50 \\
+Se opone a protestas violentas & Apoya protestas violentas \\
+Se opone a aumentar pensiones & Se opone a aumentar pensiones \\
+\midrule
+\multicolumn{2}{c}{\texttt{Por favor, elija una opción}} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\begin{itemize}
+  \item El proceso se repite 8 veces.
+  \item {\bf \color{blue}Cada vez, los atributos cambian aleatoriamente}.
+\end{itemize}
+\end{frame}
+
+\subsection{Ganadores y Perdedores}
+
+\begin{frame}[c]{Ganadores y Perdedores: ¿Cómo los medimos?}
+\begin{itemize}
+  \item {\only<2>{\leavevmode\color{Red}}{\bf Perdedores}}/{\only<3>{\leavevmode\color{ForestGreen}}{\bf Ganadores}}: preguntamos por quién votaron en la {\bf última elección real}.
+  \begin{itemize}
+    \item {\bf Chile}: ``\emph{¿Por qué candidato votaste en la segunda vuelta de la elección presidencial de diciembre de 2021?}'' \\
+    {\only<2>{\leavevmode\color{Red}}\texttt{Kast}}, {\only<3>{\leavevmode\color{ForestGreen}}\texttt{Boric}}, \texttt{Otros} {\tiny(\texttt{Blanco/Nulo}, \texttt{No votó}, \texttt{Prefiero no responder})}.
+    \item {\bf Estonia}: ``\emph{¿Por qué partido votaste en la elección parlamentaria de marzo de 2023?}''
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Resultados}
+
+\miniframeson
+\subsection{Chile}
+
+\begin{frame}
+\begin{columns}
+\begin{column}[T]{0.45\textwidth}
+\begin{itemize}
+  \item Candidatos hipotéticos que apoyan protestas violentas son sistemáticamente rechazados por ganadores y perdedores.
+  \item Efectos de legado: influencia del Estallido Social.
+  \item Perdedores (Kast) muestran incluso más desaprobación.
+\end{itemize}
+\end{column}
+\begin{column}[T]{0.65\textwidth}
+\includegraphics[scale=.295]{Conjoint_Winner_Loser.pdf}
+\end{column}
+\end{columns}
+\end{frame}
+
+\miniframeson
+\subsection{Estonia}
+
+\begin{frame}
+\begin{columns}
+\begin{column}[T]{0.45\textwidth}
+\begin{itemize}
+  \item Candidatos hipotéticos que apoyan protestas violentas son apoyados por perdedores.
+  \item Efecto de los perdedores: votantes EKRE.
+  \item Ciudadanos desvinculados: más favorables a protestas.
+\end{itemize}
+\end{column}
+\begin{column}[T]{0.65\textwidth}
+\includegraphics[scale=.295]{Conjoint_Winner_Loser.pdf}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Discusi\'on}
+
+\subsection{Discusión} 
+
+\miniframeson
+\begin{frame}[c]{Discusión: Más preguntas que respuestas}
+\begin{itemize}
+  \item H1: Perdedores apoyan más protestas.
+  \item H2: Efecto mayor en presidencialismo.
+  \item Resultados:
+  \begin{itemize}
+    \item Chile: derecha radical es menos propensa a apoyar protestas.
+    \item Estonia: derecha radical es más propensa a apoyar protestas.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\miniframeson
+\begin{frame}[c]{¿Un experimento fallido? ¿Metimos la pata?}
+\begin{exampleblock}{En cierto sentido, es un experimento fallido:}
+¿Nos equivocamos al pensar que en Chile {\bf los perdedores de derecha} (!) iban a protestar?
+\end{exampleblock}
+\begin{itemize}
+  \item ¿Cómo podemos reformular el paper?
+  \item Lo presentamos como una señal del legado del Estallido Social.
+  \item Enviado a Research \& Politics.
+  \item Comentarios bienvenidos.
+\end{itemize}
+\end{frame}
+
+\miniframesoff
+\begin{frame}[c]{Gracias}
+        \begin{center}
+          \vspace{-0.7cm}\includegraphics[scale=.06, center]{/Users/hectorbahamonde/hbahamonde.github.io/resources/qr-code.pdf}
+        \end{center}
+
+
+        \begin{itemize}
+            %\item Paper (draft) available at {\color{blue}www.HectorBahamonde.com}.
+            \item[] {\large\color{red}\faCamera}\; to check updates on this project. 
+        \end{itemize}
+\end{frame}
+
+\end{document}
