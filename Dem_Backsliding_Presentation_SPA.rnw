@@ -526,8 +526,8 @@ Se opone a aumentar pensiones & Se opone a aumentar pensiones \\
   \item H2: Efecto mayor en presidencialismo.
   \item Resultados:
   \begin{itemize}
-    \item Chile: derecha radical {\color{red}es menos} propensa a apoyar protestas.
-    \item Estonia: derecha radical {\color{red}es más propensa} a apoyar protestas.
+    \item {\bf Chile}: derecha radical {\color{red}(\emph{loser})} {\color{blue}es menos} propensa a apoyar protestas.
+    \item {\bf Estonia}: derecha radical {\color{red}(\emph{loser})} {\color{blue}es más propensa} a apoyar protestas.
   \end{itemize}
 \end{itemize}
 \end{frame}
