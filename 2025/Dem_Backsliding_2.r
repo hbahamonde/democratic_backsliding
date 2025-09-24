@@ -23,13 +23,94 @@ dat.t$Q10_2 = as.factor(dat.t$Q10_2) # dem is not effective, better a strong lea
 dat.t$Q10_3 = as.factor(dat.t$Q10_3) # importance of media
 dat.t$Q10_4 = as.factor(dat.t$Q10_4) # pol participation 
 dat.t$Q10_5 = as.factor(dat.t$Q10_5) # no pressure on the judiciary
-dat.t$Q11 = as.factor(dat.t$Q11) # Interest in politics
+#dat.t$Q11 = as.factor(dat.t$Q11) # Interest in politics
 dat.t$Q15 = as.factor(dat.t$Q15)
-dat.t$Q3 = as.factor(dat.t$Q3) # age
-dat.t$Q4 = as.factor(dat.t$Q4) # gender
-dat.t$Q5 = as.factor(dat.t$Q5) # region
-dat.t$Q6 = as.factor(dat.t$Q6) # educ
+#dat.t$Q3 = as.factor(dat.t$Q3) # age
+#dat.t$Q4 = as.factor(dat.t$Q4) # gender
+#dat.t$Q5 = as.factor(dat.t$Q5) # region
+#dat.t$Q6 = as.factor(dat.t$Q6) # educ
 
+# prepares q27 (government distance question)
+
+p_load(dplyr)
+
+# mapping
+q27_old <- paste0("Q27_", 1:9)
+q27_new <- c("q27_sdp","q27_ps","q27_kok","q27_kesk","q27_vihr","q27_vas","q27_rkp","q27_kd","q27_liike")
+
+# 1) warn if any expected columns are missing
+missing <- setdiff(q27_old, names(dat.t))
+if (length(missing)) warning("Missing Q27 columns: ", paste(missing, collapse = ", "))
+
+# 2) coerce to numeric
+dat.t[q27_old] <- lapply(dat.t[q27_old], function(x) suppressWarnings(as.numeric(x)))
+
+# 3) rename to party names
+names(dat.t)[match(q27_old, names(dat.t))] <- q27_new
+
+# 4) DK (=12) → NA; guard range 0–10 just in case
+dat.t <- dat.t %>%
+  mutate(across(all_of(q27_new),
+                ~ ifelse(. == 12 | . < 0 | . > 10, NA_real_, .)))
+
+
+
+# Generate Weighted Distance Variable
+
+p_load(dplyr)
+
+# Seat shares of 2023 Orpo govt (edit if your wave differs)
+gov_cols <- c("q27_kok","q27_ps","q27_rkp","q27_kd")
+
+# Seat counts for the Orpo cabinet (Dec 2024–Jan 2025)
+w_named <- c(kok = 48, ps = 46, rkp = 9, kd = 5)
+
+# Helper: weighted mean with rowwise renormalization over non-missing items
+renorm_wmean <- function(x, w) {
+  ok <- !is.na(x)
+  if (!any(ok)) return(NA_real_)
+  sum(x[ok] * w[ok]) / sum(w[ok])
+}
+
+# 1) Clean values (character -> numeric; DK=12 or out-of-range -> NA)
+dat.t <- dat.t %>%
+  mutate(across(all_of(gov_cols), ~ suppressWarnings(as.numeric(.)))) %>%
+  mutate(across(all_of(gov_cols), ~ ifelse(. == 12 | . < 0 | . > 10, NA_real_, .)))
+
+# 2) Seat-weighted (renormalized) coalition closeness & distance
+dat.t <- dat.t %>%
+  rowwise() %>%
+  mutate(
+    gov_closeness_w = {
+      x <- c_across(all_of(gov_cols))
+      # align weights to column order
+      w <- w_named[sub("^q27_", "", gov_cols)]
+      renorm_wmean(x, w)
+    },
+    gov_distance_w = 10 - gov_closeness_w
+  ) %>%
+  ungroup()
+
+# 3) Unweighted versions + diagnostics
+dat.t <- dat.t %>%
+  mutate(
+    gov_closeness_u = rowMeans(select(., all_of(gov_cols)), na.rm = TRUE),
+    gov_distance_u  = 10 - gov_closeness_u,
+    gov_known_share = rowMeans(!is.na(select(., all_of(gov_cols))))
+  )
+
+# 4) “Closest-government-party” distance (safe when all-missing)
+max_close    <- do.call(pmax, c(select(dat.t, all_of(gov_cols)), list(na.rm = TRUE)))
+all_missing  <- rowSums(!is.na(select(dat.t, all_of(gov_cols)))) == 0
+dat.t$gov_distance_min <- ifelse(all_missing, NA_real_, 10 - max_close)
+
+
+
+# gov_closeness_w — Seat-weighted coalition closeness: respondent’s average closeness to the governing parties, weighting each party by its seat share
+# gov_distance_w — Seat-weighted coalition distance. A flipped version so that larger = farther from government.
+# gov_closeness_u — Unweighted coalition closeness. Simple (unweighted) mean of the respondent’s closeness to the gov parties.
+# gov_distance_u — Unweighted coalition distance. The flipped version of the unweighted closeness.
+# gov_distance_min — “Closest-party” distance. Distance to the single government party the respondent likes the most.
 
 # order Q13_1
 dat.t$Q13_1 <- factor(
@@ -47,18 +128,98 @@ dat.t$Q13_1 <- factor(
 dat.t$Q13_1.r <- ifelse(dat.t$Q13_1 == "Totally disagree", 1, 0)
 
 #
-dat.t$Q13_6 <- factor(
-  dat.t$Q13_6,
-  levels = c(
-    "I don't know",
-    "Totally disagree",
-    "Somewhat disagree",
-    "Neither agree nor disagree",
-    "Somewhat agree",
-    "Totally agree"
-  ),
-  ordered = TRUE
+p_load(dplyr, forcats, sandwich, lmtest)
+
+## --- 1) Recode technocracy item (Q13_6): drop "I don't know" and make 1..5 ---
+dat.t <- dat.t %>%
+  mutate(
+    q13_6_chr = as.character(Q13_6),
+    q13_6_chr = na_if(q13_6_chr, "I don't know"),
+    techno_ord = factor(
+      q13_6_chr,
+      levels = c("Totally disagree","Somewhat disagree",
+                 "Neither agree nor disagree","Somewhat agree","Totally agree"),
+      ordered = TRUE
+    )
+  )
+
+## --- 2) Controls (light-touch recodes; drop DK/Other where needed) ---
+dat.t <- dat.t %>%
+  mutate(
+    # Education (ordered; drop "Other/Don't know")
+    educ_chr = as.character(Q6),
+    educ_chr = na_if(educ_chr, "Other/Don't know"),
+    educ_ord = factor(
+      educ_chr,
+      levels = c("Less than primary school (grades 1-9)",
+                 "Primary school (grades 1-9)",
+                 "Professional qualification",
+                 "Matriculation",
+                 "Master's degree or polytechnic degree",
+                 "University degree"),
+      ordered = TRUE
+    ),
+    
+    # Age (ordered categories from the survey)
+    age_ord = factor(
+      as.character(Q3),
+      levels = c("18-24","25-34","35-44","45-54","55+"),
+      ordered = TRUE
+    ),
+    
+    # Gender (drop Other / prefer not to say)
+    gender = fct_drop(fct_recode(factor(as.character(Q4)),
+                                 Female = "Female",
+                                 Male    = "Male",
+                                 NULL    = "Other/do not want to say")),
+    
+    # Political interest (optional but useful; drop DK)
+    polint_chr = na_if(as.character(Q11), "I don't know"),
+    polint_ord = factor(
+      polint_chr,
+      levels = c("Not interested at all","Only slightly interested",
+                 "Somewhat interested","Very interested"),
+      ordered = TRUE
+    ),
+    
+    # Region (as factor)
+    region = factor(as.character(Q5))
+  )
+
+## --- 3) Main predictor: scale gov_distance_w to 0–1 for interpretability ---
+dat.t <- dat.t %>%
+  mutate(gov_distance_w_01 = gov_distance_w / 10)
+
+## --- 4) OLS: technocracy (1..5) on distance + controls ---
+model_dat <- dat.t %>%
+  filter(!is.na(techno5), !is.na(gov_distance_w_01))
+
+
+
+m_ols <- lm(
+  techno5 ~ gov_distance_w_01 + educ_ord + age_ord + gender + region,
+  ,
+  data = model_dat
 )
+
+
+summary(m_ols)
+
+p_load(dplyr, MASS, sandwich, lmtest)
+
+m_ologit <- MASS::polr(
+  techno_ord ~ gov_distance_w_01 + educ_ord + age_ord + gender +
+    + region,
+  data = model_dat, method = "logistic", Hess = TRUE
+)
+
+
+
+
+
+
+
+
 
 #
 dat.t$Q13_6.r <- ifelse(dat.t$Q13_6 == "Totally disagree", 1, 0)
