@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, booktabs, graphicx, xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{bbm}          % in the preamble
+
+
+
+\begin{document}
+
+\section*{Technical Note: Distance to Government and Support for Technocratic Rule}
+
+\subsection*{1. Constructing \texttt{gov\_distance\_w\_01}}
+
+The main independent variable is \texttt{gov\_distance\_w\_01}, which captures the party-weighted distance from individual $i$ from the current Government.
+
+Let $i$ index respondents and $p \in G$ index parties in the governing coalition.
+From Q27, respondents rate their \emph{closeness} to each parliamentary party on a $0$--$10$ scale
+($12$ = ``don't know''). I first set all $12$ to missing. 
+
+Let $C_{ip} \in [0,10]$ denote respondent $i$'s closeness to party $p$.
+Let $s_p$ be party $p$'s seat count in the Eduskunta at the time of fieldwork
+(\emph{KOK} $=48$, \emph{PS} $=46$, \emph{RKP} $=9$, \emph{KD} $=5$),
+and define the coalition seat weights
+\[
+w_p \equiv \frac{s_p}{\sum_{q \in G} s_q}.
+\]
+Because some respondents skip one or more government parties when answering Q27, I \emph{renormalize} the weights over the parties that respondent $i$ actually rated:
+\[
+\tilde w_{ip} \equiv 
+\frac{w_p \cdot \mathbbm{1}\{C_{ip}\text{ is observed}\}}
+{\sum_{q \in G} w_q \cdot \mathbbm{1}\{C_{iq}\ \text{is observed}\}}.
+\]
+The respondent's seat-weighted coalition \emph{closeness} is then
+\[
+\text{GovCloseness}_i \equiv \sum_{p \in G} \tilde w_{ip}\, C_{ip}
+\quad \in [0,10].
+\]
+I scaled it to $0$--$1$ and defined a complementary \emph{distance} index:
+\[
+\texttt{gov\_closeness\_w\_01}_i \equiv \frac{\text{GovCloseness}_i}{10},
+\qquad
+\texttt{gov\_distance\_w\_01}_i \equiv 1 - \texttt{gov\_closeness\_w\_01}_i.
+\]
+By construction, higher values of \texttt{gov\_distance\_w\_01} indicate that a respondent is
+farther from the governing coalition in the Q27 closeness space.
+
+\subsection*{2. Estimation model}
+
+I modeled support for technocratic delegation using a linear specification,
+treating the $1$--$5$ item as approximately continuous (I also estimated an ordered model as a robustness check):
+\[
+\begin{aligned}
+\underbrace{\texttt{techno5}_i}_{\text{Technocracy}}
+&= \beta_0 + \beta_1\,\texttt{gov\_distance\_w\_01}_i
+  + \beta_2\,\underbrace{\texttt{Q8\_1}_i}_{\text{Dem satisfaction}}
+  + \beta_3\,\underbrace{\texttt{Q9\_4}_i}_{\text{Trust in Finnish politicians}} \\
+&\quad + \boldsymbol{\gamma}'\,\mathbf{X}_i
+  + \delta_{\text{region}(i)} + \varepsilon_i .
+\end{aligned}
+\]
+
+where $\mathbf{X}_i$ includes education, age and gender; $\delta_{\text{region}}$ are region fixed effects. The coefficient of interest is $\beta_1$.
+
+\subsection*{3. Interpretation of the predictive plot}
+
+Figure~\ref{fig:pred} plots the \emph{average} predicted value of \texttt{techno5}
+over the empirical distribution of controls, as \texttt{gov\_distance\_w\_01} varies from $0$ (very close to the government) to $1$ (far).
+The dark line is the point prediction; the shaded band is the 95\% confidence interval.
+The estimated relationship is \emph{negative and monotonic}: moving from full proximity to maximal distance lowers
+predicted technocratic support from about $3.5$ to about $2.8$ on the $1$--$5$ scale.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=.8\linewidth]{Rplot.pdf} % replace with your path/filename
+\caption{Average predicted technocracy vs.\ government distance (95\% CIs).}
+\label{fig:pred}
+\end{figure}
+
+\subsection*{4. Substantive takeaway and relation to our expectation}
+
+Our expectation was that \emph{electoral losers}---those farther from the sitting government---would be
+more likely to (a) defend checks and balances and (b) support delegating power away from elected politicians (i.e., more technocracy). The evidence in Figure~\ref{fig:pred} goes in the opposite direction for (b): in Finland,
+respondents who are \emph{farther} from the right-wing Orpo coalition exhibit \emph{lower} support for technocratic delegation.
+
+A plausible interpretation is that, in this context, distance from the government largely identifies
+left-leaning respondents. For these voters, ``experts rather than politicians'' may be perceived as
+\emph{depoliticizing distributional conflict} and historically associated with fiscal austerity and
+market-forward governance. Thus, when the right governs, left-leaning losers appear
+\emph{less} willing to transfer authority to non-elected experts and prefer to keep decisions under elected, accountable politicians.
+This pattern can coexist with stronger support for \emph{checks and balances} (judicial review, oversight),
+which constrain incumbents without removing decisions from electoral accountability. In short,
+losers may favor \emph{constraints on the government}, but not \emph{depoliticization} of policy.
+
+
+\medskip
+\noindent
+\textit{Implications.} The results suggest that support for technocracy is not a generic ``losers' consent'' mechanism.
+It appears contingent on the ideological meaning of expertise in a given polity: when expertise is coded
+as center-right (Finland, 2023--2025), distance from the government correlates with \emph{lower} technocratic support.
+
+\end{document}

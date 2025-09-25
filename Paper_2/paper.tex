@@ -1,0 +1,60 @@
+\title{Losers, Delegation, and the Ideological Valence of Expertise: \\ Evidence from Finland}
+\author{[Anonymous]}
+\date{\today}
+
+% in your preamble:
+% \usepackage{amsmath,amssymb}
+% \usepackage{natbib}
+% \usepackage{mathtools}
+% \bibliographystyle{apsr} % or your journal's style
+
+\section{Introduction}
+
+Recent work argues that ordinary citizens often fail to discipline would-be autocrats because partisan conflict makes them willing to trade democratic principles for policy or partisan gains \citep{Svolik2020QJPS, Svolik2019JoD}. In polarized electorates, incumbents can subvert democracy and “get away with it” because their supporters find it too costly to vote for the opposition as punishment \citep{Svolik2020QJPS}. This view reframes classic worries about conflict and fragmentation \citep{Lipset1960, Dahl1971, Sartori1976} and complements accounts that document executive takeovers and legalistic backsliding rather than overt coups \citep{LevitskyWay2010, Bermeo2016, WaldnerLust2018}. A parallel literature emphasizes how manipulation and depoliticization can proceed via institutional engineering---for instance, by delegating authority to nominally independent bodies \citep{Schedler2002, Singer2018}.
+
+We extend this agenda by focusing on citizens’ \emph{preferences over delegation versus electoral accountability}. While existing research usually studies whether voters punish undemocratic behavior, we examine whether they support shifting power \emph{away from elected politicians} to unelected experts (“technocratic delegation”). We argue that this preference itself is politically conditional. In particular, delegation may be perceived as \emph{ideologically valenced}: where “experts” are viewed as aligned with the incumbent coalition, losers may oppose delegation not because they reject constraints, but because delegation would empower ideologically unfriendly actors.\footnote{This complements arguments about affective/identity polarization that magnify in-group protection and out-group threat \citep[e.g.,][]{LevitskyZiblatt2018, McCoySomer2018}.}
+
+\subsection*{Data, measures, and Finland as a hard test}
+
+We analyze an original survey from Finland (2023–2025), a high-quality parliamentary democracy with multi-party coalitions. Respondents placed each parliamentary party on a 0–10 “closeness” scale (Q27; 12 = “don’t know”). We construct an individual, coalition-weighted “distance to government” that travels across coalition systems and directly operationalizes the voter–incumbent gap stressed by \citet{Svolik2020QJPS}.
+
+Let $G$ denote the governing parties at the time of fieldwork \emph{(KOK, PS, RKP, KD)} with seat counts $s_p$ and weights $w_p = s_p/\sum_{q\in G}s_q$. Let $C_{ip}\in[0,10]$ be respondent $i$’s closeness to party $p$ (we set 12 = DK to missing). Because respondents may skip some parties, we re-normalize weights over those actually answered:
+\[
+\tilde w_{ip} \equiv 
+\frac{w_p \,\mathbbm{1}\{C_{ip}\ \text{observed}\}}
+{\sum_{q \in G} w_q \,\mathbbm{1}\{C_{iq}\ \text{observed}\}}\,,
+\]
+and define seat-weighted coalition \emph{closeness}
+$\text{GovCloseness}_i=\sum_{p\in G}\tilde w_{ip}C_{ip}$ (0–10) and \emph{distance}
+$\texttt{gov\_distance\_w\_01}_i\equiv 1-\text{GovCloseness}_i/10\in[0,1]$.
+This renormalization ensures comparability when some $C_{ip}$ are missing.
+
+Our main outcome is support for technocracy, recoded to a five-point scale from Q13\_6 (1 = totally disagree, 5 = totally agree). Key controls include democratic satisfaction (Q8\_1; 0–10) and trust in Finnish politicians (Q9\_4; 1–11), plus education, age, gender, and region fixed effects. For transparency we estimate both OLS and ordered logit. The benchmark specification is
+\[
+\underbrace{\texttt{techno5}_i}_{\text{Technocracy (1--5)}} \;=\;
+\beta_0 \;+\;
+\beta_1\,\texttt{gov\_distance\_w\_01}_i \;+\;
+\beta_2\,\underbrace{\texttt{Q8\_1}_i}_{\text{Dem.\ satisfaction}} \;+\;
+\beta_3\,\underbrace{\texttt{Q9\_4}_i}_{\text{Trust in politicians}} \;+\;
+\boldsymbol{\gamma}'\,\mathbf{X}_i
+\;+\; \delta_{\text{region}(i)} \;+\; \varepsilon_i\,.
+\]
+
+\subsection*{Theory and hypotheses: the ideological valence of delegation}
+
+Following \citet{Svolik2020QJPS}, voters face trade-offs between democratic means and partisan ends. We recast that trade-off as a choice between \emph{delegation} (empowering unelected experts) and \emph{electoral accountability}. Delegation is not ideologically neutral: in Finland 2023–25, “expert” governance is widely associated with market-forward, fiscally conservative policy. Hence, among \emph{losers} (those farther from the governing coalition), delegation may look like ceding authority to actors expected to implement the winner’s program. Two conditional predictions follow:
+
+\begin{description}
+  \item[H1 (Distance effect, conditional on valence).] When technocratic institutions are perceived as ideologically aligned with the government, $\beta_1<0$: losers oppose delegation and prefer elected control. When perceived as neutral or aligned with losers, $\beta_1>0$.
+  \item[H2 (Polarization as a moderator).] The slope in H1 steepens with individual partisan intensity and system-level polarization, which raise the cost of empowering the out-group \citep{Svolik2019JoD, Sartori1976}.
+\end{description}
+
+\noindent
+We operationalize polarization at the individual level via (i) distance to government (above) and (ii) intensity indices based on the dispersion/concentration of Q27 party likes (e.g., max-gap or Herfindahl). As additional scope conditions, we interact distance with trust in ideologically coded “expert” institutions (e.g., judiciary, central bank, EU), testing whether perceived neutrality reverses the direction of the effect.
+
+\subsection*{Preview of findings}
+
+Contrary to a simple “losers favor constraints” logic, Finnish respondents who are farther from the right-leaning coalition are \emph{less} supportive of technocratic delegation. We interpret this as evidence that losers in this context prefer to keep decisions with elected, accountable politicians rather than empower right-coded experts. This pattern refines the scope conditions in \citet{Svolik2020QJPS}: public checks depend not only on polarization but also on the \emph{ideological valence} of the institutional alternative to electoral control.
+
+% later in the manuscript:
+% \bibliography{library}

@@ -2,6 +2,7 @@
 # Data Cleaning
 ##########################################################################################
 
+## ---- loadings:d
 cat("\014")
 rm(list=ls())
 setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
@@ -30,6 +31,33 @@ dat.t$Q15 = as.factor(dat.t$Q15)
 #dat.t$Q5 = as.factor(dat.t$Q5) # region
 #dat.t$Q6 = as.factor(dat.t$Q6) # educ
 
+# --- Q9 trust items: recode to numeric 1..11; 12 ("I don't know") -> NA ---
+q9_cols <- paste0("Q9_", 1:7)
+
+# warn if any are missing
+missing <- setdiff(q9_cols, names(dat.t))
+if (length(missing)) warning("Missing Q9 columns: ", paste(missing, collapse = ", "))
+
+# recode
+dat.t[q9_cols] <- lapply(dat.t[q9_cols], function(x) {
+  x_chr <- as.character(x)
+  # drop textual DKs if present
+  x_chr[x_chr %in% c("I don't know", "I dont know", "<NA>", "", "NA")] <- NA
+  v <- suppressWarnings(as.numeric(x_chr))
+  # keep only 1..11; set 12 (DK) and any out-of-range to NA
+  v[ v == 12 | v < 1 | v > 11 ] <- NA_real_
+  v
+})
+
+# Optional: also provide 0–10 and 0–1 scaled versions
+dat.t[paste0(q9_cols, "_010")] <- lapply(dat.t[q9_cols], function(v) ifelse(is.na(v), NA, v - 1))
+dat.t[paste0(q9_cols, "_01")]  <- lapply(dat.t[q9_cols], function(v) ifelse(is.na(v), NA, (v - 1) / 10))
+
+# Quick sanity checks
+# sapply(dat.t[q9_cols], function(v) range(v, na.rm = TRUE))
+# sapply(dat.t[q9_cols], function(v) table(v, useNA="ifany"))
+
+
 # prepares q27 (government distance question)
 
 p_load(dplyr)
@@ -56,7 +84,6 @@ dat.t <- dat.t %>%
 
 
 # Generate Weighted Distance Variable
-
 p_load(dplyr)
 
 # Seat shares of 2023 Orpo govt (edit if your wave differs)
@@ -91,19 +118,34 @@ dat.t <- dat.t %>%
   ) %>%
   ungroup()
 
-# 3) Unweighted versions + diagnostics
-dat.t <- dat.t %>%
-  mutate(
-    gov_closeness_u = rowMeans(select(., all_of(gov_cols)), na.rm = TRUE),
-    gov_distance_u  = 10 - gov_closeness_u,
-    gov_known_share = rowMeans(!is.na(select(., all_of(gov_cols))))
-  )
+# 3) Unweighted versions + diagnostics (robust base-R) ---
+
+# sanity: check the columns exist and are numeric
+stopifnot(all(gov_cols %in% names(dat.t)))
+stopifnot(all(sapply(dat.t[gov_cols], is.numeric)))
+
+# make a plain matrix of the gov-party ratings
+Xg <- as.matrix(dat.t[, gov_cols, drop = FALSE])
+
+# count answered gov-party items per row
+answered <- rowSums(!is.na(Xg))
+
+# unweighted closeness: mean over answered items
+closeness_u <- rowSums(Xg, na.rm = TRUE) / pmax(answered, 1L)  # avoid /0
+closeness_u[answered == 0] <- NA_real_                          # all-missing -> NA
+
+# attach to dat.t
+dat.t$gov_closeness_u <- closeness_u
+dat.t$gov_distance_u  <- 10 - dat.t$gov_closeness_u
+dat.t$gov_known_share <- answered / ncol(Xg)                     # 0..1 share answered
 
 # 4) “Closest-government-party” distance (safe when all-missing)
-max_close    <- do.call(pmax, c(select(dat.t, all_of(gov_cols)), list(na.rm = TRUE)))
-all_missing  <- rowSums(!is.na(select(dat.t, all_of(gov_cols)))) == 0
+max_close <- do.call(
+  pmax,
+  c(dplyr::select(dat.t, tidyselect::all_of(gov_cols)), list(na.rm = TRUE))
+  )
+all_missing <- rowSums(!is.na(dplyr::select(dat.t, tidyselect::all_of(gov_cols)))) == 0
 dat.t$gov_distance_min <- ifelse(all_missing, NA_real_, 10 - max_close)
-
 
 
 # gov_closeness_w — Seat-weighted coalition closeness: respondent’s average closeness to the governing parties, weighting each party by its seat share
@@ -130,7 +172,7 @@ dat.t$Q13_1.r <- ifelse(dat.t$Q13_1 == "Totally disagree", 1, 0)
 #
 p_load(dplyr, forcats, sandwich, lmtest)
 
-## --- 1) Recode technocracy item (Q13_6): drop "I don't know" and make 1..5 ---
+## 1) Recode technocracy item (Q13_6): drop "I don't know" and make 1..5 ---
 dat.t <- dat.t %>%
   mutate(
     q13_6_chr = as.character(Q13_6),
@@ -140,10 +182,15 @@ dat.t <- dat.t %>%
       levels = c("Totally disagree","Somewhat disagree",
                  "Neither agree nor disagree","Somewhat agree","Totally agree"),
       ordered = TRUE
-    )
+    ),
+    techno5 = as.numeric(techno_ord)   # 1..5 (higher = more technocratic)
   )
+# quick check
+# table(dat.t$techno5, useNA="ifany")
 
-## --- 2) Controls (light-touch recodes; drop DK/Other where needed) ---
+
+
+## 2) Controls (light-touch recodes; drop DK/Other where needed) ---
 dat.t <- dat.t %>%
   mutate(
     # Education (ordered; drop "Other/Don't know")
@@ -186,43 +233,161 @@ dat.t <- dat.t %>%
     region = factor(as.character(Q5))
   )
 
-## --- 3) Main predictor: scale gov_distance_w to 0–1 for interpretability ---
+## 3) Main predictor: scale gov_distance_w to 0–1 for interpretability ---
 dat.t <- dat.t %>%
-  mutate(gov_distance_w_01 = gov_distance_w / 10)
-
-## --- 4) OLS: technocracy (1..5) on distance + controls ---
-model_dat <- dat.t %>%
-  filter(!is.na(techno5), !is.na(gov_distance_w_01))
-
+  mutate(
+    gov_closeness_w_01 = gov_closeness_w / 10,   # 0..1 (higher = closer to govt)
+    gov_distance_w_01  = 1 - gov_closeness_w_01  # exact complement of closeness
+  )
 
 
+## 4) OLS: technocracy (1..5) on distance + controls ---
+#model_dat <- dat.t %>%
+#  filter(!is.na(techno5), !is.na(gov_distance_w_01))
+
+
+
+# ols
 m_ols <- lm(
-  techno5 ~ gov_distance_w_01 + educ_ord + age_ord + gender + region,
+  techno5 ~ gov_distance_w_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
   ,
-  data = model_dat
+  data = dat.t
 )
-
-
 summary(m_ols)
 
-p_load(dplyr, MASS, sandwich, lmtest)
 
+# Packages
+p_load(ggplot2)
+       
+
+mf <- model.frame(m_ols)           # data actually used in the fit (complete cases)
+V  <- vcov(m_ols)
+xseq <- seq(0, 1, by = 0.01)
+
+ap <- lapply(xseq, function(x) {
+  nd <- mf
+  nd$gov_distance_w_01 <- x
+  X  <- model.matrix(formula(m_ols), data = nd)
+  xbar <- colMeans(X)                               # average design vector
+  fit  <- drop(xbar %*% coef(m_ols))                # average prediction
+  se   <- sqrt(drop(t(xbar) %*% V %*% xbar))        # delta-method SE
+  data.frame(
+    gov_distance_w_01 = x,
+    estimate = fit,
+    conf.low = fit - 1.96 * se,
+    conf.high = fit + 1.96 * se
+  )
+})
+ap <- do.call(rbind, ap)
+
+## ----
+
+plot.p = ggplot(ap, aes(gov_distance_w_01, estimate)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.20) +
+  geom_line(linewidth = 1) +
+  labs(
+    x = "Government distance (0 = very close, 1 = far)",
+    y = "Predicted technocracy (1–5)",
+    title = "Average predicted\nTechnocracy vs. Government distance",
+    subtitle = "Averaged over the empirical distribution of controls"
+  ) +
+  coord_cartesian(ylim = c(1, 5)) +
+  theme_minimal(base_size = 12)
+
+
+
+
+# o logit
+p_load(dplyr, MASS, sandwich, lmtest)
 m_ologit <- MASS::polr(
-  techno_ord ~ gov_distance_w_01 + educ_ord + age_ord + gender +
-    + region,
-  data = model_dat, method = "logistic", Hess = TRUE
+  techno_ord ~ gov_distance_w_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
+  data = dat.t, method = "logistic", Hess = TRUE
 )
 
+summary(m_ologit)
+
+# Predicted probabilities for each level of techno_ord
+# across gov_distance_w_01 in [0,1], averaged over the sample
+# (no marginaleffects; no predict.polr)
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("tidyr", quietly = TRUE)) install.packages("tidyr")
+library(ggplot2); library(dplyr); library(tidyr)
+
+# 1) Extract pieces from the fitted model
+mf         <- model.frame(m_ologit)                      # data used in the fit (levels/contrasts correct)
+trmX       <- delete.response(terms(m_ologit))           # RHS terms
+beta       <- coef(m_ologit)                             # slope coefficients
+beta_names <- names(beta)
+zeta       <- m_ologit$zeta                              # cutpoints
+K          <- length(zeta) + 1                           # number of outcome categories
+lev_y      <- levels(mf$techno_ord)
+
+# 2) Helper: average predicted probs at a given x
+avg_probs_at_x <- function(x){
+  nd <- mf
+  nd$gov_distance_w_01 <- x
+  
+  # Build X with the *same* terms and contrasts; align columns to beta names
+  X <- model.matrix(trmX, data = nd)
+  # keep exactly the columns used in the model, in the right order
+  X <- X[, beta_names, drop = FALSE]
+  
+  eta <- as.numeric(X %*% beta)  # linear predictor for every row
+  
+  # Cumulative probabilities for categories 1..K-1: P(Y<=k) = logit^{-1}(zeta_k - eta)
+  cum <- plogis(matrix(zeta, nrow = length(eta), ncol = length(zeta), byrow = TRUE) - eta)
+  
+  # Convert to category probabilities 1..K
+  probs <- matrix(NA_real_, nrow = length(eta), ncol = K)
+  probs[, 1] <- cum[, 1]
+  if (K > 2) for (k in 2:(K - 1)) probs[, k] <- cum[, k] - cum[, k - 1]
+  probs[, K] <- 1 - cum[, K - 1]
+  
+  pm <- colMeans(probs)  # average over the sample
+  tibble(gov_distance_w_01 = x,
+         outcome = factor(lev_y, levels = lev_y, ordered = TRUE),
+         prob = as.numeric(pm))
+}
+
+# 3) Evaluate on a grid and bind
+xseq <- seq(0, 1, by = 0.01)
+pp   <- bind_rows(lapply(xseq, avg_probs_at_x))
+
+# 4) Plot
+ggplot(pp, aes(x = gov_distance_w_01, y = prob, color = outcome)) +
+  geom_line(linewidth = 1) +
+  labs(
+    x = "Distance from government (0–1)",
+    y = "Predicted probability",
+    color = "Technocracy level",
+    title = "Predicted probabilities vs. distance from government (ordered logit)",
+    subtitle = "Averaged over the empirical distribution of controls"
+  ) +
+  scale_y_continuous(limits = c(0, 1)) +
+  theme_minimal(base_size = 12)
 
 
 
 
 
 
+## ---- abstract ----
+fileConn <- file ("abstract.txt")
+abstract.c = as.character(c("Polarization research shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Yet we know far less about how citizens evaluate \emph{delegation}—shifting authority from elected politicians to unelected experts. This paper bridges that gap by theorizing that delegation is not ideologically neutral: its appeal depends on the perceived ideological valence of “expert” institutions. We argue that electoral losers will oppose delegation when experts are seen as aligned with the incumbent coalition, and may favor it when experts are perceived as neutral or aligned with the opposition. This reframes canonical trade-offs as a choice between delegation and electoral accountability, and refines scope conditions in the polarization literature. Empirically, we leverage a novel, original survey dataset from Finland---an expert-trusting, high-capacity democracy---constitutes a hard case that might make technocratic delegation broadly acceptable; finding the opposite pattern here sharpens our scope conditions. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on respondents’ party closeness evaluations, renormalized for item nonresponse, and examine its association with support for delegating power to experts. Contrary to “losers favor constraints” expectations, greater distance from the right-leaning cabinet is associated with \emph{lower} support for technocratic delegation. We interpret this as evidence that losers prefer electoral accountability when expertise is perceived as ideologically right-coded. Substantively, the findings identify when losers’ consent does---and does not---extend to technocracy; methodologically, we introduce a transparent distance-to-government metric that might travel to other coalition systems."))
+writeLines(abstract.c, fileConn)
+close(fileConn)
+## ----
 
 
-#
-dat.t$Q13_6.r <- ifelse(dat.t$Q13_6 == "Totally disagree", 1, 0)
+## ---- abstract.length ----
+abstract.c.l = sapply(strsplit(abstract.c, " "), length)
+## ----
+
+
+
+
 
 ### Democracy Support and Priming Variable
 

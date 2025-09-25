@@ -1,0 +1,144 @@
+%========================
+% paper.tex
+%========================
+\documentclass[11pt]{article}
+
+%---- Page & fonts
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[american]{babel}
+\usepackage{microtype}
+\usepackage{authblk}
+
+%---- Math & symbols
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{bbm}          % for \mathbbm{1} indicator
+\usepackage{siunitx}
+
+%---- Graphics, tables, floats
+\usepackage{graphicx}
+\graphicspath{{fig/}{figures/}{build/}} % adjust as needed
+\usepackage{booktabs, threeparttable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{placeins}
+
+%---- Links & clever refs
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%---- Citations & bib
+\usepackage[
+  backend=biber,       % requires biber
+  style=authoryear,    % (Author Year)
+  maxcitenames=2,
+  maxbibnames=99,
+  uniquename=false,
+  dashed=false
+]{biblatex}
+\addbibresource{/Users/hectorbahamonde/Bibliografia_PoliSci/library.bib}  % your .bib file
+
+
+%---- Custom macros (edit as you like)
+\newcommand{\govdist}{\texttt{gov\_distance\_w\_01}}
+\newcommand{\govclose}{\texttt{gov\_closeness\_w\_01}}
+\newcommand{\techno}{\texttt{techno5}}
+\newcommand{\demsat}{\texttt{Q8\_1}}      % democratic satisfaction
+\newcommand{\trustpol}{\texttt{Q9\_4}}    % trust in Finnish politicians
+\newcommand{\ind}[1]{\mathbbm{1}\!\left\{#1\right\}}
+
+\title{Losers, Delegation, and the Ideological Valence of Expertise:\\ Evidence from Finland}
+
+
+\author[1]{%
+\textsc{H\'ector Bahamonde}%
+\thanks{\href{mailto:hector.bahamonde@utu.fi}{hector.bahamonde@utu.fi}; %
+\href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}.}%
+}
+
+\author[2]{%
+\textsc{Inga Saikkonen}%
+\thanks{\href{mailto:inga.saikkonen@abo.fi}{inga.saikkonen@abo.fi}; %
+\href{https://research.abo.fi/en/persons/inga-saikkonen}{\texttt{research.abo.fi/en/persons/inga-saikkonen}}.\\
+Authors are listed in alphabetical order and both have contributed equally to the paper.}%
+}
+
+\affil[1]{Senior Researcher, University of Turku, Finland}
+\affil[2]{Senior University Lecturer, {\AA}bo Akademi University}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Polarization research shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Yet we know far less about how citizens evaluate \emph{delegation}—shifting authority from elected politicians to unelected experts. We bridge this gap by theorizing that delegation is not ideologically neutral: its appeal depends on the perceived ideological valence of “expert” institutions. We argue that electoral losers will oppose delegation when experts are seen as aligned with the incumbent coalition and may favor it when experts are perceived as neutral or aligned with the opposition. Empirically, we leverage a novel, original survey from Finland (2023–2025), a high-quality, multiparty parliamentary democracy—an analytically demanding hard case where expert governance might otherwise be broadly acceptable. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on party-closeness evaluations (renormalized for item nonresponse) and study its association with support for delegating power to experts. Linear and ordered-logit models include demographic covariates, democratic satisfaction, trust in politicians, and region fixed effects; we visualize average predicted probabilities across the full distance range. Contrary to a simple “losers favor constraints” expectation, greater distance from the right-leaning cabinet is associated with \emph{lower} support for technocratic delegation. Substantively, this identifies when losers’ consent does—and does not—extend to technocracy; methodologically, we introduce a transparent distance-to-government metric that travels to coalition systems.
+\end{abstract}
+
+\newpage
+
+\section{Introduction}
+
+Democratic backsliding increasingly advances through legalistic tactics rather than overt rupture, and partisan trade–offs often blunt voters’ willingness to discipline incumbents \parencite{Svolik2020QJPS, Svolik2019JoD}. Classic work links party competition and polarization to regime vulnerability \parencite{Sartori1976, Dahl1971, Lipset1960}, while recent studies document how incumbents tilt the playing field without abolishing elections \parencite{LevitskyWay2010, Bermeo2016, WaldnerLust2018}. This study shifts the outcome of interest from sanctioning undemocratic behavior to preferences over \emph{delegation versus electoral accountability}.
+
+Our core claim is that delegation is \emph{ideologically valenced}. When “experts” are perceived as aligned with incumbent parties, electoral losers may resist delegating authority away from elected politicians even if they support checks and balances. We derive two implications. First, the association between being farther from the governing bloc and support for delegation is conditional on the perceived ideological valence of expert institutions (negative when expert authority is government–aligned; potentially positive when neutral or loser–aligned). Second, this relationship should strengthen with individual partisan intensity and with higher system–level polarization \parencite{Svolik2020QJPS}.
+
+Empirically, the analysis uses a novel survey of adults in Finland. Respondents reported closeness to each parliamentary party; these evaluations are combined into a respondent–level proximity to the governing coalition by weighting coalition parties by their parliamentary seat shares and renormalizing weights over the parties each respondent rated. The proximity measure is transformed into a normalized distance–to–government index. Support for technocratic delegation is measured on an ordered response scale. Models adjust for democratic satisfaction, trust in politicians, education, age, gender, and region.
+
+The research design estimates linear specifications for ease of interpretation and ordered models as robustness. Results show a clear negative association between distance from the governing coalition and support for delegation. The pattern is robust to alternative distance constructions (seat–weighted, unweighted, closest–party) and to modeling choices. The evidence is consistent with expert governance being perceived as ideologically aligned with the incumbent bloc in this context: losers prefer electoral accountability over technocratic delegation. Exploratory heterogeneity indicates steeper negative slopes among respondents with stronger partisan attachments and in more polarized environments, with attenuation among those expressing higher trust in expert institutions. The findings refine scope conditions in the polarization literature by showing that losers’ consent does not automatically extend to technocracy and depends on the perceived ideological valence of delegated bodies.
+
+
+\section{Methods} 
+
+\subsection*{1. Constructing \texttt{gov\_distance\_w\_01}}
+
+The main independent variable is \texttt{gov\_distance\_w\_01}, a respondent–government distance measure based on party–closeness ratings.
+
+Let $i$ index respondents and let $p \in G$ index parties in the governing coalition. From Q27, respondents rate their closeness to each parliamentary party on a $0$–$10$ scale (code $12$ = “don’t know”). Values equal to $12$ are set to missing.
+
+Let $C_{ip} \in [0,10]$ denote respondent $i$’s closeness to party $p$. Let $s_p$ be party $p$’s seat count in the Eduskunta at the time of fieldwork (KOK $=48$, PS $=46$, RKP $=9$, KD $=5$), and define coalition seat weights
+\[
+w_p \equiv \frac{s_p}{\sum_{q \in G} s_q}\, .
+\]
+Because some respondents skip one or more government parties, weights are renormalized over the set of parties that respondent $i$ rated:
+\[
+\tilde w_{ip} \equiv 
+\frac{w_p \,\mathbbm{1}\!\{C_{ip}\ \text{observed}\}}
+{\sum_{q \in G} w_q \,\mathbbm{1}\!\{C_{iq}\ \text{observed}\}}\, .
+\]
+Seat–weighted coalition closeness is
+\[
+\text{GovCloseness}_i \equiv \sum_{p \in G} \tilde w_{ip}\, C_{ip} \in [0,10]\, .
+\]
+This is scaled to $[0,1]$ and complemented by a distance index:
+\[
+\texttt{gov\_closeness\_w\_01}_i \equiv \frac{\text{GovCloseness}_i}{10},
+\qquad
+\texttt{gov\_distance\_w\_01}_i \equiv 1 - \texttt{gov\_closeness\_w\_01}_i\, .
+\]
+By construction, larger \texttt{gov\_distance\_w\_01} indicates greater distance from the governing coalition in the Q27 closeness space.
+
+\subsection*{2. Estimation model}
+
+Support for technocratic delegation is modeled using a linear specification, treating the $1$–$5$ outcome as approximately continuous (ordered models are used as robustness):
+\[
+\begin{aligned}
+\underbrace{\texttt{techno5}_i}_{\text{Technocracy}}
+&= \beta_0
+  + \beta_1\,\texttt{gov\_distance\_w\_01}_i
+  + \beta_2\,\underbrace{\texttt{Q8\_1}_i}_{\text{Dem satisfaction}}
+  + \beta_3\,\underbrace{\texttt{Q9\_4}_i}_{\text{Trust in Finnish politicians}} \\
+&\quad + \boldsymbol{\gamma}'\,\mathbf{X}_i
+  + \delta_{\text{region}(i)} + \varepsilon_i \, .
+\end{aligned}
+\]
+
+The vector $\mathbf{X}_i$ contains education, age, and gender indicators; $\delta_{\text{region}(i)}$ are region fixed effects. The parameter of primary interest is $\beta_1$.
+
+\FloatBarrier
+%\bibliography{library}
+
+\end{document}
