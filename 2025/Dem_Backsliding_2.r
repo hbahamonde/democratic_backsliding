@@ -297,6 +297,9 @@ plot.p = ggplot(ap, aes(gov_distance_w_01, estimate)) +
 
 
 
+
+
+
 # o logit
 p_load(dplyr, MASS, sandwich, lmtest)
 m_ologit <- MASS::polr(
