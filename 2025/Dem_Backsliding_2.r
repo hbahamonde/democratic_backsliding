@@ -31,7 +31,7 @@ dat.t$Q15 = as.factor(dat.t$Q15)
 #dat.t$Q5 = as.factor(dat.t$Q5) # region
 #dat.t$Q6 = as.factor(dat.t$Q6) # educ
 
-# --- Q9 trust items: recode to numeric 1..11; 12 ("I don't know") -> NA ---
+# Q9 trust items: recode to numeric 1..11; 12 ("I don't know") -> NA
 q9_cols <- paste0("Q9_", 1:7)
 
 # warn if any are missing
@@ -242,60 +242,95 @@ dat.t <- dat.t %>%
 
 
 ## 4) OLS: technocracy (1..5) on distance + controls ---
-#model_dat <- dat.t %>%
-#  filter(!is.na(techno5), !is.na(gov_distance_w_01))
 
-
-
-# ols
-m_ols <- lm(
-  techno5 ~ gov_distance_w_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
-  ,
-  data = dat.t
-)
-summary(m_ols)
-
-
+## ---- models:plots ----
 # Packages
-p_load(ggplot2)
-       
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("dplyr", quietly = TRUE))   install.packages("dplyr")
+library(ggplot2)
+library(dplyr)
 
-mf <- model.frame(m_ols)           # data actually used in the fit (complete cases)
-V  <- vcov(m_ols)
-xseq <- seq(0, 1, by = 0.01)
-
-ap <- lapply(xseq, function(x) {
-  nd <- mf
-  nd$gov_distance_w_01 <- x
-  X  <- model.matrix(formula(m_ols), data = nd)
-  xbar <- colMeans(X)                               # average design vector
-  fit  <- drop(xbar %*% coef(m_ols))                # average prediction
-  se   <- sqrt(drop(t(xbar) %*% V %*% xbar))        # delta-method SE
-  data.frame(
-    gov_distance_w_01 = x,
-    estimate = fit,
-    conf.low = fit - 1.96 * se,
-    conf.high = fit + 1.96 * se
+# Ensure 0–1 versions for the other distances exist
+dat.t <- dat.t %>%
+  mutate(
+    gov_distance_u_01   = ifelse(is.na(gov_distance_u),   NA_real_, gov_distance_u   / 10),
+    gov_distance_min_01 = ifelse(is.na(gov_distance_min), NA_real_, gov_distance_min / 10)
   )
-})
-ap <- do.call(rbind, ap)
 
-## ----
+# --- Three OLS models (remove stray commas!) ---
+m_w   <- lm(techno5 ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
+m_u   <- lm(techno5 ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
+m_min <- lm(techno5 ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 
-plot.p = ggplot(ap, aes(gov_distance_w_01, estimate)) +
+# Helper: average predicted value curve with delta-method SEs
+avg_pred_curve <- function(mod, xvar, xseq = seq(0, 1, by = 0.01)) {
+  mf         <- model.frame(mod)                       # complete cases as used in the fit
+  trmX       <- delete.response(terms(mod))            # RHS-only terms
+  beta       <- coef(mod)
+  beta_names <- names(beta)
+  V          <- vcov(mod)
+  
+  rows <- lapply(xseq, function(x) {
+    nd <- mf
+    nd[[xvar]] <- x
+    X <- model.matrix(trmX, data = nd)
+    X <- X[, beta_names, drop = FALSE]                 # align to coef order
+    xbar <- colMeans(X)                                # average design vector
+    fit  <- sum(xbar * beta)
+    se   <- sqrt(as.numeric(t(xbar) %*% V %*% xbar))
+    data.frame(x = x, estimate = fit,
+               conf.low = fit - 1.96 * se,
+               conf.high = fit + 1.96 * se)
+  })
+  dplyr::bind_rows(rows)
+}
+
+# Build curves for each spec
+ap_w   <- avg_pred_curve(m_w,   "gov_distance_w_01")   %>% mutate(spec = "Seat-weighted")
+ap_u   <- avg_pred_curve(m_u,   "gov_distance_u_01")   %>% mutate(spec = "Unweighted")
+ap_min <- avg_pred_curve(m_min, "gov_distance_min_01") %>% mutate(spec = "Closest-party")
+
+ap_all <- bind_rows(ap_w, ap_u, ap_min) %>%
+  mutate(spec = factor(spec, levels = c("Seat-weighted","Unweighted","Closest-party")))
+
+# 3-panel plot object you can print inside knitr
+pred_plot_3panel <- ggplot(ap_all, aes(x, estimate)) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.20) +
   geom_line(linewidth = 1) +
+  facet_grid(. ~ spec) +
   labs(
     x = "Government distance (0 = very close, 1 = far)",
     y = "Predicted technocracy (1–5)",
-    title = "Average predicted\nTechnocracy vs. Government distance",
-    subtitle = "Averaged over the empirical distribution of controls"
+    title = "Average predicted Technocracy vs. Government distance",
+    subtitle = "Seat-weighted, unweighted, and closest-party; averaged over the empirical distribution of controls"
   ) +
   coord_cartesian(ylim = c(1, 5)) +
-  theme_minimal(base_size = 12)
+  theme_minimal(base_size = 12) +
+  theme(panel.spacing = grid::unit(1, "lines"),
+        strip.text = element_text(face = "bold"))
+## ----
 
 
 
+
+
+################
+#### ABSTRACT
+################
+
+## ---- abstract ----
+fileConn <- file ("abstract.txt")
+abstract.c = as.character(c("Polarization research shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Much less is known about how citizens evaluate delegation-shifting authority from elected politicians to unelected experts. We address this gap with a simple formal model and new evidence from Finland. In the model, voters weigh a perceived performance gain from technocratic rule against ideological distance from government and the loss of electoral accountability. The model yields three implications: (i) support for delegation declines monotonically with distance from the governing coalition when expert institutions are perceived as government-aligned; (ii) this negative relationship attenuates when experts are viewed as neutral (or closer to the voter than the government) and steepens when alignment is high; and (iii) an irreversibility cost from ceding electoral control uniformly depresses support. Empirically, we analyze a 2025 survey of Finnish adults-a high-capacity, multiparty parliamentary democracy and thus a hard case where expert governance might otherwise be broadly acceptable. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on party-closeness evaluations (renormalized for item nonresponse) and study its association with support for delegating power to experts. Linear and ordered-logit models indicate that voters farther from the right-leaning cabinet are less supportive of technocratic delegation. Substantively, this identifies when losers' consent does-and does not-extend to technocracy: even in a high-trust context, delegation is acceptable primarily when perceived performance gains outweigh ideological and accountability costs, and when expert bodies are not seen as aligned with the incumbents."))
+writeLines(abstract.c, fileConn)
+close(fileConn)
+## ----
+
+
+
+
+## ---- abstract.length ----
+abstract.c.l = sapply(strsplit(abstract.c, " "), length)
+## ----
 
 
 
@@ -370,23 +405,6 @@ ggplot(pp, aes(x = gov_distance_w_01, y = prob, color = outcome)) +
   ) +
   scale_y_continuous(limits = c(0, 1)) +
   theme_minimal(base_size = 12)
-
-
-
-
-
-
-## ---- abstract ----
-fileConn <- file ("abstract.txt")
-abstract.c = as.character(c("Polarization research shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Yet we know far less about how citizens evaluate \emph{delegation}—shifting authority from elected politicians to unelected experts. This paper bridges that gap by theorizing that delegation is not ideologically neutral: its appeal depends on the perceived ideological valence of “expert” institutions. We argue that electoral losers will oppose delegation when experts are seen as aligned with the incumbent coalition, and may favor it when experts are perceived as neutral or aligned with the opposition. This reframes canonical trade-offs as a choice between delegation and electoral accountability, and refines scope conditions in the polarization literature. Empirically, we leverage a novel, original survey dataset from Finland---an expert-trusting, high-capacity democracy---constitutes a hard case that might make technocratic delegation broadly acceptable; finding the opposite pattern here sharpens our scope conditions. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on respondents’ party closeness evaluations, renormalized for item nonresponse, and examine its association with support for delegating power to experts. Contrary to “losers favor constraints” expectations, greater distance from the right-leaning cabinet is associated with \emph{lower} support for technocratic delegation. We interpret this as evidence that losers prefer electoral accountability when expertise is perceived as ideologically right-coded. Substantively, the findings identify when losers’ consent does---and does not---extend to technocracy; methodologically, we introduce a transparent distance-to-government metric that might travel to other coalition systems."))
-writeLines(abstract.c, fileConn)
-close(fileConn)
-## ----
-
-
-## ---- abstract.length ----
-abstract.c.l = sapply(strsplit(abstract.c, " "), length)
-## ----
 
 
 

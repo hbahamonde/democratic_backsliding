@@ -4,57 +4,7 @@
 %========================
 % paper.tex
 %========================
-\documentclass[11pt]{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
-% maxwidth is the original width if it is less than linewidth
-% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-\let\hlipl\hlkwb
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass[11pt]{article}
 
 %---- Page & fonts
 \usepackage[margin=1in]{geometry}
@@ -123,25 +73,47 @@ Authors are listed in alphabetical order and both have contributed equally to th
 \affil[2]{Senior University Lecturer, {\AA}bo Akademi University, Finland}
 
 \date{\today}
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
 \begin{document}
 \maketitle
 
+<<echo=FALSE, cache=FALSE, warning = FALSE, message = F>>=
+read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/2025/Dem_Backsliding_2.r')
+
+@
+
+
+<<setup, include=FALSE>>=
+# Fail fast if knitr is missing; install it once *outside* the .Rnw
+if (!requireNamespace("knitr", quietly = TRUE)) {
+  stop("Please install knitr once before compiling: install.packages('knitr')")
+}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.align = "center", fig.width = 6, fig.height = 4,
+  cache = FALSE
+)
+options(scipen = 999)  # large enough; avoids overflows or odd behavior
+@
 
 
 
+<<loadings:d, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
+
+@
 
 
+<<abstract, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
+@
 
+<<abstract.length, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
+@
 
+<<models:plots, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
-
-
-
-
-
+@
 
 
 
@@ -158,7 +130,7 @@ Authors are listed in alphabetical order and both have contributed equally to th
 
 
 \vspace*{0.3cm}
-\centerline{{\bf Abstract length}: 247 words.}
+\centerline{{\bf Abstract length}: \Sexpr{abstract.c.l} words.}
 \vspace*{0.3cm}
 
 
@@ -323,7 +295,7 @@ By construction, larger ${\texttt{Government distance}}_i$ indicates greater dis
 
 \subsection{Estimation Strategy}
 
-We estimated  the association between support for technocratic delegation (\texttt{Technocracy}) and ideological distance from the governing coalition (\texttt{Government distance}) using a linear specification. Now, let $\texttt{Technocracy}_i$ denote respondent $i$'s technocracy item and ${\texttt{Government distance}}_i$ the normalized index in \autoref{eq:govdist}.\footnote{We treated the $1$–$5$ outcome variable as approximately continuous (ordered models are reported as robustness). The survey question asked (originally in Finnish) ``What do you think about the following statements? [...] Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.'' The options were ``Strongly disagree'' (n=133), ``Somewhat disagree'' (n=248), ``Neither agree nor disagree'' (n=383), ``Somewhat agree'' (n=436) and ``Totally agree'' (n=197).} The baseline model is
+We estimated  the association between support for technocratic delegation (\texttt{Technocracy}) and ideological distance from the governing coalition (\texttt{Government distance}) using a linear specification. Now, let $\texttt{Technocracy}_i$ denote respondent $i$'s technocracy item and ${\texttt{Government distance}}_i$ the normalized index in \autoref{eq:govdist}.\footnote{We treated the $1$–$5$ outcome variable as approximately continuous (ordered models are reported as robustness). The survey question asked (originally in Finnish) ``What do you think about the following statements? [...] Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.'' The options were ``Strongly disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[1])}), ``Somewhat disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[2])}), ``Neither agree nor disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[3])}), ``Somewhat agree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[4])}) and ``Totally agree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[5])}).} The baseline model is
 
 \begin{equation}
 \begin{aligned}
@@ -379,13 +351,34 @@ The formal model implies that delegation is chosen only when the perceived gover
 % WORD COUNT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
+<<wordcount, echo=FALSE, cache=FALSE, warning = FALSE>>=
+library(knitr)
 
+comma <- function (x, ...) {
+  format(x, ..., big.mark = ",", scientific = FALSE, trim = TRUE)
+}
+
+# To dynamically extract name of the current file, use code below
+nameoffile <- current_input() # get name of file
+nof2 <-  strsplit(nameoffile,"\\.")[[1]][1] # extract name, drop extension
+noftex <- paste(nof2, ".tex", sep="") # add .tex extension
+systemcall <- paste("system('texcount -inc -incbib -total -sum ", noftex, "', intern=TRUE)", sep="") # paste together texcount system command
+texcount.out <- eval(parse(text=systemcall)) # run texcount on current last compiled .tex file
+
+sum.row <- grep("Sum count", texcount.out, value=TRUE) # extract row
+pattern <- "(\\d)+" # regex pattern for digits
+
+count <- regmatches(sum.row, regexpr(pattern, sum.row) )
+# extract digits
+
+count <- comma(as.numeric(count)) # add comma
+@
 
 
 \begin{center}
 \vspace*{\stretch{1}}
 \dotfill
-\dotfill {\huge {\bf Word count}: 4,122} \dotfill
+\dotfill {\huge {\bf Word count}: \Sexpr{count}} \dotfill
 \dotfill
 \vspace*{\stretch{1}}
 \end{center}
