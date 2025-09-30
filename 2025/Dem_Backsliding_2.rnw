@@ -111,7 +111,7 @@ options(scipen = 999)  # large enough; avoids overflows or odd behavior
 
 @
 
-<<models:plots, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
+<<models.plots, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
 @
 
@@ -249,18 +249,13 @@ Hence delegation is strictly decreasing in $d_i$: distant (``loser'') voters req
 \autoref{eq:aligned} delivers the empirical prediction that, when expert institutions are perceived as government–aligned, \emph{support for delegation is decreasing in the normalized distance} $d_i$ and increasing in perceived valence $B$, with attenuation when experts are viewed as neutral ($\alpha<1$) and when $\lambda$ is small. This maps one–for–one to our econometric specification with \texttt{Government distance} as the main covariate and measures of institutional trust/competence as proxies for $(B,\alpha)$.
 
 
-\section{Finland as a Hard Case: Data and Findings}
+\section{Data and Findings}
 
-\subsection{Constructing \texttt{Government distance}}
+\subsection{Measurement}
 
-The main independent variable is \texttt{Government distance}, a respondent–government distance
-measure based on party–closeness ratings.
+The main independent variable is \texttt{Government distance}, a respondent–government distance measure based on party–closeness ratings.
 
-Let $i$ index respondents and let $p \in G$ index parties in the governing coalition. Survey respondents
-rated their closeness to each parliamentary party on a $0$–$10$ scale. Let $C_{ip} \in [0,10]$ denote
-respondent $i$'s closeness to party $p$. Let $s_p$ be party $p$'s seat count in the \emph{Eduskunta}
-(the Finnish Parliament) at the time of fieldwork,\footnote{KOK $=48$, PS $=46$, RKP $=9$, KD $=5$.}
-and define coalition seat weights
+Let $i$ index respondents and let $p \in G$ index parties in the governing coalition. Survey respondents rated their closeness to each parliamentary party on a $0$–$10$ scale. Let $C_{ip} \in [0,10]$ denote respondent $i$'s closeness to party $p$. Let $s_p$ be party $p$'s seat count in the \emph{Eduskunta} (the Finnish Parliament) at the time of fieldwork,\footnote{KOK $=48$, PS $=46$, RKP $=9$, KD $=5$.} and define coalition seat weights
 
 \begin{equation}
 w_p \equiv \frac{s_p}{\sum_{q \in G} s_q}.
@@ -293,9 +288,46 @@ We scaled it to $[0,1]$ and defined the complementary distance index:
 
 By construction, larger ${\texttt{Government distance}}_i$ indicates greater distance from the governing coalition.
 
+Beyond the seat–weighted baseline in \autoref{eq:govdist}, we also construct two conceptually adjacent indices. First, an \emph{unweighted} coalition proximity treats each governing party symmetrically, abstracting from parliamentary strength and thereby reducing dependence on the specific seat distribution at fieldwork. Let
+
+\[
+\texttt{Government closeness (UW)}_i \;\equiv\;
+\frac{\sum_{p\in G} C_{ip}\,\mathbbm{1}\!\bigl\{\text{$C_{ip}$ observed}\bigr\}}
+     {\sum_{q\in G} \mathbbm{1}\!\bigl\{\text{$C_{iq}$ observed}\bigr\}}
+\;\in\;[0,10],
+\label{eq:govclose_u}
+\tag{A1}
+\]
+
+with \texttt{NA} if no governing party was rated. The associated distance is
+
+\begin{equation}
+\texttt{Government distance (UW)}_i \;\equiv\;
+1 - \frac{\texttt{Government closeness (UW)}_i}{10}
+\;\in\;[0,1].
+\label{eq:govdist_u}
+\end{equation}
+
+Second, a \emph{closest–party} distance captures the heuristic that respondents may anchor evaluations on the single governing party they feel closest to (salience of a primary partisan tie), and it is maximally robust to selective answering:
+
+\begin{equation}
+\texttt{Government distance (Closest)}_i \;\equiv\;
+1 - \frac{\max_{p\in G}\, C_{ip}}{10}
+\;\in\;[0,1],
+\label{eq:govdist_min}
+\end{equation}
+
+set to \texttt{NA} when all $C_{ip}$ for $p\in G$ are missing.
+
+Taken together, the seat–weighted (\autoref{eq:govdist}), unweighted (\autoref{eq:govdist_u}), and closest–party (\autoref{eq:govdist_min}) indices map, respectively, to influence–weighted proximity to the governing bloc, an equal–party aggregation, and a strongest–affinity anchor. We use all three in the empirical analysis; as shown below, they yield substantively similar patterns, indicating that our results do not hinge on a particular distance construction or on the treatment of item nonresponse.
+
 \subsection{Estimation Strategy}
 
-We estimated  the association between support for technocratic delegation (\texttt{Technocracy}) and ideological distance from the governing coalition (\texttt{Government distance}) using a linear specification. Now, let $\texttt{Technocracy}_i$ denote respondent $i$'s technocracy item and ${\texttt{Government distance}}_i$ the normalized index in \autoref{eq:govdist}.\footnote{We treated the $1$–$5$ outcome variable as approximately continuous (ordered models are reported as robustness). The survey question asked (originally in Finnish) ``What do you think about the following statements? [...] Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.'' The options were ``Strongly disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[1])}), ``Somewhat disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[2])}), ``Neither agree nor disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[3])}), ``Somewhat agree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[4])}) and ``Totally agree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[5])}).} The baseline model is
+We estimated the association between support for technocratic delegation (\texttt{Technocracy}) and ideological distance from the governing coalition (\texttt{Government distance}) using a linear specification. Now, let $\texttt{Technocracy}_i$ denote respondent $i$'s technocracy item and ${\texttt{Government distance}}_i$ the normalized index in \autoref{eq:govdist}.\footnote{We treated the $1$–$5$ outcome variable as approximately continuous (ordered models are reported as robustness). The survey question asked (originally in Finnish) ``What do you think about the following statements? [...] Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.'' The options were ``Strongly disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[1])}), ``Somewhat disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[2])}), ``Neither agree nor disagree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[3])}), ``Somewhat agree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[4])}) and ``Totally agree'' (n=\Sexpr{as.numeric(table(dat.t$techno5)[5])}).} 
+
+For expositional clarity we use the seat–weighted index as our primary measure, since it mirrors parties’ relative bargaining power within the cabinet and thus the theoretical object of interest—proximity to the governing bloc as policy setter. It also tempers noise from idiosyncratic ratings of very small coalition partners with limited agenda influence. For robustness, we re–estimate all models with the unweighted aggregation (\autoref{eq:govdist_u}) and the closest–party anchor (\autoref{eq:govdist_min}); the results are substantively unchanged. The baseline model is
+
+
 
 \begin{equation}
 \begin{aligned}
@@ -318,18 +350,16 @@ assumptions---should be negative when expert institutions are perceived as align
 
 \autoref{fig:pred} reports \emph{marginal standardization} (average predicted values) of \texttt{Technocracy} across the full range of \texttt{Government distance} holding the distribution of all covariates at their observed values. The solid line is the point prediction; the shaded band is the 95\% confidence interval. The estimated relationship is negative and approximately monotonic: moving from full proximity to maximal distance lowers the predicted outcome from about $3.5$ to about $2.8$ on the $1$–$5$ scale.
 
-<<pred, fig.width=11, fig.height=4, out.width='\\textwidth',
-  fig.cap='Average predicted technocracy vs.\ government distance (95\\% CIs).',
-  echo=FALSE, message=FALSE, warning=FALSE>>=
+<<pred, fig.width=11, fig.height=4, out.width='\\textwidth', fig.cap='Average predicted, technocracy vs.\\ government distance (95\\% CIs).', echo=FALSE, message=FALSE, warning=FALSE>>=
 
 print(pred_plot_3panel)
 
 @
 
-\subsection{Substantive Interpretation and Link to Theory}
 
-The formal model implies that delegation is chosen only when the perceived governance–quality gain from expert rule exceeds the ideological and accountability costs of ceding control. When experts are perceived as government–aligned, the cost term grows with distance from the governing coalition, yielding a negative slope in \texttt{Government distance}. The estimates match this prediction: respondents farther from the right–leaning Orpo coalition express \emph{lower} support for technocratic delegation. A plausible reading in the Finnish context is that greater distance from the government largely identifies left–leaning respondents for whom “experts” are aligned with the center–right coalition; for this voters subset, delegation is evaluated as entrenching unfavorable policy under weaker electoral accountability. This pattern is compatible with losers endorsing checks and balances while rejecting depolitization: constraints that discipline incumbents without shifting authority away from elected politicians remain attractive, whereas technocratic delegation does not. Consistent with Finnish survey evidence, voters who ascribe greater competence to fellow citizens tend to prefer electoral accountability over technocratic arrangements, reinforcing the observed negative association between distance and support for delegation \parencite{Rapeli2023}.
+Across all three panels of \autoref{fig:pred}, the relationship between \texttt{Government distance} and \texttt{Technocracy} is negative, smooth, and of similar magnitude. In the \emph{seat–weighted} specification (left panel), moving from full proximity to maximal distance lowers the average predicted technocracy score by roughly two–thirds of a response point on the 1–5 scale, with narrow uncertainty bands over most of the support. The \emph{unweighted} construction (middle panel)—a simple mean over the rated government parties—delivers an almost identical slope and envelope, indicating that the result is not driven by the seat–weighting scheme or renormalization for item nonresponse. The \emph{closest–party} measure (right panel), which asks only how close respondents feel to the single government party they like most, again produces a clear, monotonic decline. If anything, the closest–party curve suggests the same substantive pattern with slightly wider intervals at the extremes, as expected when relying on a single item.
 
+Two points follow. First, the distance–to–delegation link is \emph{not} an artifact of a particular operationalization of proximity to government: whether we (i) renormalize seat–weighted closeness over answered items, (ii) average answered items without weights, or (iii) use the respondent’s favorite government party only, the predicted technocracy score falls as distance increases. Second, the magnitudes are remarkably stable across the three constructions, reinforcing that the main finding reflects a population pattern rather than a modeling choice. Consistent with our formal argument, voters farther from the right–leaning Orpo coalition are systematically \emph{less} willing to cede authority to unelected experts when those experts are perceived as aligned with incumbents. The same pattern appears in ordered–logit estimates of each specification (not shown), underscoring that the result is robust to outcome scaling as well as to alternative measures of \texttt{Government distance}.
 \FloatBarrier
 
 

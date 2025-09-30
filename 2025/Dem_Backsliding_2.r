@@ -243,7 +243,7 @@ dat.t <- dat.t %>%
 
 ## 4) OLS: technocracy (1..5) on distance + controls ---
 
-## ---- models:plots ----
+## ---- models.plots ----
 # Packages
 if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
 if (!requireNamespace("dplyr", quietly = TRUE))   install.packages("dplyr")
@@ -257,7 +257,7 @@ dat.t <- dat.t %>%
     gov_distance_min_01 = ifelse(is.na(gov_distance_min), NA_real_, gov_distance_min / 10)
   )
 
-# --- Three OLS models (remove stray commas!) ---
+# --- 
 m_w   <- lm(techno5 ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 m_u   <- lm(techno5 ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 m_min <- lm(techno5 ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
@@ -300,7 +300,7 @@ pred_plot_3panel <- ggplot(ap_all, aes(x, estimate)) +
   facet_grid(. ~ spec) +
   labs(
     x = "Government distance (0 = very close, 1 = far)",
-    y = "Predicted technocracy (1–5)",
+    y = "Predicted technocracy (1-5)",
     title = "Average predicted Technocracy vs. Government distance",
     subtitle = "Seat-weighted, unweighted, and closest-party; averaged over the empirical distribution of controls"
   ) +
