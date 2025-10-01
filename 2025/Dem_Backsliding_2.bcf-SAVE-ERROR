@@ -96,15 +96,15 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxbibnames</bcf:key>
-      <bcf:value>99</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>2</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
-      <bcf:value>99</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxitems</bcf:key>
@@ -184,7 +184,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquename</bcf:key>
-      <bcf:value>false</bcf:value>
+      <bcf:value>full</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniqueprimaryauthor</bcf:key>
@@ -331,15 +331,15 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxbibnames</bcf:key>
-      <bcf:value>99</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>2</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
-      <bcf:value>99</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxitems</bcf:key>
@@ -399,7 +399,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquename</bcf:key>
-      <bcf:value>false</bcf:value>
+      <bcf:value>full</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniqueprimaryauthor</bcf:key>
@@ -2362,8 +2362,41 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">/Users/hectorbahamonde/Bibliografia_PoliSci/library.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1" intorder="1">Svolik2020QJPS</bcf:citekey>
-    <bcf:citekey order="1" intorder="2">Svolik2019JoD</bcf:citekey>
+    <bcf:citekey order="1" intorder="1">Svolik2020</bcf:citekey>
+    <bcf:citekey order="1" intorder="2">Svolik2019</bcf:citekey>
     <bcf:citekey order="2" intorder="1">Sartori1976</bcf:citekey>
     <bcf:citekey order="2" intorder="2">Dahl1971</bcf:citekey>
-    <bcf:citekey order="2" intorder="3">Lipset1960</bcf:citekey>
+    <bcf:citekey order="2" intorder="3">Lipset1981</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">Levitsky2010</bcf:citekey>
+    <bcf:citekey order="3" intorder="2">Bermeo2016</bcf:citekey>
+    <bcf:citekey order="3" intorder="3">Waldner2018</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">Saikkonen2022</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">Rapeli2023</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">Svolik2020</bcf:citekey>
+    <bcf:citekey order="6" intorder="2">Svolik2019</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">Bartels2023</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">Achen2016</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">Mounk2018</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">Achen2016</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">Hamburger2014</bcf:citekey>
+    <bcf:citekey order="11" intorder="2">Glennon2014</bcf:citekey>
+    <bcf:citekey order="11" intorder="3">Majone1994</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">Caramani2017</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">Bertsou2020</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">Rapeli2023</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">Clarks2013</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">Capoccia2007a</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">Anderson2005a</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">Svolik2019</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">Claassen2025</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">Lieberman2019</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">Clarks2013</bcf:citekey>
+    <bcf:citekey order="21" intorder="2">Clark2013</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">Svolik2019</bcf:citekey>
+    <bcf:citekey order="22" intorder="2">Kingzette2021</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">Achen2016</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">Waldner2018</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">Luhrmann2019</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">Keeper2003</bcf:citekey>
+    <bcf:citekey order="27" intorder="1">Bertsou2020</bcf:citekey>
+    <bcf:citekey order="28" intorder="1">Caramani2017</bcf:citekey>
