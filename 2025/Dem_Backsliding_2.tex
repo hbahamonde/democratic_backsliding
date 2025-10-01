@@ -372,9 +372,9 @@ Taken together, the seat–weighted (\autoref{eq:govdist}), unweighted (\autoref
 
 \subsection{Estimation Strategy}
 
-We estimated the association between support for technocratic delegation (\texttt{Technocracy}) and ideological distance from the governing coalition (\texttt{Government distance}) using a linear specification. Now, let $\texttt{Technocracy}_i$ denote respondent $i$'s technocracy item and ${\texttt{Government distance}}_i$ the normalized index in \autoref{eq:govdist}.\footnote{We treated the $1$–$5$ outcome variable as approximately continuous (ordered models are reported as robustness). The survey question asked (originally in Finnish) ``What do you think about the following statements? [...] Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.'' The options were ``Strongly disagree'' (n=133), ``Somewhat disagree'' (n=248), ``Neither agree nor disagree'' (n=383), ``Somewhat agree'' (n=436) and ``Totally agree'' (n=197).} 
+We estimated the association between support for technocratic delegation (\texttt{Technocracy}) and ideological distance from the governing coalition (\texttt{Government distance}) using a linear specification. Now, let $\texttt{Technocracy}_i$ denote respondent $i$'s technocracy item and ${\texttt{Government distance}}_i$ the normalized index in \autoref{eq:govdist}.\footnote{We treated the $1$–$5$ outcome variable as approximately continuous (ordered models are reported as robustness in \autoref{tab:ologit-models}, yielding substantively identical conclusions). The survey question asked (originally in Finnish) ``What do you think about the following statements? [...] Our country would work better if political decisions were left to independent, non-elected experts instead of politicians.'' The options were ``Strongly disagree'' (n=133), ``Somewhat disagree'' (n=248), ``Neither agree nor disagree'' (n=383), ``Somewhat agree'' (n=436) and ``Totally agree'' (n=197).} 
 
-For expositional clarity we use the seat–weighted index as our primary measure, since it mirrors parties’ relative bargaining power within the cabinet and thus the theoretical object of interest—proximity to the governing bloc as policy setter. It also tempers noise from idiosyncratic ratings of very small coalition partners with limited agenda influence. For robustness, we re–estimate all models with the unweighted aggregation (\autoref{eq:govdist_u}) and the closest–party anchor (\autoref{eq:govdist_min}); the results are substantively unchanged. The baseline model is
+For expositional clarity we use the seat–weighted index as our primary measure, since it mirrors parties’ relative bargaining power within the cabinet and thus the theoretical object of interest—proximity to the governing bloc as policy setter. It also tempers noise from idiosyncratic ratings of very small coalition partners with limited agenda influence. For robustness, we re–estimate all models with the unweighted aggregation (\autoref{eq:govdist_u}) and the closest–party anchor (\autoref{eq:govdist_min}); the results are substantively unchanged (\autoref{tab:ols-models}). The baseline model is
 
 
 
@@ -393,7 +393,8 @@ For expositional clarity we use the seat–weighted index as our primary measure
 
 where $\mathbf{X}_i$ includes education, age, and gender, and $\delta_{\text{region}(i)}$ are
 region fixed effects. The coefficient of interest is $\beta_1$, which---under the formal model’s
-assumptions---should be negative when expert institutions are perceived as aligned with the incumbent bloc.\footnote{Ordered logit estimates of the same specification yield substantively identical conclusions.}
+assumptions---should be negative when expert institutions are perceived as aligned with the incumbent bloc.
+
 
 \subsection{Results}
 
@@ -444,7 +445,7 @@ Two substantive points follow. First, our empirical results match our voter–ch
 \begin{center}
 \vspace*{\stretch{1}}
 \dotfill
-\dotfill {\huge {\bf Word count}: 4,377} \dotfill
+\dotfill {\huge {\bf Word count}: 4,384} \dotfill
 \dotfill
 \vspace*{\stretch{1}}
 \end{center}
@@ -475,23 +476,27 @@ Two substantive points follow. First, our empirical results match our voter–ch
 \section{Appendix}
 \pagenumbering{roman}
 \setcounter{page}{1}
-%\newpage
+
 
 \subsection{Regression Models}
+\FloatBarrier
 
 \begin{table}[!htbp]
 \centering
 \caption{OLS Estimates: Technocracy and Business vs.\ Government Distance}
+\label{tab:ols-models}
 \resizebox{\textwidth}{!}{\input{build/table_models_tabular.tex}}
 \par\vspace{0.5ex}
 \footnotesize\emph{Notes:} HC1 robust standard errors in parentheses. Models include education, age, gender, and region fixed effects (omitted for brevity).
 \end{table}
 
 
+\newpage
 \subsection{Business Plots}
+\FloatBarrier
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
 
 {\centering \includegraphics[width=\textwidth]{figure/pred2-1} 
 
@@ -503,9 +508,35 @@ Two substantive points follow. First, our empirical results match our voter–ch
 \end{knitrout}
 
 
+\newpage
 \subsection{Regression Table with Outcome Variable treated as Ordered}
+\FloatBarrier
 
-
+\begin{table}[!htbp]
+\centering
+\caption{Ordered logit (proportional odds) estimates: Technocracy and Business vs.\ Government Distance}
+\label{tab:ologit-models}
+\setlength{\tabcolsep}{3.5pt} % tighten intercolumn spacing
 \resizebox{\textwidth}{!}{\input{build/table_models_ologit_tabular.tex}}
+\par\vspace{0.4ex}
+\footnotesize\emph{Notes:} Model-based standard errors in parentheses. Cutpoints omitted. Models include education, age, gender, and region fixed effects (omitted for brevity).
+\end{table}
+
+\newpage
+\subsection{Technocratic Support by Party Choice}
+\FloatBarrier
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \includegraphics[width=\textwidth]{figure/pred3-1} 
+
+}
+
+\caption[Technocracy by Party Choice (95\% CIs)]{Technocracy by Party Choice (95\% CIs).}\label{fig:pred3}
+\end{figure}
+
+\end{knitrout}
+
 
 \end{document}

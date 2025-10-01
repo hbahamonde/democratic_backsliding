@@ -2,7 +2,7 @@
 setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
 
 ## Packages
-if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
 pacman::p_load(dplyr, forcats, ggplot2, patchwork)
 
 ## Data
@@ -224,6 +224,61 @@ pred_plot_business_3panel <-
     title = "Average predicted Business vs. Government distance",
     theme = theme(plot.title = element_text(hjust = 0.5, face = "bold"))
   )
+
+#  technocracy error bars by party (Q15), dropping "Other"
+p_load(dplyr, forcats, ggplot2)
+
+parties <- c(
+  "Centre Party of Finland (KESK)",
+  "Christian Democrats of Finland (KD)",
+  "Green Alliance (VIHR)",
+  "Left Alliance (VAS)",
+  "Movement Now",
+  "National Coalition Party (NCP)",
+  "Social Democratic Party of Finland (SDP)",
+  "Swedish People's Party of Finland (RKP)",
+  "True Finns (PS)"
+)
+
+dat_party <- dat.t %>%
+  mutate(
+    party = case_when(
+      as.character(Q15) %in% parties ~ as.character(Q15),
+      Q15 == "I did not vote"       ~ "Did not vote",
+      Q15 == "I don't know"         ~ "Don't know",
+      # "Other party or grouping" is dropped by sending to NA
+      TRUE                          ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(techno5), !is.na(party)) %>%
+  group_by(party) %>%
+  summarise(
+    n    = dplyr::n(),
+    mean = mean(techno5),
+    sd   = sd(techno5),
+    se   = sd / sqrt(n),
+    ci   = qt(0.975, df = pmax(n - 1, 1)) * se,
+    .groups = "drop"
+  ) %>%
+  mutate(party = fct_reorder(party, mean))  # order by mean support
+
+tech_by_party_plot <- ggplot(dat_party, aes(x = party, y = mean)) +
+  geom_errorbar(aes(ymin = mean - ci, ymax = mean + ci), width = 0.15) +
+  geom_point(size = 2) +
+  coord_flip() +
+  scale_y_continuous(limits = c(1, 5), breaks = 1:5) +
+  labs(
+    x = NULL,
+    y = "Support for technocracy",
+    title = "Technocracy by Party Choice"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.x = element_line(),
+    panel.grid.major.y = element_blank(),
+    aspect.ratio = 1      # <- makes the plotting panel square
+  )
+
 ## ----
 
 
