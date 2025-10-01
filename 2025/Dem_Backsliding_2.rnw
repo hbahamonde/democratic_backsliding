@@ -57,7 +57,7 @@
 \title{\textbf{\input{title.txt}\unskip}} % Article title
 
 \author[1]{%
-\textsc{H\'ector Bahamonde}%
+\textsc{Hector Bahamonde}%
 \thanks{\href{mailto:hector.bahamonde@utu.fi}{hector.bahamonde@utu.fi}; %
 \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}.}%
 }
@@ -65,17 +65,30 @@
 \author[2]{%
 \textsc{Inga Saikkonen}%
 \thanks{\href{mailto:inga.saikkonen@abo.fi}{inga.saikkonen@abo.fi}; %
-\href{https://research.abo.fi/en/persons/inga-saikkonen}{\texttt{research.abo.fi/en/persons/inga-saikkonen}}.\\
-Authors are listed in alphabetical order and both have contributed equally to the paper.}%
+\href{https://research.abo.fi/en/persons/inga-saikkonen}{\texttt{research.abo.fi/en/persons/inga-saikkonen}}.}%
+}
+
+\author[3]{%
+\textsc{Mart Trasberg}%
+\thanks{\href{mailto:mart.trasberg@tec.mx}{mart.trasberg@tec.mx}; %
+\href{https://sites.google.com/view/marttrasberg/home}{\texttt{sites.google.com/view/marttrasberg/home}}.\\
+Authors are listed in alphabetical order; all authors contributed equally.}%
 }
 
 \affil[1]{Senior Researcher, University of Turku, Finland}
 \affil[2]{Senior University Lecturer, {\AA}bo Akademi University, Finland}
+\affil[3]{Assistant Professor of Political Science, School of Social Sciences and Government, Tecnol\'ogico de Monterrey, Mexico}
+
+
 
 \date{\today}
 
 \begin{document}
+
+
 \maketitle
+\thispagestyle{empty}
+
 
 <<echo=FALSE, cache=FALSE, warning = FALSE, message = F>>=
 read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/2025/Dem_Backsliding_2.r')
@@ -146,9 +159,12 @@ options(scipen = 999)  # large enough; avoids overflows or odd behavior
 
 
 
-\newpage
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 \section{Losers, Experts, and Accountability}
+
 
 Democracy rarely dies to the sound of tanks; it fades behind legalese, ``independent commissions,'' and crisis cabinets staffed by experts. In Finland, the COVID–19 pandemic made this trade-off vivid: trust in public health authorities and scientific advisers was high on average, yet a subset of voters---disproportionately out-partisans---grew skeptical when expert guidance arrived alongside the government's agenda. Other notable examples are when, in polarized electorates, citizens often swallow anti-liberal moves when their side benefits \parencite{Svolik2020, Svolik2019}. Classic work links electoral competition and cleavage structure to regime vulnerability \parencite{Sartori1976, Dahl1971, Lipset1981}, while contemporary research shows how incumbents tilt the field without canceling elections \parencite{Levitsky2010, Bermeo2016, Waldner2018}. Our paper pushes this literature one step earlier in the causal chain and asks: \emph{when do voters prefer the steady hand of ``experts'' over the rough justice of elections?} 
 
@@ -348,7 +364,8 @@ assumptions---should be negative when expert institutions are perceived as align
 
 \subsection{Results}
 
-\autoref{fig:pred} reports \emph{marginal standardization} (average predicted values) of \texttt{Technocracy} across the full range of \texttt{Government distance} holding the distribution of all covariates at their observed values. The solid line is the point prediction; the shaded band is the 95\% confidence interval. The estimated relationship is negative and approximately monotonic: moving from full proximity to maximal distance lowers the predicted outcome from about $3.5$ to about $2.8$ on the $1$–$5$ scale.
+\autoref{fig:pred} plots marginal-standardized (average) predictions of \texttt{Technocracy} across the full range of \texttt{Government distance}; the solid line is the point estimate and the band the 95\% CI. Across all three panels---seat-weighted, unweighted, and closest-party---the relationship is smoothly and monotonically negative: moving from full proximity to maximal distance lowers the predicted score from about 3.5 to about 2.8 on the 1–5 scale. The near-identical slope in the unweighted panel shows the pattern is not an artifact of seat weights or renormalization, while the closest-party panel reproduces the same monotonic decline with slightly wider intervals at the extremes, as expected from a single-item measure.
+
 
 <<pred, fig.width=11, fig.height=4, out.width='\\textwidth', fig.cap='Average predicted, technocracy vs.\\ government distance (95\\% CIs).', echo=FALSE, message=FALSE, warning=FALSE>>=
 
@@ -357,9 +374,10 @@ print(pred_plot_3panel)
 @
 
 
-Across all three panels of \autoref{fig:pred}, the relationship between \texttt{Government distance} and \texttt{Technocracy} is negative, smooth, and of similar magnitude. In the \emph{seat–weighted} specification (left panel), moving from full proximity to maximal distance lowers the average predicted technocracy score by roughly two–thirds of a response point on the 1–5 scale, with narrow uncertainty bands over most of the support. The \emph{unweighted} construction (middle panel)—a simple mean over the rated government parties—delivers an almost identical slope and envelope, indicating that the result is not driven by the seat–weighting scheme or renormalization for item nonresponse. The \emph{closest–party} measure (right panel), which asks only how close respondents feel to the single government party they like most, again produces a clear, monotonic decline. If anything, the closest–party curve suggests the same substantive pattern with slightly wider intervals at the extremes, as expected when relying on a single item.
 
-Two points follow. First, the distance–to–delegation link is \emph{not} an artifact of a particular operationalization of proximity to government: whether we (i) renormalize seat–weighted closeness over answered items, (ii) average answered items without weights, or (iii) use the respondent’s favorite government party only, the predicted technocracy score falls as distance increases. Second, the magnitudes are remarkably stable across the three constructions, reinforcing that the main finding reflects a population pattern rather than a modeling choice. Consistent with our formal argument, voters farther from the right–leaning Orpo coalition are systematically \emph{less} willing to cede authority to unelected experts when those experts are perceived as aligned with incumbents. The same pattern appears in ordered–logit estimates of each specification (not shown), underscoring that the result is robust to outcome scaling as well as to alternative measures of \texttt{Government distance}.
+Two substantive points follow. First, our empirical results match our voter–choice model: as \texttt{Government distance} widens, the ideological loss term $(\theta_i-\theta_e)^2$ grows, while the performance bonus B and the accountability cost $\lambda$ are held fixed; hence fewer respondents satisfy the delegation condition $B-\lambda > (\theta_i-\theta_e)^2$. Substantively, the slope moves the average respondent from slight technocratic sympathy toward mild skepticism as distance increases. Second, the cross–panel contrasts clarify mechanism rather than measurement: the \emph{closest–party} panel shows that even one sympathetic cabinet party reduces $d_i \equiv \lvert \theta_i-\theta_g\rvert$ enough to make the threshold $B-\lambda > (\theta_i-\theta_e)^2$ easier to clear, whereas its absence erodes support; the \emph{unweighted} panel demonstrates that the result does not hinge on coalition seat shares or renormalization. Taken together, the three measurements indicate that losers’ consent to technocracy is conditional on perceived alignment with incumbents—captured in our framework by higher perceived expert–government alignment $\alpha$—rather than an artifact of how proximity is aggregated.
+
+
 \FloatBarrier
 
 

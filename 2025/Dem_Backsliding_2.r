@@ -172,7 +172,7 @@ dat.t$Q13_1.r <- ifelse(dat.t$Q13_1 == "Totally disagree", 1, 0)
 #
 p_load(dplyr, forcats, sandwich, lmtest)
 
-## 1) Recode technocracy item (Q13_6): drop "I don't know" and make 1..5 ---
+## 1.1) techno5
 dat.t <- dat.t %>%
   mutate(
     q13_6_chr = as.character(Q13_6),
@@ -188,6 +188,21 @@ dat.t <- dat.t %>%
 # quick check
 # table(dat.t$techno5, useNA="ifany")
 
+## 1.2) business5
+dat.t <- dat.t %>%
+  mutate(
+    q13_7_chr = as.character(Q13_7),
+    q13_7_chr = na_if(q13_7_chr, "I don't know"),
+    business_ord = factor(
+      q13_7_chr,
+      levels = c(
+        "Totally disagree","Somewhat disagree",
+        "Neither agree nor disagree","Somewhat agree","Totally agree"
+      ),
+      ordered = TRUE
+    ),
+    business5 = as.numeric(business_ord)  # 1..5 (higher = more agreement)
+  )
 
 
 ## 2) Controls (light-touch recodes; drop DK/Other where needed) ---
@@ -245,10 +260,7 @@ dat.t <- dat.t %>%
 
 ## ---- models.plots ----
 # Packages
-if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
-if (!requireNamespace("dplyr", quietly = TRUE))   install.packages("dplyr")
-library(ggplot2)
-library(dplyr)
+p_load(ggplot2, dplyr)
 
 # Ensure 0–1 versions for the other distances exist
 dat.t <- dat.t %>%
@@ -257,38 +269,49 @@ dat.t <- dat.t %>%
     gov_distance_min_01 = ifelse(is.na(gov_distance_min), NA_real_, gov_distance_min / 10)
   )
 
-# --- 
+# 
 m_w   <- lm(techno5 ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 m_u   <- lm(techno5 ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 m_min <- lm(techno5 ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 
+
+#
+b_w   <- lm(business5 ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
+b_u   <- lm(business5 ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
+b_min <- lm(business5 ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
+
+
 # Helper: average predicted value curve with delta-method SEs
-avg_pred_curve <- function(mod, xvar, xseq = seq(0, 1, by = 0.01)) {
-  mf         <- model.frame(mod)                       # complete cases as used in the fit
-  trmX       <- delete.response(terms(mod))            # RHS-only terms
-  beta       <- coef(mod)
-  beta_names <- names(beta)
-  V          <- vcov(mod)
+avg_pred_curve <- function(model, var, grid = seq(0, 1, length.out = 101)) {
+  stopifnot(inherits(model, "lm"))
+  mf  <- model.frame(model)
+  TT  <- terms(model)
+  Vb  <- vcov(model)
+  bet <- coef(model)
   
-  rows <- lapply(xseq, function(x) {
+  out <- lapply(grid, function(g) {
     nd <- mf
-    nd[[xvar]] <- x
-    X <- model.matrix(trmX, data = nd)
-    X <- X[, beta_names, drop = FALSE]                 # align to coef order
-    xbar <- colMeans(X)                                # average design vector
-    fit  <- sum(xbar * beta)
-    se   <- sqrt(as.numeric(t(xbar) %*% V %*% xbar))
-    data.frame(x = x, estimate = fit,
-               conf.low = fit - 1.96 * se,
-               conf.high = fit + 1.96 * se)
+    nd[[var]] <- g
+    Xg <- model.matrix(TT, data = nd)
+    a  <- colMeans(Xg)
+    est <- sum(a * bet)
+    se  <- sqrt(as.numeric(t(a) %*% Vb %*% a))
+    data.frame(x = g,
+               estimate = est,
+               conf.low = est - 1.96 * se,
+               conf.high = est + 1.96 * se)
   })
-  dplyr::bind_rows(rows)
+  do.call(rbind, out)
 }
 
 # Build curves for each spec
 ap_w   <- avg_pred_curve(m_w,   "gov_distance_w_01")   %>% mutate(spec = "Seat-weighted")
 ap_u   <- avg_pred_curve(m_u,   "gov_distance_u_01")   %>% mutate(spec = "Unweighted")
 ap_min <- avg_pred_curve(m_min, "gov_distance_min_01") %>% mutate(spec = "Closest-party")
+
+ap_b_w   <- avg_pred_curve(b_w,   "gov_distance_w_01")
+ap_b_u   <- avg_pred_curve(b_u,   "gov_distance_u_01")
+ap_b_min <- avg_pred_curve(b_min, "gov_distance_min_01")
 
 ap_all <- bind_rows(ap_w, ap_u, ap_min) %>%
   mutate(spec = factor(spec, levels = c("Seat-weighted","Unweighted","Closest-party")))
@@ -308,6 +331,34 @@ pred_plot_3panel <- ggplot(ap_all, aes(x, estimate)) +
   theme_minimal(base_size = 12) +
   theme(panel.spacing = grid::unit(1, "lines"),
         strip.text = element_text(face = "bold"))
+
+p_load(ggplot2)
+make_panel <- function(df, title_sub) {
+  ggplot(df, aes(x, estimate)) +
+    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.20) +
+    geom_line(linewidth = 1) +
+    labs(
+      x = "Government distance (0 = very close, 1 = far)",
+      y = "Predicted business (1–5)",
+      title = title_sub,
+      subtitle = "Average predictions, controls held at observed distribution"
+    ) +
+    coord_cartesian(ylim = c(1, 5)) +
+    theme_minimal(base_size = 12)
+}
+
+p_b_w   <- make_panel(ap_b_w,   "Seat-weighted")
+p_b_u   <- make_panel(ap_b_u,   "Unweighted")
+p_b_min <- make_panel(ap_b_min, "Closest-party")
+
+p_load(patchwork)
+pred_plot_business_3panel <-
+  (p_b_w | p_b_u | p_b_min) +
+  plot_annotation(
+    title = "Average predicted Business vs. Government distance",
+    theme = theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+  )
+
 ## ----
 
 
@@ -487,19 +538,20 @@ dat.t$Q13_6_num <- recode(dat.t$Q13_6,
                           "Totally agree" = 5,
                           "I don't know" = NA_real_)
 
+
+# Recode Q13_7 to numeric Likert-style scale
+dat.t$Q13_7_num <- recode(dat.t$Q13_6,
+                          "Totally disagree" = 1,
+                          "Somewhat disagree" = 2,
+                          "Neither agree nor disagree" = 3,
+                          "Somewhat agree" = 4,
+                          "Totally agree" = 5,
+                          "I don't know" = NA_real_)
+
+
 ####################
 # Models
 ####################
-
-p_load(jtools)
-# dem satisfaction
-fit = lm(Q13_6_num ~ govt_distance*Q8_1 + Q3 + Q4 + Q5 + Q6, data = dat.t)
-summary(fit)
-effect_plot(fit,
-            pred = "govt_distance",
-            modx = "Q8_1",
-            data = dat.t,
-            interval = TRUE)
 
 dat.t$Q8_1 = as.numeric(dat.t$Q8_1) # dem satisfaction
 dat.t$Q10_1 = as.factor(dat.t$Q10_1) # dem might have problems, but...
