@@ -212,7 +212,7 @@ where $\bar\theta$ is a non–partisan reference (e.g., a technocratic consensus
 Voter $i$ chooses between retaining \emph{electoral accountability} ($A$) or \emph{delegating} to experts ($D$). Under $D$, policy is set at $\theta_e(\alpha)$ by unelected experts. Under $A$, electoral control ultimately delivers policy responsive to voters. For tractability, we take the long–run accountable outcome for voter $i$ as $\theta_A=\theta_i$.\footnote{A more general formulation lets $\theta_A=\phi\,\theta_i+(1-\phi)\,\theta_g$ with $\phi\in(0,1]$ measuring accountability effectiveness. All results below go through with $(\theta_i-\theta_e)^2$ replaced by $(\theta_i-\theta_e)^2 - (\theta_i-\theta_A)^2$.}
 
 \paragraph{Preferences.}
-Utility is spatial with a technocratic valence bonus $B\ge 0$ and an irreversibility (or loss–of–accountability) penalty $\lambda\ge 0$ under delegation:
+Utility is spatial with a technocratic valence gain $B\ge 0$ and an irreversibility (or loss–of–accountability) penalty $\lambda\ge 0$ under delegation:
 \begin{align*}
 U_i(A) &= -(\theta_i - \theta_A)^2 \;=\; 0,\\
 U_i(D) &= -(\theta_i - \theta_e(\alpha))^2 \;+\; B \;-\; \lambda.
@@ -358,23 +358,38 @@ assumptions---should be negative when expert institutions are perceived as align
 
 \subsection{Results}
 
-\autoref{fig:pred} plots marginal-standardized (average) predictions of \texttt{Technocracy} across the full range of \texttt{Government distance}; the solid line is the point estimate and the band the 95\% CI. Across all three panels---seat-weighted, unweighted, and closest-party---the relationship is smoothly and monotonically negative: moving from full proximity to maximal distance lowers the predicted score from about 3.5 to about 2.8 on the 1–5 scale. The near-identical slope in the unweighted panel shows the pattern is not an artifact of seat weights or renormalization, while the closest-party panel reproduces the same monotonic decline with slightly wider intervals at the extremes, as expected from a single-item measure.
-
+\autoref{fig:pred} plots marginal-standardized (average) predictions of \texttt{Technocracy} across the full range of \texttt{Government distance}; the solid line is the point estimate and the band the 95\% CI. Across all three panels---seat–weighted, unweighted, and closest-party---the relationship is monotonically negative: moving from full proximity to maximal distance lowered the predicted score from roughly 3.5 to about 2.8 on the 1-5 scale. The near-identical slope in the unweighted panel shows that the pattern did not hinge on coalition seat shares or renormalization, while the closest-party panel reproduced the same decline with slightly wider intervals at the extremes.
 
 <<pred, fig.width=11, fig.height=4, out.width='\\textwidth', fig.cap='Average predicted, technocracy vs.\\ government distance (95\\% CIs).', echo=FALSE, message=FALSE, warning=FALSE>>=
-
 print(pred_plot_3panel)
 
 @
 
+In light of our voter-choice framework, these estimates align with the mechanism in which ideological loss grows with distance while the performance gains and the accountability cost are held fixed. As \texttt{Government distance} widens, the term $(\theta_i-\theta_e)^2$ increases, so fewer respondents satisfy the delegation condition $B-\lambda>(\theta_i-\theta_e)^2$. Substantively, the slope moved the average respondent from slight technocratic sympathy toward  skepticism as distance increased.
+
+Although the survey did not directly ask whether experts were perceived as ideologically biased, the gradient in \autoref{fig:pred} is unlikely to be an artifact of measurement or data aggregation, suggesting that experts were not viewed as uniformly neutral. The pattern implies that a nontrivial share of respondents inferred some alignment between expert bodies and the right-leaning cabinet, which depressed willingness to delegate among those farthest from the government in ideological space. At the same time, these results do not suggest that Finnish voters, on average, saw experts as politicized. We believe that Finland's high baseline of institutional trust coexists with different heterogeneity levels: a considerable ammount of respondents likely trusted experts, while others---disproportionately opposition-aligned voters---appeared more sensitive to who would be empowered and who appointed them. 
+
+The near-parallel slopes across the seat-weighted, unweighted, and closest-party panels, together with ordered-logit estimates that treat the outcome as ordinal (\autoref{tab:ologit-models}), indicate that the core association is not an artifact of proximity aggregation or outcome scaling. 
 
 
-Two substantive points follow. First, our empirical results match our voter–choice model: as \texttt{Government distance} widens, the ideological loss term $(\theta_i-\theta_e)^2$ grows, while the performance bonus B and the accountability cost $\lambda$ are held fixed; hence fewer respondents satisfy the delegation condition $B-\lambda > (\theta_i-\theta_e)^2$. Substantively, the slope moves the average respondent from slight technocratic sympathy toward mild skepticism as distance increases. Second, the cross–panel contrasts clarify mechanism rather than measurement: the \emph{closest–party} panel shows that even one sympathetic cabinet party reduces $d_i \equiv \lvert \theta_i-\theta_g\rvert$ enough to make the threshold $B-\lambda > (\theta_i-\theta_e)^2$ easier to clear, whereas its absence erodes support; the \emph{unweighted} panel demonstrates that the result does not hinge on coalition seat shares or renormalization. Taken together, the three measurements indicate that losers’ consent to technocracy is conditional on perceived alignment with incumbents—captured in our framework by higher perceived expert–government alignment $\alpha$—rather than an artifact of how proximity is aggregated.
+
+\section{Discussion and Limitations}
+
+This study argued that citizens evaluated technocratic delegation through an ideologically valenced lens. We formalized a voter's choice as a trade-off between a perceived performance gain from expert rule, the ideological loss from ceding authority to actors aligned with the incumbent coalition, and an accountability (irreversibility) cost. The model yielded three central implications: support for delegation decreased with ideological distance from government when experts were perceived as aligned; this distance penalty attenuated when experts were viewed as neutral; and higher accountability costs uniformly depressed support. Empirically, we analyzed a novel Finnish survey and constructed respondent-level distances to the governing coalition using seat-weighted party-closeness, alongside unweighted and closest-party variants. Linear and ordered-logit models consistently indicated a monotonic, negative association between distance and support for delegation. Average predicted values declined across the full distance range and the pattern replicated under alternative distance constructions, supporting the model's core comparative statics.
+
+The findings were especially noteworthy because Finland constituted a demanding case. Finland reliably ranked very high on institutional trust, and large shares of the public trusted government, civil service, and the broader expert community. In such a context, technocratic delegation would have been expected to be broadly acceptable across partisan lines. Instead, support appeared conditional on perceived alignment: voters ideologically distant from the right-leaning cabinet expressed lower willingness to delegate. This pattern was consistent with the idea that, even in a high-trust polity, a nontrivial segment of the electorate inferred that experts could lean toward the incumbents, thereby activating a partisan calculus. At the same time, the results did not imply that all Finns viewed experts as politicized. Taken together, we find that technocratic delegation was endorsed when the performance gains outweighed ideological and accountability losses.
+
+These results come with several. First, we did not directly measure respondents' perceptions of expert alignment or ideological bias. The inference that perceived alignment mattered rested on behavioral patterns (lower delegation support among those farther from government) rather than on explicit survey questions. This limitation implied caution in interpreting the mechanism; future work would benefit from direct measures of perceived neutrality, appointment trust, and agency ideology. Second, the design was observational and cross-sectional, so we could not fully preclude omitted-variable bias or reverse causality (e.g., low support for delegation shaping ex post evaluations of distance). We mitigated this risk with control variables and alternative distance constructions, but stronger identification---via panel data, event-study designs around cabinet changes or salient appointments, or experiments---would have improved causal leverage.
+
+Third, our distance measure relied on self-reported party-closeness and seat-share weights as a proxy for influence within the cabinet. Nonresponse patterns and measurement error in closeness ratings could introduce noise, and seat weights might imperfectly map onto perceived agenda power. We partially addressed this by reporting unweighted and closest-party variants, which delivered substantively similar results, but additional weighting schemes should be explored in future research. Fourth, the technocracy outcome was a single ordered item. Although results were robust to ordered-logit specifications, single-item measures are vulnerable to wording effects or scale interpretation. A multi-item battery tapping distinct facets, such as views about democratic accountability and attitudes toward different government bodies---would yield a more reliable latent construct. 
+
+Fifth, while Finland served as a strong hard test, external validity beyond high-trust, consensus-oriented democracies remained uncertain. The same mechanism could be stronger where baseline trust was lower and polarization higher, but it could also interact with other macro-level variables. Finally, our analyses focused on attitudes; thus, behavioral implications remained to be established.
+
+
+Several extensions follow. First, future surveys should directly measure perceived expert alignment and credibility of appointment procedures (e.g., transparent vs.\ partisan selection), and incorporate items that separately capture the performance gains and the accountability cost. Experimental vignettes could randomize expert appointment rules, explicit ideological signals, and evidence of performance, allowing a clean test of the model's thresholds. Second, designs that exploit temporal variation---before/after cabinet reshuffles, high-salience appointments, or prominent policy episodes---would sharpen causal inference. Third, comparative designs could improve inferential leverage by testing whether the negative effect of government distance on support for delegation intensifies when perceived alignment is more salient and accountability costs loom larger. Fourth, within-country heterogeneity deserves closer attention: multilevel models with party or region random slopes, and explicit tests of the distance effect within parties, would clarify whether the mechanism operated similarly among government supporters and among different strands of the opposition. Finally, linking attitudes to behavior---support for institutional reforms, willingness to cede authority in specific domains, or tolerance for curbing expert bodies---would shed light on the political consequences of ideologically valenced delegation.
 
 
 \FloatBarrier
-
-
 \newpage
 
 
@@ -509,7 +524,15 @@ TODO
 
 ######### OUTLETS
 
-Political Behavior appears to be the best fit overall. Its scope squarely covers voter perceptions of democratic norms and partisan polarization, which are central to the manuscript. The fact that Political Behavior has recently published work on electoral losers’ reactions and democratic erosion underscores this alignment ￼ ￼.
+Political Behavior 
+
+9,000 words or fewer
+
+https://link.springer.com/collections/ebebbjjcij (Populism special issue)
+
+Submission to first decision (median): 10 days
+
+appears to be the best fit overall. Its scope squarely covers voter perceptions of democratic norms and partisan polarization, which are central to the manuscript. The fact that Political Behavior has recently published work on electoral losers’ reactions and democratic erosion underscores this alignment ￼ ￼.
 
 https://link.springer.com/article/10.1007/s11109-025-10001-1#:~:text=While%20%E2%80%98losers%E2%80%99%20consent%E2%80%99%20has%20long,may%20initially%20overlook%20undemocratic%20behavior
 
