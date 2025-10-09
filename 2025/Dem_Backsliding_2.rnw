@@ -18,6 +18,13 @@
 \usepackage{microtype}
 \usepackage{authblk}
 
+
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx} % tinytable uses \num from siunitx; you already load siunitx
+% also add this to be safe for the multiplication sign in labels
+\DeclareUnicodeCharacter{00D7}{\times}
+
 %---- Math & symbols
 \usepackage{amsmath, amssymb, mathtools}
 \usepackage{bbm}          % for \mathbbm{1} indicator
@@ -105,14 +112,20 @@ knitr::read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/2025/D
 @
 
 <<loadings, include=FALSE, cache=FALSE, eval=TRUE, error=FALSE, results='hide', ref.label='loadings'>>=
+
 @
 
-<<reg_table, include=FALSE, cache=FALSE, eval=TRUE, error=FALSE, results='hide', ref.label='reg_table'>>=
+<<reg_table, include=FALSE, eval=TRUE, ref.label='reg_table'>>=
+
 @
 
-<<reg_table_ologit, include=FALSE, cache=FALSE, eval=TRUE, error=FALSE, results='hide', ref.label='reg_table2'>>=
+<<reg_table_ologit, include=FALSE, eval=TRUE, ref.label='reg_table_ologit'>>=
+
 @
 
+<<align, include=FALSE, cache=FALSE, eval=TRUE, error=FALSE, results='hide', ref.label='align'>>=
+
+@
 
 <<abstract, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
@@ -360,19 +373,48 @@ assumptions---should be negative when expert institutions are perceived as align
 
 \subsection{Results}
 
-\autoref{fig:pred} plots marginal-standardized (average) predictions of \texttt{Technocracy} across the full range of \texttt{Government distance}; the solid line is the point estimate and the band the 95\% CI. Across all three panels---seat–weighted, unweighted, and closest-party---the relationship is monotonically negative: moving from full proximity to maximal distance lowered the predicted score from roughly 3.5 to about 2.8 on the 1-5 scale. The near-identical slope in the unweighted panel shows that the pattern did not hinge on coalition seat shares or renormalization, while the closest-party panel reproduced the same decline with slightly wider intervals at the extremes.
+\autoref{fig:pred} plots marginal-standardized (average) predictions of expert support across the full range of distance from the current Finnish Government.\footnote{The solid line is the point estimate and the band the 95\% CI.} Effects are modest but meaningful in a hard case like Finland. Across all three panels---seat-weighted, unweighted, and closest-party---the relationship is monotonically negative: moving from full proximity to maximal distance from the Government lowered the predicted score from roughly 3.5 to about 2.8 on the 1-5 scale. The near-identical slope in the unweighted panel shows that the pattern did not hinge on coalition seat shares or renormalization, while the closest-party panel reproduced the same decline.
 
-<<pred, fig.width=11, fig.height=4, out.width='\\textwidth', fig.cap='Average predicted, technocracy vs.\\ government distance (95\\% CIs).', echo=FALSE, message=FALSE, warning=FALSE>>=
+<<pred, fig.width=11, fig.height=4, out.width='\\textwidth', fig.cap='Average predicted: technocracy vs.\\ government distance (95\\% CIs).', echo=FALSE, message=FALSE, warning=FALSE>>=
 print(pred_plot_3panel)
 
 @
 
-In light of our voter-choice framework, these estimates align with the mechanism in which ideological loss grows with distance while the performance gains and the accountability cost are held fixed. As \texttt{Government distance} widens, the term $(\theta_i-\theta_e)^2$ increases, so fewer respondents satisfy the delegation condition $B-\lambda>(\theta_i-\theta_e)^2$. Substantively, the slope moved the average respondent from slight technocratic sympathy toward  skepticism as distance increased.
+In light of our voter-choice framework, these estimates align with the mechanism in which ideological loss grows with distance while the performance gains and the accountability cost are held fixed. As distance from the Government widens, the term $(\theta_i-\theta_e)^2$ increases, so fewer respondents satisfy the delegation condition $B-\lambda>(\theta_i-\theta_e)^2$. Substantively, the slope moved the average respondent from slight technocratic sympathy toward  skepticism as distance increased.
 
 Although the survey did not directly ask whether experts were perceived as ideologically biased, the gradient in \autoref{fig:pred} is unlikely to be an artifact of measurement or data aggregation, suggesting that experts were not viewed as uniformly neutral. The pattern implies that a nontrivial share of respondents inferred some alignment between expert bodies and the right-leaning cabinet, which depressed willingness to delegate among those farthest from the government in ideological space. At the same time, these results do not suggest that Finnish voters, on average, saw experts as politicized. We believe that Finland's high baseline of institutional trust coexists with different heterogeneity levels: a considerable ammount of respondents likely trusted experts, while others---disproportionately opposition-aligned voters---appeared more sensitive to who would be empowered and who appointed them. 
 
 The near-parallel slopes across the seat-weighted, unweighted, and closest-party panels, together with ordered-logit estimates that treat the outcome as ordinal (\autoref{tab:ologit-models}), indicate that the core association is not an artifact of proximity aggregation or outcome scaling. 
 
+
+\paragraph{Perceived Government-Expert Alignment} Because our core claim hinges on \emph{perceived} alignment, we complement the baseline models with additional tests that unpack the mechanism and clarify our main specification tests. Specifically, we construct an alignment proxy based on the \emph{trust gap} between government and a flagship expert body (the Finnish central bank) and estimate interaction models of Government distance and our trust gap variable.  
+
+Let $T^{G}_i$ denote respondent $i$'s trust in the current government (0–10) and $T^{E}_i$ trust in experts (the Finnish central bank). Our alignment proxy is the signed differential
+
+\[
+\texttt{Align}_i \;\equiv\; T^{G}_i - T^{E}_i,
+\]
+
+and a symmetric unit-interval mapping for graphical exposition,
+
+\[
+\texttt{Align}^{01}_i \;\equiv\; \tfrac{1}{2} + \frac{\texttt{Align}^{z}_i}{2A},\qquad A \equiv \max_j \bigl|\texttt{Align}^{z}_j\bigr|,
+\]
+
+By construction, $\texttt{Align}^{01}_i=0.5$ means indifference ($T^{G}_i \approx T^{E}_i$); values $>\!0.5$ indicate a government-over-experts trust premium, and values $<\!0.5$ indicate an experts-over-government premium. Using the trust gap, $T^{G}_i - T^{E}_i$, rather than the raw levels $T^{G}_i$ or $T^{E}_i$ separately, strips out a respondent's overall trust mood---e.g., some respondents rate everything high or everything low, and focuses on which \emph{side} they trust more. For example, $(T^{G}_i,T^{E}_i)=(8,7)$ and $(2,1)$ both yield a gap of $+1$, indicating the same comparative orientation (government trusted over experts) despite very different absolute trust.
+
+Substantively, we theorize that when the cabinet is trusted \emph{more} than the central bank, voters will most likely think expert bodies will adhere to the government. However, when the central bank is trusted \emph{more} than the government, it is safe to expect that voters will see experts as independent from the government. This rests on a realistic behavioral assumption: appointment rules, mandate‐setting, and day-to-day agenda coordination naturally connect expert agencies to elected incumbents in the public mind.
+
+
+
+<<pred.4, fig.width=6, fig.height=4, out.width='\\textwidth', fig.cap='Interactive OLS hypothesis: Technocracy $\\times$ Government distance moderated by Gov-Expert trust gap', fig.pos='H', echo=FALSE, message=FALSE, warning=FALSE>>=
+
+print(pint)
+
+@
+
+
+Empirically, \autoref{fig:pred.4} shows that including in the main model an interaction between \texttt{Government distance} and alignment delivers the expected pattern (model 1 in \autoref{tab:interact-models}).\footnote{Following \textcite[73]{Brambor2006}, we do not interpret the table, but rather focus on the marginal effects  \autoref{fig:pred.4}} Among respondents with a positive gap (government trusted over experts), the slope of \texttt{Technocracy} on government distance is sharply negative: as voters move away from the governing bloc, predicted support for delegation falls. Around the indifferent region (gap $\approx 0$), the negative slope attenuates. Among respondents with a negative gap (experts trusted over government), the slope is flat to slightly positive, consistent with the idea that losers are comparatively more willing to delegate when experts are viewed as independent. This heterogeneity is central for our identification.
 
 
 \section{Discussion and Limitations}
@@ -381,7 +423,7 @@ This study argued that citizens evaluated technocratic delegation through an ide
 
 The findings were especially noteworthy because Finland constituted a demanding case. Finland reliably ranked very high on institutional trust, and large shares of the public trusted government, civil service, and the broader expert community. In such a context, technocratic delegation would have been expected to be broadly acceptable across partisan lines. Instead, support appeared conditional on perceived alignment: voters ideologically distant from the right-leaning cabinet expressed lower willingness to delegate. This pattern was consistent with the idea that, even in a high-trust polity, a nontrivial segment of the electorate inferred that experts could lean toward the incumbents, thereby activating a partisan calculus. At the same time, the results did not imply that all Finns viewed experts as politicized. Taken together, we find that technocratic delegation was endorsed when the performance gains outweighed ideological and accountability losses.
 
-These results come with several. First, we did not directly measure respondents' perceptions of expert alignment or ideological bias. The inference that perceived alignment mattered rested on behavioral patterns (lower delegation support among those farther from government) rather than on explicit survey questions. This limitation implied caution in interpreting the mechanism; future work would benefit from direct measures of perceived neutrality, appointment trust, and agency ideology. Second, the design was observational and cross-sectional, so we could not fully preclude omitted-variable bias or reverse causality (e.g., low support for delegation shaping ex post evaluations of distance). We mitigated this risk with control variables and alternative distance constructions, but stronger identification---via panel data, event-study designs around cabinet changes or salient appointments, or experiments---would have improved causal leverage.
+These results come with several caveats. First, although we now operationalize perceived alignment with a  trust differential (government-over-experts trust gap), this remains a proxy rather than a direct measure of whether respondents \emph{believe} experts are government-aligned. The interaction between \texttt{Government distance} and the gap behaves as the theory predicts---strongly negative when $T^{G}_i>T^{E}_i$, attenuated near $T^{G}_i\approx T^{E}_i$, and weak/flat when $T^{G}_i<T^{E}_i$---which provides construct validity, but the gap could also absorb generalized regime affect or performance evaluations. Second, the design is observational and cross–sectional, so distance and the trust gap may be jointly shaped by latent ideology or anti–elitism; causal claims should therefore be cautious. Future work should field direct items on perceived capture/appointment trust and agency ideology, and deploy experiments that randomize appointment rules, explicit ideological cues, and performance signals, ideally embedded in panels around salient appointments or cabinet reshuffles.
 
 Third, our distance measure relied on self-reported party-closeness and seat-share weights as a proxy for influence within the cabinet. Nonresponse patterns and measurement error in closeness ratings could introduce noise, and seat weights might imperfectly map onto perceived agenda power. We partially addressed this by reporting unweighted and closest-party variants, which delivered substantively similar results, but additional weighting schemes should be explored in future research. Fourth, the technocracy outcome was a single ordered item. Although results were robust to ordered-logit specifications, single-item measures are vulnerable to wording effects or scale interpretation. A multi-item battery tapping distinct facets, such as views about democratic accountability and attitudes toward different government bodies---would yield a more reliable latent construct. 
 
@@ -518,6 +560,18 @@ print(tech_by_party_plot)
 
 @
 
+\newpage
+\subsection{Expert-Government Gap: Interactive Models}
+\FloatBarrier
+
+
+\begin{table}[!htbp]
+\centering
+\caption{Interactive OLS models: Technocracy $\times$ Government distance moderated by Gov-Expert trust gap}
+\label{tab:interact-models}
+\resizebox{\textwidth}{!}{\input{build/table_models_interact_tabular.tex}}
+\end{table}
+
 
 \end{document}
 
@@ -588,3 +642,18 @@ The puzzle, then, is: If Finns trust experts so much, why do we still find ideol
 
 
   • Perceived Alignment Triggers Partisan Lens: Even in Finland, there can be a perception that expert bodies are not entirely neutral but lean in the direction of the incumbent government’s ideology. This perception may be subtle, but it is enough to activate a partisan response. Recall that in the U.S. Fed example, overall trust in the institution stayed high, yet each side believed the institution favored the other side ￼ ￼. A similar dynamic can occur in Finland: voters across the spectrum might profess trust in, say, the civil service or scientific community, yet each camp may think those institutions serve someone else’s agenda in practice. If left-wing Finns suspect that expert agencies are quietly pushing the right-wing government’s policies (or if right-wing voters suspect experts are captive to a left-leaning “deep state”), each will be less eager to cede authority to those experts. In sum, high average trust doesn’t preclude partisan interpretations of expert impartiality.
+
+
+  ###
+What the figure shows (ignoring CI overlap, per your instruction)  ￼:
+  • Across the x-axis, \govdist and support for technocratic delegation (\techno) move in opposite directions: as distance from the cabinet grows, predicted support falls. That’s your baseline distance penalty.
+• The penalty is conditional on alignment (our proxy: relative trust in Government vs the Bank of Finland).
+• For Align_01_c = +0.25 (respondents trusting government more than the central bank) the slope is most negative: out-partisans in this group are least willing to delegate to experts as they move away from government.
+• For Align_01_c = 0 (rough parity) the slope is negative but moderate.
+• For Align_01_c = −0.25 (respondents trusting the central bank more than government) the slope is flattest and the line lies higher overall: these respondents are consistently more pro-delegation at every level of \govdist, and distance hurts them least.
+
+Why this helps your case:
+  • Substantively, the plot delivers exactly the conditional we need: losers’ willingness to delegate is lowest when they see “experts” as aligned with the incumbents (proxied here by higher trust in government relative to the BoF), and attenuated when they trust the expert body more than the government. That’s the paper’s core mechanism in behavioral form.
+• The vertical spread between the lines is not trivial on a 1–5 scale (visually, it’s on the order of a fraction of a response category), and it’s systematic across the whole range of \govdist, not just at a corner. This reads as a meaningful moderation, not noise.
+
+“Because cabinet appointment and agenda-setting tie expert bodies to elected incumbents in the public mind, respondents who trust government more than the central bank have a stronger prior that experts are government-aligned, whereas those who trust the central bank more than government are primed to see experts as independent.”

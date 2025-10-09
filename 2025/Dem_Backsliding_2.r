@@ -1,3 +1,7 @@
+cat("\014")
+rm(list=ls())
+
+
 ## ---- loadings
 setwd("/Users/hectorbahamonde/research/democratic_backsliding/2025/")
 
@@ -373,7 +377,7 @@ writeLines(enc2utf8(as.character(tex_tab)),
 
 
 ################
-#### reg_table_ologit
+#### reg table ologit
 ################
 
 ## ---- reg_table_ologit
@@ -489,77 +493,200 @@ writeLines(enc2utf8(as.character(tex_tab_ologit)),
 #### Align var
 ################
 
+## ---- align
+
 # libs
-library(dplyr)
-library(interactions)
-library(ggplot2)
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  dplyr, interactions, ggplot2, scales,
+  modelsummary, kableExtra, sandwich, lmtest, rlang
+)
 
-# columns
-v_trust_gov <- "Q9_3"               # trust in government (1–9)
-v_trust_bof <- "Q9_7"               # trust in Bank of Finland (1–9)
-v_govdist   <- "gov_distance_w_01"  # 0–1 distance to government
-v_outcome   <- "techno5"            # 1–5 technocracy item
+# Force classic LaTeX tabular output (no tabularray/tinytable)
+options(modelsummary_factory_latex = "kableExtra")
 
-# 1) Raw directional gap (+ = BoF > Gov), and overall trustfulness (sum)
+# 0) Column names
+
+v_trust_gov    <- "Q9_3"                 # trust in government (1–9)
+v_trust_bof    <- "Q9_7"                 # trust in Bank of Finland (1–9)
+v_govdist_w    <- "gov_distance_w_01"    # 0–1 seat-weighted distance
+v_govdist_u    <- "gov_distance_u_01"    # 0–1 unweighted distance
+v_govdist_min  <- "gov_distance_min_01"  # 0–1 closest-party distance
+v_outcome_tech <- "techno5"              # 1–5 technocracy item
+v_outcome_biz  <- "business5"            # 1–5 business item
+
+# defensive: ensure factors are factors (used in models)
 dat.t <- dat.t %>%
   mutate(
-    Align_raw = .data[[v_trust_bof]] - .data[[v_trust_gov]],   # range theoretically [-8, +8]
+    region = factor(region),
+    gender = factor(gender)
+  )
+
+# 1) Build Align (BoF minus Government) and controls
+dat.t <- dat.t %>%
+  mutate(
+    Align_raw = .data[[v_trust_bof]] - .data[[v_trust_gov]],  # theoretical range [-8, +8]
     Trust_sum = .data[[v_trust_bof]] + .data[[v_trust_gov]]
+  ) %>%
+  mutate(
+    Align_01 = pmin(pmax(0.5 + Align_raw / 16, 0), 1)         # map to [0,1], 0.5 = equal trust
   )
 
-# 2) Map Align_raw to 0–1 so 0 -> 0.5 (using theoretical max diff = 8 for a 1–9 scale)
+mu_align <- mean(dat.t$Align_01, na.rm = TRUE)
 dat.t <- dat.t %>%
   mutate(
-    Align_01 = pmin(pmax(0.5 + Align_raw / (2*8), 0), 1)   # 0.5 = equal trust
-  )
-
-# 3) Force sample mean to be exactly 0.5 (handy for interpretations)
-mu <- mean(dat.t$Align_01, na.rm = TRUE)
-dat.t <- dat.t %>%
-  mutate(
-    Align_01_m05 = pmin(pmax(Align_01 - (mu - 0.5), 0), 1),  # shifted so mean ≈ 0.5
-    Align_01_c   = Align_01_m05 - 0.5,                      # centered at 0
+    Align_01_m05 = pmin(pmax(Align_01 - (mu_align - 0.5), 0), 1),
+    Align_01_c   = Align_01_m05 - 0.5,                         # centered at 0
     Trust_sum_c  = Trust_sum - mean(Trust_sum, na.rm = TRUE)
   )
 
-# 4) Estimate interaction (control for general “trustfulness” with Trust_sum_c)
-m_align <- lm(
-  as.formula(paste(
-    v_outcome, "~", paste0(v_govdist, "*Align_01_c"),
-    "+ Trust_sum_c + Q8_1 + Q9_4 + educ_ord + age_ord + gender + factor(region)"
-  )),
+# 2) Main interaction model (used for the plot)
+t_w_i <- lm(
+  reformulate(
+    c(paste0(v_govdist_w, "*Align_01_c"),
+      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
+    response = v_outcome_tech
+  ),
   data = dat.t, na.action = na.exclude
 )
 
-summary(m_align)
+# 3) Interaction plot (from the model above)
+pred_dat <- ggeffects::ggpredict(
+  t_w_i,
+  terms = c(sprintf("%s [0:1 by=0.01]", v_govdist_w),  # x-axis: 0..1
+            "Align_01_c [-0.25,0,0.25]")              # three moderator lines
+)
 
-# 5) Plot simple slopes
-interactions::interact_plot(
-  m_align,
-  pred = !!rlang::sym(v_govdist),
-  modx = Align_01_c,
-  modx.values = c(-.25, 0, .25),  # ~ BoF << Gov, equal, BoF >> Gov
-  interval = TRUE, int.width = .95,
-  plot.points = FALSE
-) +
+# Build a standard ggplot object named `pint`
+pint <- ggplot(pred_dat, aes(x = x, y = predicted, color = group)) +
+  geom_line(linewidth = 1) +
   labs(
-    x = "Government distance (0–1)",
-    y = "Predicted technocracy (1–5)",
-    color = "Align (BoF – Gov)\n(centered)"
+    x   = "Government distance (0 = close, 1 = far)",
+    y   = "Technocracy",
+    color = "Gov-Expert trust gap"
   ) +
-  theme_minimal()
+  #coord_fixed(ratio = 1) +
+  theme_light() +
+  theme(
+    legend.position  = "bottom",
+    legend.direction = "horizontal"
+  ) +
+  guides(color = guide_legend(nrow = 1, byrow = TRUE))
 
-###
-What the figure shows (ignoring CI overlap, per your instruction)  ￼:
-  •	Across the x-axis, \govdist and support for technocratic delegation (\techno) move in opposite directions: as distance from the cabinet grows, predicted support falls. That’s your baseline distance penalty.
-•	The penalty is conditional on alignment (our proxy: relative trust in Government vs the Bank of Finland).
-•	For Align_01_c = +0.25 (respondents trusting government more than the central bank) the slope is most negative: out-partisans in this group are least willing to delegate to experts as they move away from government.
-•	For Align_01_c = 0 (rough parity) the slope is negative but moderate.
-•	For Align_01_c = −0.25 (respondents trusting the central bank more than government) the slope is flattest and the line lies higher overall: these respondents are consistently more pro-delegation at every level of \govdist, and distance hurts them least.
 
-Why this helps your case:
-  •	Substantively, the plot delivers exactly the conditional we need: losers’ willingness to delegate is lowest when they see “experts” as aligned with the incumbents (proxied here by higher trust in government relative to the BoF), and attenuated when they trust the expert body more than the government. That’s the paper’s core mechanism in behavioral form.
-•	The vertical spread between the lines is not trivial on a 1–5 scale (visually, it’s on the order of a fraction of a response category), and it’s systematic across the whole range of \govdist, not just at a corner. This reads as a meaningful moderation, not noise.
+# 4) Six OLS interaction specs (tech + business; w / u / closest)
+# Tech (OLS)
+t_u_i <- lm(
+  reformulate(
+    c(paste0(v_govdist_u, "*Align_01_c"),
+      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
+    response = v_outcome_tech
+  ),
+  data = dat.t, na.action = na.exclude
+)
+
+t_min_i <- lm(
+  reformulate(
+    c(paste0(v_govdist_min, "*Align_01_c"),
+      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
+    response = v_outcome_tech
+  ),
+  data = dat.t, na.action = na.exclude
+)
+
+# Business (OLS)
+b_w_i <- lm(
+  reformulate(
+    c(paste0(v_govdist_w, "*Align_01_c"),
+      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
+    response = v_outcome_biz
+  ),
+  data = dat.t, na.action = na.exclude
+)
+
+b_u_i <- lm(
+  reformulate(
+    c(paste0(v_govdist_u, "*Align_01_c"),
+      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
+    response = v_outcome_biz
+  ),
+  data = dat.t, na.action = na.exclude
+)
+
+b_min_i <- lm(
+  reformulate(
+    c(paste0(v_govdist_min, "*Align_01_c"),
+      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
+    response = v_outcome_biz
+  ),
+  data = dat.t, na.action = na.exclude
+)
+
+# 5) Table: six OLS models with interaction (TABULAR-ONLY, classic LaTeX)
+models_interact <- list(
+  `Tech (OLS): Seat-wt`  = t_w_i,   # plot uses this one
+  `Tech (OLS): Unwt`     = t_u_i,
+  `Tech (OLS): Closest`  = t_min_i,
+  `Biz (OLS): Seat-wt`   = b_w_i,
+  `Biz (OLS): Unwt`      = b_u_i,
+  `Biz (OLS): Closest`   = b_min_i
+)
+
+# Robust SEs (HC1)
+vcovs_hc1 <- lapply(models_interact, \(m) sandwich::vcovHC(m, type = "HC1"))
+
+# ASCII-only labels (avoid Unicode inside LaTeX)
+# Build the original names (keys) programmatically…
+var_keys <- c(
+  "Align_01_c",
+  paste0(v_govdist_w,   ":Align_01_c"),
+  paste0(v_govdist_u,   ":Align_01_c"),
+  paste0(v_govdist_min, ":Align_01_c"),
+  v_govdist_w,
+  v_govdist_u,
+  v_govdist_min,
+  "Trust_sum_c",
+  "Q8_1",
+  "Q9_4"
+)
+
+# …and map them to pretty labels (values). Use ASCII-safe LaTeX.
+var_vals <- c(
+  "Gov--Expert trust gap (centered)",
+  "Distance $\\times$ Gap (seat--wt)",
+  "Distance $\\times$ Gap (unwt)",
+  "Distance $\\times$ Gap (closest)",
+  "Gov distance (seat--wt)",
+  "Gov distance (unwt)",
+  "Gov distance (closest)",
+  "Overall trustfulness (centered)",
+  "Democratic satisfaction",
+  "Trust in politicians"
+)
+
+# Final mapping for coef_rename:
+var_labels <- setNames(var_vals, var_keys)
+
+dir.create("build", showWarnings = FALSE, recursive = TRUE)
+
+tab_tex <- modelsummary::msummary(
+  models      = models_interact,
+  vcov        = vcovs_hc1,
+  coef_rename = var_labels,
+  coef_omit   = "(^educ_ord)|(^region)|(^age_ord)",
+  gof_omit    = "IC|Log|AIC|BIC|F|Adj|Within|Pseudo|R2 Within|R2 Between|Std\\.Errors|Std\\. Errors",  estimate    = "{estimate}{stars}",
+  statistic   = "({std.error})",
+  stars       = c('*'=.10, '**'=.05, '***'=.01),
+  output      = "latex_tabular",
+  escape      = FALSE 
+)
+
+# Write a pure \begin{tabular}...\end{tabular} file (no tblr)
+writeLines(enc2utf8(as.character(tab_tex)),
+           con = "build/table_models_interact_tabular.tex",
+           useBytes = TRUE)
+## ----
+
 
 
 ################
@@ -568,7 +695,7 @@ Why this helps your case:
 
 ## ---- abstract ----
 fileConn <- file ("abstract.txt")
-abstract.c = as.character(c("Research on partisan-motivated tolerance of democratic transgressions shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Much less is known about how citizens evaluate delegation—shifting authority from elected politicians to unelected experts. We address this gap with a simple formal model and new evidence from Finland. In the model, voters weigh a perceived performance gain from technocratic rule against ideological distance from government and the loss of electoral accountability. We argue that resistance to technocratic delegation concentrates in a subset of voters who perceive expert bodies as government-aligned. The model yields three implications: (i) support for delegation declines monotonically with distance from the governing coalition when expert institutions are perceived as aligned; (ii) this negative relationship attenuates when experts are viewed as neutral (or closer to the voter than the government) and steepens when alignment is high; and (iii) an irreversibility cost from ceding electoral control uniformly depresses support. Empirically, we analyze a novel 2025 survey of Finnish adults—a high-capacity, multiparty parliamentary democracy and thus a hard case for partisan resistance to expertise. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on party-closeness evaluations. Statistical models show that voters farther from the right-leaning Finnish cabinet are less supportive of delegation; results replicate with different measurements. Substantively, losers' consent to technocracy is conditional: delegation is acceptable primarily when performance gains outweigh ideological and accountability costs and when expert bodies are not seen as aligned with incumbents."))
+abstract.c = as.character(c("Research on partisan-motivated tolerance of democratic transgressions shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Much less is known about how citizens evaluate delegation---shifting authority from elected politicians to unelected experts. We address this gap with a simple formal model and new evidence from Finland. In the model, voters weigh a perceived performance gain from technocratic rule against ideological distance from government and the loss of electoral accountability. We argue that resistance to technocratic delegation concentrates in a subset of voters who perceive expert bodies as government-aligned. The model yields three implications: (i) support for delegation declines monotonically with distance from the governing coalition when expert institutions are perceived as aligned; (ii) this negative relationship attenuates when experts are viewed as neutral (or closer to the voter than the government) and steepens when alignment is high; and (iii) an irreversibility cost from ceding electoral control uniformly depresses support. Empirically, we analyze a novel 2025 survey of Finnish adults—a high-capacity, multiparty parliamentary democracy and thus a hard case for partisan resistance to expertise. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on party-closeness evaluations. Statistical models show that voters farther from the right-leaning Finnish cabinet are less supportive of delegation; results replicate with different measurements. Substantively, losers' consent to technocracy is conditional: delegation is acceptable primarily when performance gains outweigh ideological and accountability costs and when expert bodies are not seen as aligned with incumbents."))
 writeLines(abstract.c, fileConn)
 close(fileConn)
 ## ----
