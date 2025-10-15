@@ -72,7 +72,7 @@
 \author[1]{\textsc{Hector Bahamonde}\thanks{\href{mailto:hector.bahamonde@utu.fi}{hector.bahamonde@utu.fi}; \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}}}
 \author[2]{\textsc{Andrea Canales}\thanks{\href{mailto:andrea.canales@uoh.cl}{andrea.canales@uoh.cl}; \href{https://sites.google.com/view/andrea-canales-g/home}{\texttt{sites.google.com/view/andrea-canales-g/home}}}}
 \author[3]{\textsc{Inga Saikkonen}\thanks{\href{mailto:inga.saikkonen@abo.fi}{inga.saikkonen@abo.fi}; \href{https://research.abo.fi/en/persons/inga-saikkonen}{\texttt{research.abo.fi/en/persons/inga-saikkonen}}}}
-\author[4]{\textsc{Mart Trasberg}\thanks{\href{mailto:mart.trasberg@tec.mx}{mart.trasberg@tec.mx}; \href{https://sites.google.com/view/marttrasberg/home}{\texttt{sites.google.com/view/marttrasberg/home}}. \\{\bf Authors are listed in alphabetical order; all authors contributed equally.}}}
+\author[4]{\textsc{Mart Trasberg}\thanks{\href{mailto:mart.trasberg@tec.mx}{mart.trasberg@tec.mx}; \href{https://sites.google.com/view/marttrasberg/home}{\texttt{sites.google.com/view/marttrasberg/home}}. \\{\bf Authors are listed in alphabetical order; all authors contributed equally.} This research was supported by Research Council Finland (grant number 316897).}}
 
 
 
