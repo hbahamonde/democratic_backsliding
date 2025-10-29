@@ -177,7 +177,7 @@ knitr::read_chunk('/Users/hectorbahamonde/research/democratic_backsliding/2025/D
 \vspace*{0.3cm}
 
 
-%\centerline{\bf Please consider downloading the last version of the paper \href{https://github.com/hbahamonde/democratic_backsliding/raw/main/2025/Dem_Backsliding_2.pdf}{\texttt{{\color{red}here}}}.}
+\centerline{\bf Please consider downloading the last version of the paper \href{https://github.com/hbahamonde/democratic_backsliding/raw/main/2025/Dem_Backsliding_2.pdf}{\texttt{{\color{red}here}}}.}
 
 \vspace*{0.3cm}
 \centerline{\bf {\color{red}PLEASE DO NOT CIRCULATE}.}
