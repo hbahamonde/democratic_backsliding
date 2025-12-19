@@ -96,6 +96,7 @@
 % \href{https://sites.google.com/view/marttrasberg/home}{\texttt{sites.google.com/view/marttrasberg/home}}
 
 
+\newcommand{\dpartial}[2]{\frac{\partial #1}{\partial #2}}
 
 
 \date{\today}
@@ -255,50 +256,91 @@ which corresponds to our empirical measure \texttt{Government distance}. Perceiv
 where $\bar\theta$ is a non–partisan reference (e.g., a technocratic consensus or the median policy). Full alignment means $\alpha=1$ (so $\theta_e=\theta_g$); lower $\alpha$ implies more neutral experts.
 
 \paragraph{Sequence.}
-Voter $i$ chooses between retaining the status quo of elected–politician control ($S$) or \emph{delegating} to experts ($D$). Under $D$, policy is set at $\theta_e(\alpha)$. Under $S$, we normalize the long–run outcome to $\theta_S=\theta_i$ (a standard spatial benchmark that fixes utility levels).
+Voter $i$ chooses between retaining the status quo of elected–politician control ($S$) or \emph{delegating} to experts ($D$). Under $D$, policy is set at $\theta_e(\alpha)$
 
 \paragraph{Preferences.} Utility is spatial with a perceived technocratic performance/competence gain $B\ge 0$:
 
-\begin{align*}
-U_i(S) &= -(\theta_i - \theta_S)^2 \;=\; 0,\\
-U_i(D) &= -(\theta_i - \theta_e(\alpha))^2 \;+\; B.
-\end{align*}
+\begin{align}
+U_i(S) &= -(\theta_i - \theta_S)^2,\\
+U_i(D) &= -(\theta_i - \theta_e(\alpha))^2 \;+\; B(\alpha).
+\end{align}
 
-Here $B$ captures the expected advantage from expert rule (information, insulation from short-termism, etc.). There is \emph{no} additional penalty term.
+Here $B$ captures the expected advantage from expert rule (information, insulation from short-termism, etc.) and $B'(\alpha)<0$. There is \emph{no} additional penalty term.
 
 \paragraph{Decision rule.}
 
 Voter $i$ supports delegation iff $U_i(D) > U_i(S)$, i.e.
 
-\begin{equation}
-B \;>\; \bigl(\theta_i - \theta_e(\alpha)\bigr)^2.
-\label{eq:threshold}
-\end{equation}
-
-Equivalently, define the \emph{required valence} for delegation,
-
 \[
-B_i^\star(\alpha) \;\equiv\; \bigl(\theta_i - \theta_e(\alpha)\bigr)^2,
+\begin{cases}
+    \theta_i >\theta_i^\star(\alpha) & \text{if } \theta_e(\alpha)>\theta_S\\[6pt] 
+    \theta_i <\theta_i^\star(\alpha) & \text{if } \theta_e(\alpha)<\theta_S\\[6pt] 
+\end{cases}
+\]
+where,
+\[
+\theta_i^\star(\alpha) \;\equiv\; \frac{\theta_e(\alpha)+\theta_S}{2}-\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)},
 \]
 
-so that $D$ is chosen iff $B > B_i^\star$.
+Therefore,  $D$ is chosen iff
+\[
+\begin{cases}
+    1/2 >F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)>\theta_S\\[6pt] 
+    1/2 <F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)<\theta_S\\[6pt] 
+\end{cases}
+\]
 
-\paragraph{Special case: fully aligned experts.}
+Note that the indifferent voter depends on $\alpha$, which captures the alignment between the government and the experts. That is,
 
-If $\alpha=1$ (experts perceived as government–aligned), then $\theta_e=\theta_g$ and
-\begin{equation}
-B \;>\; d_i^2.
-\label{eq:aligned}
-\end{equation}
-Hence, support for delegation is strictly decreasing in $d_i$: distant (``loser'') voters require larger $B$ to accept delegation.
+\begin{align}\label{eq:indifferent-alpha}
+    \dpartial{\theta_i^\star(\alpha)}{\alpha}&=\frac{\theta_e'(\alpha)}{2}\Big(1+\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)^2}\Big)+ \frac{B'(\alpha)}{2(\theta_e(\alpha)-\theta_S)} \\ \nonumber
+ %   &=\frac{\theta_g-\bar \theta}{2}-\frac{B'(\alpha)}{2(\alpha(\theta_g-\bar\theta)+(\bar\theta-\theta_S))}+\frac{B(\alpha)(\theta_g-\bar \theta)}{2(\theta_g-\bar\theta)+(\bar\theta-\theta_S))^2}
+\end{align}
 
-\paragraph{Comparative statics.}
-
+The derivative consists of two forces:
 \begin{itemize}
-\item \textbf{Distance effect.} For fixed $(B,\alpha)$, delegation is (weakly) less likely as $d_i$ grows. Under \autoref{eq:aligned}, the cutoff is $d_i^\star(B)=\sqrt{B}$; if $d_i > d_i^\star$, voter $i$ rejects delegation.
-\item \textbf{Valence effect.} For fixed $(d_i,\alpha)$, delegation is more likely as $B$ increases; $\partial \mathbf{1}\{D\}/\partial B \ge 0$.
-\item \textbf{Perceived alignment.} Since $\theta_e(\alpha)=\alpha\theta_g+(1-\alpha)\bar\theta$, the ideological loss under $D$ is $L_i(\alpha)\equiv(\theta_i-\theta_e(\alpha))^2$. If $\bar\theta$ lies weakly between $\theta_g$ and $\theta_i$, then $L_i(\alpha)$ is (weakly) increasing in $\alpha$; delegation becomes less likely as experts are perceived more aligned with government.
+    \item Ideological alignment channel.The term:
+    $$\frac{\theta_e'(\alpha)}{2}\Big(1+\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)^2}\Big)$$
+
+captures how the policy implemented by experts shifts as alignment increases. A higher 
+$\alpha$ makes the experts’ policy more similar to the government’s preferred alternative. As a consequence, the delegated policy moves away from the status quo and becomes more extreme from the voters’ perspective. This displacement pushes the indifferent voter in the direction of $\theta_g$, if $\theta_g>\bar\theta$, the indifferent voter shifts to the right; if $\theta_g<\bar\theta$, it shifts to the left. In other words, stronger alignment increases the ideological distance between the delegated policy and moderate voters, thereby reducing support for delegation.
+
+\item Efficiency channel. The second term,
+$$\frac{B'(\alpha)}{2(\theta_e(\alpha)-\theta_S)}$$
+
+reflects the fact that higher alignment reduces the benefits of delegation, since $B'(\alpha)<0$ by assumption. The effect of this efficiency loss is conditional on the ideological position of the delegated policy relative to the status quo. When the experts’ policy lies to the right of the status quo ($\theta_e(\alpha)>\theta_S$), deteriorating efficiency pushes the indifferent voter to the right and therefore lowers support for delegation. In contrast, when the experts’ policy lies to the left of the status quo ($\theta_e(\alpha)<\theta_S$), the same reduction in efficiency shifts the indifferent voter to the left and increases support for delegation. Intuitively, efficiency losses matter more when they exacerbate the ideological divergence with respect to the status quo.
+
 \end{itemize}
+
+Note that the effect of a marginal increase in alignment $\alpha$ on the position of the indifferent voter is a priori ambiguous. The direction of this effect depends on the relative strength of two opposing mechanisms.
+
+On the one hand, the efficiency channel captures how delegation increases the likelihood that policies are closer to voters’ ideal points due to the expert’s superior competence. This channel pushes the indifferent voter to favor delegation as alignment increases.
+
+On the other hand, the ideological channel reflects how greater alignment shifts the expected policy outcome toward the expert’s preferred alternative. This channel can move the indifferent voter away from delegation when the expert’s ideal point is sufficiently distant.
+
+Thus, the net effect of alignment on support for delegation depends on the interplay between these two channels, making the sign of the comparative static generally ambiguous.
+
+\subsection*{Comparative Statics}
+
+The effect of increased alignment $\alpha$ on public support for delegation is \emph{a priori} ambiguous, since it operates through two opposing mechanisms. First, the \emph{efficiency channel} lowers $\theta_i^\star(\alpha)$, reflecting that better-aligned experts reduce the expected bias cost of delegation. Second, the \emph{ideological channel} raises $\theta_i^\star(\alpha)$, because higher alignment moves the delegated policy closer to the government's preferred position and thus farther from the status quo. The overall effect depends on which of these forces dominates.
+
+To characterize how support for delegation responds to alignment, recall that delegation is chosen if:
+\[
+\begin{cases}
+1/2 > F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)>\theta_S, \\[4pt]
+1/2 < F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)<\theta_S,
+\end{cases}
+\]
+where
+\[
+\theta_i^\star(\alpha) \equiv \frac{\theta_e(\alpha)+\theta_S}{2}-\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)}.
+\]
+
+When the expert is located to the right of the status quo ($\theta_e(\alpha)>\theta_S$), delegation gains support whenever $\theta_i^\star(\alpha)$ decreases, since more voters satisfy $\theta_i> \theta_i^\star(\alpha)$. Hence, an increase in alignment raises support for delegation if and only if the efficiency channel dominates the ideological channel, leading to $\frac{d\theta_i^\star}{d\alpha} < 0$. Conversely, if $\frac{d\theta_i^\star}{d\alpha} > 0$, alignment reduces support.
+
+The logic reverses when the expert is located to the left of the status quo ($\theta_e(\alpha)<\theta_S$). In this case, delegation is chosen when $\theta_i < \theta_i^\star(\alpha)$, so a higher cutoff expands support. Thus, alignment increases support for delegation if and only if $\frac{d\theta_i^\star}{d\alpha} > 0$; if $\frac{d\theta_i^\star}{d\alpha} < 0$, alignment contracts support.
+
+Taken together, these results imply that the effect of alignment on support for delegation is shaped by both the location of the expert relative to the status quo and the relative strength of efficiency gains versus ideological drift. Alignment promotes delegation when it sufficiently reduces expected bias relative to the ideological cost of empowering more loyal experts, and undermines delegation otherwise.
 
 \paragraph{Propositions.}
 
