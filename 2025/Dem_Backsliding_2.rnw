@@ -354,7 +354,7 @@ Taken together, these results imply that the effect of alignment on support for 
 
 \section{Data and Findings}
 
-The data comes from an original survey conducted in Finland ($n = 1516$), with statistical quotas applied for age, gender and region of residence. Data collection took place between January and February 2025 through an online panel recruited by Qualtrics.
+The data comes from an original survey conducted in Finland ($n = 1516$), with statistical quotas applied for age, gender and region of residence.\footnote{Data collection took place between January and February 2025 through an online panel recruited by Qualtrics.}
 
 \subsection{Measurement}
 
@@ -469,25 +469,23 @@ Although the survey did not directly ask whether experts were perceived as ideol
 The near-parallel slopes across the seat-weighted, unweighted, and closest-party panels, together with ordered-logit estimates that treat the outcome as ordinal (\autoref{tab:ologit-models}), indicate that the core association is not an artifact of proximity aggregation or outcome scaling. 
 
 
-\paragraph{Perceived Government-Expert Alignment} Because our core claim hinges on \emph{perceived} alignment, we complement the baseline models with additional tests that unpack the mechanism and clarify our main specification tests. Specifically, we construct an alignment proxy based on the \emph{trust gap} between government and a flagship expert body (the Finnish central bank) and estimate interaction models of Government distance and our trust gap variable.  
+\paragraph{Perceived Government-Expert Alignment}
 
-Let $T^{G}_i$ denote respondent $i$'s trust in the current government (0–10) and $T^{E}_i$ trust in experts (the Finnish central bank). Our alignment proxy is the signed differential
+Because we do not directly observe whether respondents think expert bodies are aligned with the government, we proxy perceived alignment with a relative trust differential between the cabinet and a flagship expert institution (the Bank of Finland). The logic is comparative: if a respondent trusts the cabinet more than the Central Bank, she is more likely to infer that expert agencies will follow the government's lead; if she trusts the Central Bank more, she is more likely to view experts as independent. This rests on a reasonable behavioral assumption: cabinets appoint senior agency officials, set mandates, control budgets, and, during salient episodes, coordinate messaging with agencies through joint briefings. We assume that relative trust therefore serves as a practical cue for who effectively holds influence and control. Higher trust in the cabinet implies that these tools of control will matter, so respondents expect experts to align with the government's program when preferences diverge. Higher trust in the Bank of Finland suggests statutory insulation, professional norms, and reputational constraints that sustain autonomy. For example, after a cabinet announces a new policy priority alongside the agency it just staffed, respondents who trust the cabinet more will expect the agency to carry out that program; respondents who trust the Bank of Finland more will expect the appointee to follow established standards even if ministers prefer otherwise. In short, the trust gap is a simple proxy for perceived government-expert alignment.
 
-\[
-\texttt{Align}_i \;\equiv\; T^{G}_i - T^{E}_i,
-\]
 
-and a symmetric unit-interval mapping for graphical exposition,
+Formally, let $T_i^G$ denote trust in the current government ($0$–$10$) and $T_i^E$ trust in the central bank. Define the signed gap
 
 \[
-\texttt{Align}^{01}_i \;\equiv\; \tfrac{1}{2} + \frac{\texttt{Align}^{z}_i}{2A},\qquad A \equiv \max_j \bigl|\texttt{Align}^{z}_j\bigr|,
+\texttt{Align}_i \equiv T_i^G - T_i^E.
 \]
 
-By construction, $\texttt{Align}^{01}_i=0.5$ means indifference ($T^{G}_i \approx T^{E}_i$); values $>\!0.5$ indicate a government-over-experts trust premium, and values $<\!0.5$ indicate an experts-over-government premium. Using the trust gap, $T^{G}_i - T^{E}_i$, rather than the raw levels $T^{G}_i$ or $T^{E}_i$ separately, strips out a respondent's overall trust mood---e.g., some respondents rate everything high or everything low, and focuses on which \emph{side} they trust more. For example, $(T^{G}_i,T^{E}_i)=(8,7)$ and $(2,1)$ both yield a gap of $+1$, indicating the same comparative orientation (government trusted over experts) despite very different absolute trust.
+For exposition we map this to the unit interval and, for estimation, center it at the indifference point:
 
-Substantively, we theorize that when the cabinet is trusted \emph{more} than the central bank, voters will most likely think expert bodies will adhere to the government. However, when the central bank is trusted \emph{more} than the government, it is safe to expect that voters will see experts as independent from the government. This rests on a realistic behavioral assumption: appointment rules, mandate‐setting, and day-to-day agenda coordination naturally connect expert agencies to elected incumbents in the public mind.
-
-
+\[
+\texttt{Align}^{01}_i \in [0,1], \qquad
+\texttt{Align}^{01}_{i,c} \equiv \texttt{Align}^{01}_i - 0.5 \in [-0.5,0.5].
+\]
 
 <<pred.4, fig.width=6, fig.height=4, out.width='\\textwidth', fig.cap='Interactive OLS hypothesis: Technocracy $\\times$ Government distance moderated by Gov-Expert trust gap', fig.pos='H', echo=FALSE, message=FALSE, warning=FALSE>>=
 
@@ -495,8 +493,30 @@ print(pint)
 
 @
 
+By construction, $\texttt{Align}^{01}_{i,c}=0$ indicates indifference ($T_i^G \approx T_i^E$); positive values indicate a government-over-experts premium ($T_i^G>T_i^E$), and negative values indicate an experts-over-government premium ($T_i^E>T_i^G$). Using the gap rather than the levels $T_i^G$ and $T_i^E$ reduces sensitivity to response-style shifts (e.g., $(8,7)$ and $(2,1)$ imply the same comparative orientation) and focuses the interaction on perceived alignment rather than absolute institutional trust.
 
-Empirically, \autoref{fig:pred.4} shows that including in the main model an interaction between  distance from the government and alignment delivers the expected pattern.\footnote{Model 1 in \autoref{tab:interact-models}. Following \textcite[73]{Brambor2006}, we do not interpret the table, but rather focus on the marginal effects (\autoref{fig:pred.4}).} Among respondents with a positive gap (government trusted over experts), the slope of technocratic support on government distance is sharply negative: as voters move away from the governing bloc, predicted support for delegation falls. Around the indifferent region (gap $\approx 0$), the negative slope attenuates. Among respondents with a negative gap (experts trusted over government), the slope is flat to slightly positive, consistent with the idea that losers are comparatively more willing to delegate when experts are viewed as independent. This heterogeneity is central for our identification.
+We estimate
+
+\begin{equation}
+\begin{aligned}
+\texttt{Technocracy}_i \;=\;& \beta_0 \\[2pt]
+&\;+\; \beta_1\,\texttt{Government distance}_i \\[2pt]
+&\;+\; \beta_2\,\texttt{Align}^{01}_{i,c} \\[2pt]
+&\;+\; \beta_3\,\bigl(\texttt{Government distance}_i \times \texttt{Align}^{01}_{i,c}\bigr) \\[2pt]
+&\;+\; \boldsymbol{\gamma}'\,\mathbf{X}_i \\[2pt]
+&\;+\; \delta_{\text{region}(i)} \\[2pt]
+&\;+\; \varepsilon_i \, ,
+\end{aligned}
+\label{eq:model-interaction}
+\end{equation}
+
+and plot marginal predictions at $\texttt{Align}^{01}_{i,c} \in \{-0.25,\,0,\,+0.25\}$, labeled in the legend as ``Experts trusted'' (negative gap), ``Indifferent'' ($0$), and ``Government trusted'' (positive gap).\footnote{We follow \textcite[73]{Brambor2006} and interpret the interaction via marginal effects rather than coefficient signs in the table.} 
+
+\autoref{fig:pred.4} displays the expected pattern. When government is trusted over experts (``Government trusted''; positive gap), the slope of technocratic support with respect to government distance is negative: moving away from the governing bloc lowers predicted support for delegation. Around indifference (gap $\approx 0$), the negative slope attenuates. When experts are trusted over government (``Experts trusted''; negative gap), the slope is positive, consistent with greater willingness to delegate when experts are perceived as independent.
+
+In simple, our analyses suggest that distance from the government depresses support for delegation only when respondents infer that experts are aligned with incumbents; when experts are trusted more than the cabinet, the distance effect is positive. Substantively, this means that losers' consent to technocracy is conditional: voters distant from the governing bloc withdraw support for delegation when they expect expert bodies to carry the government's program, but they do not do so when experts are perceived as independent. The interaction therefore isolates the mechanism our theory posits---ideological distance operates through perceived alignment rather than as a uniform aversion to expertise. Taken together, \autoref{fig:pred.4} suggests that independence is associated with a smaller distance penalty and more uniform support for delegation.
+
+
 
 
 \section{Discussion and Limitations}
@@ -643,7 +663,7 @@ print(tech_by_party_plot)
 @
 
 \newpage
-\subsection{Expert-Government Gap: Interactive Models}
+\subsection{Government-Expert Gap: Interactive Models}
 \FloatBarrier
 
 
@@ -675,7 +695,7 @@ Others: European Journal of Political Research (EJPR)
 
 ######### include biblio
 
-Evidence of Mixed Perceptions: Survey evidence suggests that partisan leanings color institutional trust in Finland. We’ve already noted that supporters of the populist right tend to distrust expert bodies like THL ￼.
+Evidence of Mixed Perceptions: Survey evidence suggests that partisan leanings color institutional trust in Finland. We've already noted that supporters of the populist right tend to distrust expert bodies like THL ￼.
 
 https://www.researchgate.net/publication/338520366_Political_trust_political_party_preference_and_trust_in_knowledge-based_institutions#:~:text=,19%20context%20%5B22%5D.
 

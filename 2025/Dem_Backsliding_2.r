@@ -525,11 +525,11 @@ dat.t <- dat.t %>%
 # 1) Build Align (BoF minus Government) and controls
 dat.t <- dat.t %>%
   mutate(
-    Align_raw = .data[[v_trust_bof]] - .data[[v_trust_gov]],  # theoretical range [-8, +8]
+    Align_raw = .data[[v_trust_gov]] - .data[[v_trust_bof]],  # Gov − Experts; >0 means gov trusted more
     Trust_sum = .data[[v_trust_bof]] + .data[[v_trust_gov]]
   ) %>%
   mutate(
-    Align_01 = pmin(pmax(0.5 + Align_raw / 16, 0), 1)         # map to [0,1], 0.5 = equal trust
+    Align_01 = pmin(pmax(0.5 + Align_raw / 16, 0), 1)
   )
 
 mu_align <- mean(dat.t$Align_01, na.rm = TRUE)
@@ -560,19 +560,17 @@ pred_dat <- ggeffects::ggpredict(
 # Build a standard ggplot object named `pint`
 pint <- ggplot(pred_dat, aes(x = x, y = predicted, color = group)) +
   geom_line(linewidth = 1) +
-  labs(
-    x   = "Government distance (0 = close, 1 = far)",
-    y   = "Technocracy",
-    color = "Gov-Expert trust gap"
+  labs(x = "Government distance (0 = close, 1 = far)",
+       y = "Technocracy") +
+  scale_color_manual(
+    name   = "Gov-Expert trust gap",
+    breaks = c("-0.25","0","0.25"),
+    labels = c("Experts trusted", "Indifferent", "Government trusted"),
+    values = scales::hue_pal()(3)
   ) +
-  #coord_fixed(ratio = 1) +
   theme_light() +
-  theme(
-    legend.position  = "bottom",
-    legend.direction = "horizontal"
-  ) +
+  theme(legend.position = "bottom", legend.direction = "horizontal") +
   guides(color = guide_legend(nrow = 1, byrow = TRUE))
-
 
 # 4) Six OLS interaction specs (tech + business; w / u / closest)
 # Tech (OLS)
