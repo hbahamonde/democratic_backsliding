@@ -1,38 +1,34 @@
 \begin{table}
 \centering
-\begin{talltblr}[         %% tabularray outer open
-caption={OLS Estimates: Technocracy and Business vs. Government Distance},
-note{}={HC1 robust standard errors in parentheses. Models include education, age, gender, and region fixed effects (omitted for brevity).},
-]                     %% tabularray outer close
-{                     %% tabularray inner open
-colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
-column{2-7}={}{halign=c,},
-column{1}={}{halign=l,},
-hline{14}={1-7}{solid, black, 0.05em},
-}                     %% tabularray inner close
+\caption{OLS Estimates: Technocracy vs. Government Distance}
+\centering
+\begin{tabular}[t]{lccc}
 \toprule
-& Tech: Seat-wt & Tech: Unwt & Tech: Closest & Biz: Seat-wt & Biz: Unwt & Biz: Closest \\ \midrule %% TinyTableHeader
-Constant & \num{4.231}*** & \num{4.357}*** & \num{4.005}*** & \num{4.055}*** & \num{4.224}*** & \num{3.649}*** \\
-& (\num{0.229}) & (\num{0.240}) & (\num{0.213}) & (\num{0.267}) & (\num{0.291}) & (\num{0.245}) \\
-Government distance (seat-weighted) & \num{-0.663}** &  &  & \num{-1.850}*** &  &  \\
-& (\num{0.216}) &  &  & (\num{0.219}) &  &  \\
-Democratic satisfaction & \num{-0.052}* & \num{-0.053}* & \num{-0.054}* & \num{-0.071}** & \num{-0.073}** & \num{-0.076}** \\
-& (\num{0.026}) & (\num{0.026}) & (\num{0.026}) & (\num{0.027}) & (\num{0.027}) & (\num{0.027}) \\
-Trust in politicians & \num{-0.071}** & \num{-0.074}** & \num{-0.065}* & \num{-0.041} & \num{-0.044}+ & \num{-0.033} \\
-& (\num{0.025}) & (\num{0.025}) & (\num{0.025}) & (\num{0.026}) & (\num{0.026}) & (\num{0.026}) \\
-Government distance (unweighted) &  & \num{-0.820}*** &  &  & \num{-2.051}*** &  \\
-&  & (\num{0.234}) &  &  & (\num{0.253}) &  \\
-Government distance (closest-party) &  &  & \num{-0.405}* &  &  & \num{-1.454}*** \\
-&  &  & (\num{0.200}) &  &  & (\num{0.202}) \\
-Num.Obs. & \num{689} & \num{689} & \num{689} & \num{703} & \num{703} & \num{703} \\
-R2 & \num{0.057} & \num{0.061} & \num{0.050} & \num{0.151} & \num{0.152} & \num{0.126} \\
-R2 Adj. & \num{0.038} & \num{0.042} & \num{0.030} & \num{0.133} & \num{0.134} & \num{0.108} \\
-RMSE & \num{1.12} & \num{1.12} & \num{1.13} & \num{1.18} & \num{1.18} & \num{1.19} \\
-Std.Errors & Tech: Seat-wt & Tech: Unwt & Tech: Closest & Biz: Seat-wt & Biz: Unwt & Biz: Closest \\
-Education FE & Yes & Yes & Yes & Yes & Yes & Yes \\
-Age FE & Yes & Yes & Yes & Yes & Yes & Yes \\
-Gender & Yes & Yes & Yes & Yes & Yes & Yes \\
-Region FE & Yes & Yes & Yes & Yes & Yes & Yes \\
+  & Tech: Seat-wt & Tech: Unwt & Tech: Closest\\
+\midrule
+Constant & \num{4.231}*** & \num{4.357}*** & \num{4.005}***\\
+ & (\num{0.229}) & (\num{0.240}) & (\num{0.213})\\
+Government distance (seat-weighted) & \num{-0.663}** &  & \\
+ & (\num{0.216}) &  & \\
+Democratic satisfaction & \num{-0.052}* & \num{-0.053}* & \num{-0.054}*\\
+ & (\num{0.026}) & (\num{0.026}) & (\num{0.026})\\
+Trust in politicians & \num{-0.071}** & \num{-0.074}** & \num{-0.065}*\\
+ & (\num{0.025}) & (\num{0.025}) & (\num{0.025})\\
+Government distance (unweighted) &  & \num{-0.820}*** & \\
+ &  & (\num{0.234}) & \\
+Government distance (closest-party) &  &  & \num{-0.405}*\\
+ &  &  & (\num{0.200})\\
+\midrule
+Num.Obs. & \num{689} & \num{689} & \num{689}\\
+R2 & \num{0.057} & \num{0.061} & \num{0.050}\\
+R2 Adj. & \num{0.038} & \num{0.042} & \num{0.030}\\
+RMSE & \num{1.12} & \num{1.12} & \num{1.13}\\
+Std.Errors & Tech: Seat-wt & Tech: Unwt & Tech: Closest\\
+Education FE & Yes & Yes & Yes\\
+Age FE & Yes & Yes & Yes\\
+Gender & Yes & Yes & Yes\\
+Region FE & Yes & Yes & Yes\\
 \bottomrule
-\end{talltblr}
+\multicolumn{4}{l}{\rule{0pt}{1em}HC1 robust standard errors in parentheses. Models include education, age, gender, and region fixed effects (omitted for brevity).}\\
+\end{tabular}
 \end{table}

@@ -24,7 +24,7 @@ dat.t[q9_cols] <- lapply(dat.t[q9_cols], function(x) {
   x_chr <- as.character(x)
   x_chr[x_chr %in% c("I don't know", "I dont know", "", "NA", "<NA>")] <- NA
   v <- suppressWarnings(as.numeric(x_chr))
-  v[v == 12 | v < 1 | v > 11] <- NA_real_
+  v[v == 12 | v < 0 | v > 10] <- NA_real_
   v
 })
 
@@ -283,6 +283,16 @@ tech_by_party_plot <- ggplot(dat_party, aes(x = party, y = mean)) +
     aspect.ratio = 1      # <- makes the plotting panel square
   )
 
+# Convert POSIXct to Date
+dates_fieldwork <- as.Date(dat.t$EndDate)
+
+# Extract ordered unique months and years
+fieldwork_months <- unique(format(sort(dates_fieldwork), "%B"))
+fieldwork_years  <- unique(format(dates_fieldwork, "%Y"))
+
+# Collapse to single strings
+fieldwork_months_txt <- paste(fieldwork_months, collapse = " and ")
+fieldwork_year_txt   <- paste(fieldwork_years, collapse = " and ")
 ## ----
 
 
@@ -292,7 +302,7 @@ tech_by_party_plot <- ggplot(dat_party, aes(x = party, y = mean)) +
 
 ## ---- reg_table
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(stargazer, sandwich, lmtest,modelsummary,data.table)
+p_load(stargazer, sandwich, lmtest, modelsummary, data.table, tibble)
 
 # helper to replace Unicode dashes/minus with LaTeX-safe ASCII
 sanitize_tex <- function(x) {
@@ -304,10 +314,7 @@ sanitize_tex <- function(x) {
 mods <- list(
   `Tech: Seat-wt` = m_w,
   `Tech: Unwt`    = m_u,
-  `Tech: Closest` = m_min,
-  `Biz: Seat-wt`  = b_w,
-  `Biz: Unwt`     = b_u,
-  `Biz: Closest`  = b_min
+  `Tech: Closest` = m_min
 )
 
 coef_map <- c(
@@ -320,17 +327,17 @@ coef_map <- c(
 )
 
 fe_rows <- tibble::tribble(
-  ~term,            ~`Tech: Seat-wt`, ~`Tech: Unwt`, ~`Tech: Closest`, ~`Biz: Seat-wt`, ~`Biz: Unwt`, ~`Biz: Closest`,
-  "Education FE",   "Yes",            "Yes",         "Yes",            "Yes",           "Yes",        "Yes",
-  "Age FE",         "Yes",            "Yes",         "Yes",            "Yes",           "Yes",        "Yes",
-  "Gender",         "Yes",            "Yes",         "Yes",            "Yes",           "Yes",        "Yes",
-  "Region FE",      "Yes",            "Yes",         "Yes",            "Yes",           "Yes",        "Yes"
+  ~term,          ~`Tech: Seat-wt`, ~`Tech: Unwt`, ~`Tech: Closest`,
+  "Education FE", "Yes",           "Yes",         "Yes",
+  "Age FE",       "Yes",           "Yes",         "Yes",
+  "Gender",       "Yes",           "Yes",         "Yes",
+  "Region FE",    "Yes",           "Yes",         "Yes"
 )
 
 vc <- lapply(mods, function(m) sandwich::vcovHC(m, type = "HC1"))
 dir.create("build", showWarnings = FALSE, recursive = TRUE)
 
-tab_title <- sanitize_tex("OLS Estimates: Technocracy and Business vs. Government Distance")
+tab_title <- sanitize_tex("OLS Estimates: Technocracy vs. Government Distance")
 tab_notes <- sanitize_tex("HC1 robust standard errors in parentheses. Models include education, age, gender, and region fixed effects (omitted for brevity).")
 
 # 1) full table (with \begin{table} ... \end{table})
@@ -351,7 +358,6 @@ modelsummary::msummary(
 )
 
 # 2) tabular-only (so you can scale it in LaTeX)
-# tabular-only for \resizebox or \scalebox
 tex_tab <- modelsummary::msummary(
   models      = mods,
   output      = "latex_tabular",
@@ -399,20 +405,19 @@ t_u   <- MASS::polr(techno_ord   ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord 
 t_min <- MASS::polr(techno_ord   ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
                     data = dat.t, Hess = TRUE, method = "logistic")
 
-b_w_o   <- MASS::polr(business_ord ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
-                      data = dat.t, Hess = TRUE, method = "logistic")
-b_u_o   <- MASS::polr(business_ord ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
-                      data = dat.t, Hess = TRUE, method = "logistic")
-b_min_o <- MASS::polr(business_ord ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region,
-                      data = dat.t, Hess = TRUE, method = "logistic")
+#b_w_o   <- MASS::polr(business_ord ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t, Hess = TRUE, method = "logistic")
+
+# b_u_o   <- MASS::polr(business_ord ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t, Hess = TRUE, method = "logistic")
+
+# b_min_o <- MASS::polr(business_ord ~ gov_distance_min_01 + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t, Hess = TRUE, method = "logistic")
 
 mods_ologit <- list(
   `Tech (OL): Seat-wt` = t_w,
   `Tech (OL): Unwt`    = t_u,
-  `Tech (OL): Closest` = t_min,
-  `Biz (OL): Seat-wt`  = b_w_o,
-  `Biz (OL): Unwt`     = b_u_o,
-  `Biz (OL): Closest`  = b_min_o
+  `Tech (OL): Closest` = t_min#,
+  #`Biz (OL): Seat-wt`  = b_w_o,
+  #`Biz (OL): Unwt`     = b_u_o,
+  #`Biz (OL): Closest`  = b_min_o
 )
 
 coef_map_ologit <- c(
@@ -426,16 +431,11 @@ coef_map_ologit <- c(
 
 # rows indicating fixed effects presence
 fe_rows_ologit <- tibble::tribble(
-  ~term,            ~`Tech (OL): Seat-wt`, ~`Tech (OL): Unwt`, ~`Tech (OL): Closest`,
-  ~`Biz (OL): Seat-wt`, ~`Biz (OL): Unwt`,  ~`Biz (OL): Closest`,
-  "Education FE",   "Yes",                 "Yes",              "Yes",
-  "Yes",                 "Yes",              "Yes",
-  "Age FE",         "Yes",                 "Yes",              "Yes",
-  "Yes",                 "Yes",              "Yes",
-  "Gender",         "Yes",                 "Yes",              "Yes",
-  "Yes",                 "Yes",              "Yes",
-  "Region FE",      "Yes",                 "Yes",              "Yes",
-  "Yes",                 "Yes",              "Yes"
+  ~term,          ~`Tech (OL): Seat-wt`, ~`Tech (OL): Unwt`, ~`Tech (OL): Closest`,
+  "Education FE", "Yes",                "Yes",              "Yes",
+  "Age FE",       "Yes",                "Yes",              "Yes",
+  "Gender",       "Yes",                "Yes",              "Yes",
+  "Region FE",    "Yes",                "Yes",              "Yes"
 )
 
 # covariances (model-based SEs for polr)
@@ -443,7 +443,7 @@ vc_ologit <- lapply(mods_ologit, vcov)
 
 dir.create("build", showWarnings = FALSE, recursive = TRUE)
 
-tab_title_ologit <- sanitize_tex("Ordered logit (proportional odds) estimates: Technocracy and Business vs. Government Distance")
+tab_title_ologit <- sanitize_tex("Ordered logit (proportional odds) estimates: Government Distance")
 tab_notes_ologit <- sanitize_tex("Model-based standard errors in parentheses. Cutpoints omitted. Models include education, age, gender, and region fixed effects (omitted for brevity).")
 
 # omit FE and the cutpoints (e.g., '1|2', '2|3', ...)
@@ -498,7 +498,7 @@ writeLines(enc2utf8(as.character(tex_tab_ologit)),
 # libs
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
 pacman::p_load(
-  dplyr, interactions, ggplot2, scales,
+  dplyr, ggplot2, scales, ggeffects,
   modelsummary, kableExtra, sandwich, lmtest, rlang
 )
 
@@ -506,14 +506,12 @@ pacman::p_load(
 options(modelsummary_factory_latex = "kableExtra")
 
 # 0) Column names
-
-v_trust_gov    <- "Q9_3"                 # trust in government (1–9)
-v_trust_bof    <- "Q9_7"                 # trust in Bank of Finland (1–9)
+v_trust_gov    <- "Q9_3"                 # trust in government (0–10)
+v_trust_bof    <- "Q9_7"                 # trust in Bank of Finland (0–10)
 v_govdist_w    <- "gov_distance_w_01"    # 0–1 seat-weighted distance
 v_govdist_u    <- "gov_distance_u_01"    # 0–1 unweighted distance
 v_govdist_min  <- "gov_distance_min_01"  # 0–1 closest-party distance
 v_outcome_tech <- "techno5"              # 1–5 technocracy item
-v_outcome_biz  <- "business5"            # 1–5 business item
 
 # defensive: ensure factors are factors (used in models)
 dat.t <- dat.t %>%
@@ -522,14 +520,14 @@ dat.t <- dat.t %>%
     gender = factor(gender)
   )
 
-# 1) Build Align (BoF minus Government) and controls
+# 1) Build Align (Government minus BoF) and controls
 dat.t <- dat.t %>%
   mutate(
     Align_raw = .data[[v_trust_gov]] - .data[[v_trust_bof]],  # Gov − Experts; >0 means gov trusted more
     Trust_sum = .data[[v_trust_bof]] + .data[[v_trust_gov]]
   ) %>%
   mutate(
-    Align_01 = pmin(pmax(0.5 + Align_raw / 16, 0), 1)
+    Align_01 = pmin(pmax(0.5 + Align_raw / 20, 0), 1)
   )
 
 mu_align <- mean(dat.t$Align_01, na.rm = TRUE)
@@ -572,8 +570,7 @@ pint <- ggplot(pred_dat, aes(x = x, y = predicted, color = group)) +
   theme(legend.position = "bottom", legend.direction = "horizontal") +
   guides(color = guide_legend(nrow = 1, byrow = TRUE))
 
-# 4) Six OLS interaction specs (tech + business; w / u / closest)
-# Tech (OLS)
+# 4) Additional OLS interaction specs (tech only; w / u / closest)
 t_u_i <- lm(
   reformulate(
     c(paste0(v_govdist_u, "*Align_01_c"),
@@ -592,49 +589,17 @@ t_min_i <- lm(
   data = dat.t, na.action = na.exclude
 )
 
-# Business (OLS)
-b_w_i <- lm(
-  reformulate(
-    c(paste0(v_govdist_w, "*Align_01_c"),
-      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
-    response = v_outcome_biz
-  ),
-  data = dat.t, na.action = na.exclude
-)
-
-b_u_i <- lm(
-  reformulate(
-    c(paste0(v_govdist_u, "*Align_01_c"),
-      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
-    response = v_outcome_biz
-  ),
-  data = dat.t, na.action = na.exclude
-)
-
-b_min_i <- lm(
-  reformulate(
-    c(paste0(v_govdist_min, "*Align_01_c"),
-      "Trust_sum_c", "Q8_1", "Q9_4", "educ_ord", "age_ord", "gender", "region"),
-    response = v_outcome_biz
-  ),
-  data = dat.t, na.action = na.exclude
-)
-
-# 5) Table: six OLS models with interaction (TABULAR-ONLY, classic LaTeX)
+# 5) Table: tech-only OLS models with interaction (TABULAR-ONLY, classic LaTeX)
 models_interact <- list(
-  `Tech (OLS): Seat-wt`  = t_w_i,   # plot uses this one
-  `Tech (OLS): Unwt`     = t_u_i,
-  `Tech (OLS): Closest`  = t_min_i,
-  `Biz (OLS): Seat-wt`   = b_w_i,
-  `Biz (OLS): Unwt`      = b_u_i,
-  `Biz (OLS): Closest`   = b_min_i
+  `Tech (OLS): Seat-wt` = t_w_i,   # plot uses this one
+  `Tech (OLS): Unwt`    = t_u_i,
+  `Tech (OLS): Closest` = t_min_i
 )
 
 # Robust SEs (HC1)
 vcovs_hc1 <- lapply(models_interact, \(m) sandwich::vcovHC(m, type = "HC1"))
 
 # ASCII-only labels (avoid Unicode inside LaTeX)
-# Build the original names (keys) programmatically…
 var_keys <- c(
   "Align_01_c",
   paste0(v_govdist_w,   ":Align_01_c"),
@@ -648,7 +613,6 @@ var_keys <- c(
   "Q9_4"
 )
 
-# …and map them to pretty labels (values). Use ASCII-safe LaTeX.
 var_vals <- c(
   "Gov--Expert trust gap (centered)",
   "Distance $\\times$ Gap (seat--wt)",
@@ -662,7 +626,6 @@ var_vals <- c(
   "Trust in politicians"
 )
 
-# Final mapping for coef_rename:
 var_labels <- setNames(var_vals, var_keys)
 
 dir.create("build", showWarnings = FALSE, recursive = TRUE)
@@ -672,11 +635,12 @@ tab_tex <- modelsummary::msummary(
   vcov        = vcovs_hc1,
   coef_rename = var_labels,
   coef_omit   = "(^educ_ord)|(^region)|(^age_ord)",
-  gof_omit    = "IC|Log|AIC|BIC|F|Adj|Within|Pseudo|R2 Within|R2 Between|Std\\.Errors|Std\\. Errors",  estimate    = "{estimate}{stars}",
+  gof_omit    = "IC|Log|AIC|BIC|F|Adj|Within|Pseudo|R2 Within|R2 Between|Std\\.Errors|Std\\. Errors",
+  estimate    = "{estimate}{stars}",
   statistic   = "({std.error})",
   stars       = c('*'=.10, '**'=.05, '***'=.01),
   output      = "latex_tabular",
-  escape      = FALSE 
+  escape      = FALSE
 )
 
 # Write a pure \begin{tabular}...\end{tabular} file (no tblr)
@@ -693,7 +657,7 @@ writeLines(enc2utf8(as.character(tab_tex)),
 
 ## ---- abstract ----
 fileConn <- file ("abstract.txt")
-abstract.c = as.character(c("Research on partisan-motivated tolerance of democratic transgressions shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Much less is known about how citizens evaluate delegation---shifting authority from elected politicians to unelected experts. We address this gap with a simple spatial voting model in which support for technocratic delegation trades off a perceived performance gain from experts against ideological loss relative to the governing coalition. The model yields two implications: (i) support for delegation declines monotonically with ideological distance from government when expert institutions are perceived as government-aligned; and (ii) this distance penalty attenuates when experts are perceived as more neutral or closer to voters than to the government. Empirically, we analyze a novel 2025 survey of Finnish adults---a high-capacity, multiparty parliamentary democracy and thus a hard case for partisan resistance to expertise. We develop an individual-level, seat-weighted measure of distance to the governing coalition based on party-closeness evaluations. Statistical models show that voters farther from the right-leaning Finnish cabinet are less supportive of delegation; results replicate with different measurements. Substantively, losers' consent to technocracy is conditional: delegation is acceptable primarily when performance gains outweigh ideological costs and when expert bodies are not seen as aligned with incumbents."))
+abstract.c = as.character(c("Research on partisan-motivated tolerance of democratic transgressions shows that voters often trade democratic procedures for partisan ends, weakening electoral checks on incumbents. Much less is known about how citizens evaluate technocratic delegation---shifting authority from elected politicians to unelected experts. We address this gap with a simple spatial voting model in which support for technocratic delegation trades off a perceived performance gain from experts against ideological loss relative to the governing coalition. The model yields two implications: (i) support for delegation declines monotonically with ideological distance from government when expert institutions are perceived as government-aligned; and (ii) this distance penalty attenuates when experts are perceived as more neutral or closer to voters than to the government. Empirically, we analyze a novel 2025 survey of Finnish adults---a high-capacity, multiparty parliamentary democracy and thus a hard case for partisan resistance to expertise. We proxy perceived government-expert alignment with a simple relative-trust differential (cabinet vs. the Bank of Finland) and interact it with an individual, seat-weighted distance-to-government measure based on party-closeness evaluations. Statistical models suggest that voters farther from the right-leaning Finnish cabinet are less supportive of technocratic delegation; results replicate with different measurements. Substantively, losers' consent to technocracy is conditional: delegation is acceptable primarily when performance gains outweigh ideological costs and when expert bodies are not seen as aligned with incumbents."))
 writeLines(abstract.c, fileConn)
 close(fileConn)
 ## ----
