@@ -40,6 +40,9 @@
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+
 
 %---- % Allows abstract customization
 \usepackage{abstract} 
@@ -234,121 +237,188 @@ Crucially, our theory does not claim that electoral losers oppose expert rule \e
 %  5
 This logic yields clear implications. Losers’ resistance to technocratic delegation should intensify in highly polarized, ideologically sorted systems and during periods of sharp government–opposition conflict. It also helps explain why populist movements—often composed of recent electoral or globalization losers—target technocratic institutions as part of a corrupt establishment \parencite{Caramani2017}. Conversely, in consensus‐oriented or depolarized settings, or where technocratic bodies retain cross‐partisan legitimacy, backlash should be weaker. The broader paradox follows: institutions designed as impartial checks sustain stability only if they are \emph{seen} as impartial. Once viewed as instruments of those in power, the very actors who must accept them—the electoral losers—may withdraw consent, straining the balance between expertise and democracy.
 
+
 \section{A Voter's Trade‐Off: Performance vs.\ Ideological Distance}
 
-Consider a one-dimensional policy space $[0,1]$. A voter $i$ has ideal point $\theta_i \in [0,1]$. The governing coalition (``government'') has position $\theta_g \in [0,1]$. A technocratic institution (``experts'') has perceived position $\theta_e \in [0,1]$.
+Consider a one-dimensional policy space $[0,1]$. A voter $i$ has ideal point $\theta_i \in [0,1]$. The governing coalition (``government'') has position $\theta_g \in [0,1]$. A technocratic institution (``experts'') has perceived position $\theta_e \in [0,1]$. Let $F(\cdot)$ denote the cumulative distribution of voter ideal points. 
 
 \paragraph{Distance and alignment.}
-
 Define voter–government distance
 
 \[
 d_i \;\equiv\; |\theta_i - \theta_g| \in [0,1],
 \]
 
-which corresponds to our empirical measure \texttt{Government distance}. Perceived expert \emph{alignment} with government is summarized by $\alpha \in [0,1]$ via
+\noindent which corresponds to our empirical measure \texttt{Government distance}. Perceived expert \emph{alignment} with government is summarized by $\alpha \in [0,1]$ via
 
 \[
 \theta_e(\alpha) \;=\; \alpha\,\theta_g + (1-\alpha)\,\bar\theta,
 \]
 
-where $\bar\theta$ is a non–partisan reference (e.g., a technocratic consensus or the median policy). Full alignment means $\alpha=1$ (so $\theta_e=\theta_g$); lower $\alpha$ implies more neutral experts.
+\noindent where $\bar\theta$ is a non–partisan reference (e.g., a technocratic consensus or the median policy). Full alignment means $\alpha=1$ (so $\theta_e=\theta_g$); lower $\alpha$ implies more neutral experts.
 
 \paragraph{Sequence.}
 Voter $i$ chooses between retaining the status quo of elected–politician control ($S$) or \emph{delegating} to experts ($D$). Under $D$, policy is set at $\theta_e(\alpha)$
 
 \paragraph{Preferences.} Utility is spatial with a perceived technocratic performance/competence gain $B\ge 0$:
 
-\begin{align}
+
+
+\begin{align*}
 U_i(S) &= -(\theta_i - \theta_S)^2,\\
-U_i(D) &= -(\theta_i - \theta_e(\alpha))^2 \;+\; B(\alpha).
-\end{align}
+U_i(D) &= -(\theta_i - \theta_e(\alpha))^2.
+\end{align*}
 
-Here $B$ captures the expected advantage from expert rule (information, insulation from short-termism, etc.) and $B'(\alpha)<0$. There is \emph{no} additional penalty term.
+Delegation only affects outcomes through the location of the implemented policy.
 
-\paragraph{Decision rule.}
+\paragraph{Indifferent voter.}
 
-Voter $i$ supports technocratic delegation iff $U_i(D) > U_i(S)$, i.e.
+The indifferent voter satisfies $U_i(D)=U_i(S)$, which implies:
+
+\[
+(\theta_i - \theta_e(\alpha))^2 = (\theta_i - \theta_S)^2.
+\]
+
+Hence, the cutoff voter is simply the midpoint between the delegated policy and the status quo:
+
+\[
+\theta_i^\star(\alpha)
+=
+\frac{\theta_e(\alpha)+\theta_S}{2}.
+\]
+
+Substituting for $\theta_e(\alpha)$:
+
+\[
+\theta_i^\star(\alpha)
+=
+\frac{\alpha\theta_g+(1-\alpha)\bar{\theta}+\theta_S}{2}.
+\]
+
+
+Delegation is adopted under simple majority rule if and only if:
 
 \[
 \begin{cases}
-    \theta_i >\theta_i^\star(\alpha) & \text{if } \theta_e(\alpha)>\theta_S\\[6pt] 
-    \theta_i <\theta_i^\star(\alpha) & \text{if } \theta_e(\alpha)<\theta_S\\[6pt] 
-\end{cases}
-\]
-where,
-\[
-\theta_i^\star(\alpha) \;\equiv\; \frac{\theta_e(\alpha)+\theta_S}{2}-\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)},
-\]
-
-Therefore,  $D$ is chosen iff
-\[
-\begin{cases}
-    1/2 >F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)>\theta_S\\[6pt] 
-    1/2 <F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)<\theta_S\\[6pt] 
+ \dfrac{1}{2} > F\!\left(\theta_i^\star(\alpha)\right) 
+& \text{if } \theta_e(\alpha) > \theta_S, \\[8pt]
+\dfrac{1}{2} < F\!\left(\theta_i^\star(\alpha)\right) 
+& \text{if } \theta_e(\alpha) < \theta_S.
 \end{cases}
 \]
 
-Note that the indifferent voter depends on $\alpha$, which captures the alignment between the government and the experts. That is,
+Grafically,
 
-\begin{align}\label{eq:indifferent-alpha}
-    \dpartial{\theta_i^\star(\alpha)}{\alpha}&=\frac{\theta_e'(\alpha)}{2}\Big(1+\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)^2}\Big)+ \frac{B'(\alpha)}{2(\theta_e(\alpha)-\theta_S)} \\ \nonumber
- %   &=\frac{\theta_g-\bar \theta}{2}-\frac{B'(\alpha)}{2(\alpha(\theta_g-\bar\theta)+(\bar\theta-\theta_S))}+\frac{B(\alpha)(\theta_g-\bar \theta)}{2(\theta_g-\bar\theta)+(\bar\theta-\theta_S))^2}
-\end{align}
-
-The derivative consists of two forces:
 \begin{itemize}
-    \item Ideological alignment channel.The term:
-    $$\frac{\theta_e'(\alpha)}{2}\Big(1+\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)^2}\Big)$$
+    \item Case $\theta_S<\theta_e(\alpha)$
 
-captures how the policy implemented by experts shifts as alignment increases. A higher 
-$\alpha$ makes the experts’ policy more similar to the government’s preferred alternative. As a consequence, the delegated policy moves away from the status quo and becomes more extreme from the voters’ perspective. This displacement pushes the indifferent voter in the direction of $\theta_g$, if $\theta_g>\bar\theta$, the indifferent voter shifts to the right; if $\theta_g<\bar\theta$, it shifts to the left. In other words, stronger alignment increases the ideological distance between the delegated policy and moderate voters, thereby reducing support for technocratic delegation.
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=6]
 
-\item Efficiency channel. The second term,
-$$\frac{B'(\alpha)}{2(\theta_e(\alpha)-\theta_S)}$$
+% Línea principal
+\draw[thick] (0,0) -- (1,0);
 
-reflects the fact that higher alignment reduces the benefits of technocratic delegation, since $B'(\alpha)<0$ by assumption. The effect of this efficiency loss is conditional on the ideological position of the delegated policy relative to the status quo. When the experts’ policy lies to the right of the status quo ($\theta_e(\alpha)>\theta_S$), deteriorating efficiency pushes the indifferent voter to the right and therefore lowers support for technocratic delegation. In contrast, when the experts’ policy lies to the left of the status quo ($\theta_e(\alpha)<\theta_S$), the same reduction in efficiency shifts the indifferent voter to the left and increases support for technocratic delegation. Intuitively, efficiency losses matter more when they exacerbate the ideological divergence with respect to the status quo.
+% Extremos
+\node[below] at (0,0) {$0$};
+\node[below] at (1,0) {$1$};
+
+% Puntos intermedios (ajusta posiciones si quieres)
+\draw (0.35,0.02) -- (0.35,-0.02);
+\node[below] at (0.35,0) {$\theta_S$};
+
+\draw (0.5,0.02) -- (0.5,-0.02);
+\node[below] at (0.5,0) {$\theta^*$};
+
+\draw (0.7,0.02) -- (0.7,-0.02);
+\node[below] at (0.7,0) {$\theta_e(\alpha)$};
+
+% Llave izquierda (S)
+\draw[decorate,decoration={brace,amplitude=6pt}]
+(0,0.08) -- (0.5,0.08)
+node[midway,above=8pt] {$S$};
+
+% Llave derecha (D)
+\draw[decorate,decoration={brace,amplitude=6pt}]
+(0.5,0.08) -- (1,0.08)
+node[midway,above=8pt] {$D$};
+
+\end{tikzpicture}
+\end{figure}
+
+\item Case $\theta_S>\theta_e(\alpha)$
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=6]
+
+% Línea principal
+\draw[thick] (0,0) -- (1,0);
+
+% Extremos
+\node[below] at (0,0) {$0$};
+\node[below] at (1,0) {$1$};
+
+% Puntos intermedios (ajusta posiciones si quieres)
+\draw (0.35,0.02) -- (0.35,-0.02);
+\node[below] at (0.35,0) {$\theta_e(\alpha)$};
+
+\draw (0.5,0.02) -- (0.5,-0.02);
+\node[below] at (0.5,0) {$\theta^*$};
+
+\draw (0.7,0.02) -- (0.7,-0.02);
+\node[below] at (0.7,0) {$\theta_S$};
+
+% Llave izquierda (D)
+\draw[decorate,decoration={brace,amplitude=6pt}]
+(0,0.08) -- (0.5,0.08)
+node[midway,above=8pt] {$D$};
+
+% Llave derecha (S)
+\draw[decorate,decoration={brace,amplitude=6pt}]
+(0.5,0.08) -- (1,0.08)
+node[midway,above=8pt] {$S$};
+
+\end{tikzpicture}
+
+
+
+\end{figure}
 
 \end{itemize}
+\paragraph{When does an increase in $\alpha$ raise support for delegation?}
 
-Note that the effect of a marginal increase in alignment $\alpha$ on the position of the indifferent voter is a priori ambiguous. The direction of this effect depends on the relative strength of two opposing mechanisms.
+The answer depends on the relative position of the delegated policy with respect to the status quo.
 
-On the one hand, the efficiency channel captures how technocratic delegation increases the likelihood that policies are closer to voters’ ideal points due to the expert’s superior competence. This channel pushes the indifferent voter to favor technocratic delegation as alignment increases.
-
-On the other hand, the ideological channel reflects how greater alignment shifts the expected policy outcome toward the expert’s preferred alternative. This channel can move the indifferent voter away from technocratic delegation when the expert’s ideal point is sufficiently distant.
-
-Thus, the net effect of alignment on support for technocratic delegation depends on the interplay between these two channels, making the sign of the comparative static generally ambiguous.
-
-\subsection*{Comparative Statics}
-
-The effect of increased alignment $\alpha$ on public support for technocratic delegation is \emph{a priori} ambiguous, since it operates through two opposing mechanisms. First, the \emph{efficiency channel} lowers $\theta_i^\star(\alpha)$, reflecting that better-aligned experts reduce the expected bias cost of technocratic delegation. Second, the \emph{ideological channel} raises $\theta_i^\star(\alpha)$, because higher alignment moves the delegated policy closer to the government's preferred position and thus farther from the status quo. The overall effect depends on which of these forces dominates.
-
-To characterize how support for technocratic delegation responds to alignment, recall that technocratic delegation is chosen if:
+If $\theta_e(\alpha) > \theta_S$, voters with ideal points $\theta_i > \theta_i^\star(\alpha)$ support delegation. In this case, an increase in alignment raises support if and only if the indifferent voter shifts to the left, that is,
 \[
-\begin{cases}
-1/2 > F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)>\theta_S, \\[4pt]
-1/2 < F(\theta_i^\star(\alpha)) & \text{if } \theta_e(\alpha)<\theta_S,
-\end{cases}
+\frac{\partial \theta_i^\star(\alpha)}{\partial \alpha} < 0.
 \]
-where
+Since
 \[
-\theta_i^\star(\alpha) \equiv \frac{\theta_e(\alpha)+\theta_S}{2}-\frac{B(\alpha)}{2(\theta_e(\alpha)-\theta_S)}.
+\frac{\partial \theta_i^\star(\alpha)}{\partial \alpha}
+=
+\frac{1}{2}\big(\theta_g - \bar{\theta}\big),
 \]
+this occurs whenever
+\[
+\theta_g < \bar{\theta}.
+\]
+Intuitively, if the government is located to the left of the technocratic reference point, greater alignment shifts the delegated policy leftward. When the delegated policy lies to the right of the status quo, this movement brings it closer to the electoral center and expands the set of voters who prefer delegation.
 
-When the expert is located to the right of the status quo ($\theta_e(\alpha)>\theta_S$), technocratic delegation gains support whenever $\theta_i^\star(\alpha)$ decreases, since more voters satisfy $\theta_i> \theta_i^\star(\alpha)$. Hence, an increase in alignment raises support for technocratic delegation if and only if the efficiency channel dominates the ideological channel, leading to $\frac{d\theta_i^\star}{d\alpha} < 0$. Conversely, if $\frac{d\theta_i^\star}{d\alpha} > 0$, alignment reduces support.
+Conversely, if $\theta_e(\alpha) < \theta_S$, voters with $\theta_i < \theta_i^\star(\alpha)$ support delegation. In this case, an increase in alignment raises support if and only if
+\[
+\frac{\partial \theta_i^\star(\alpha)}{\partial \alpha} > 0,
+\]
+which holds whenever
+\[
+\theta_g > \bar{\theta}.
+\]
+If the government is located to the right of the technocratic benchmark, greater alignment shifts the delegated policy rightward. When this policy initially lies to the left of the status quo, the movement brings it closer to the electoral center and increases the coalition in favor of delegation.
 
-The logic reverses when the expert is located to the left of the status quo ($\theta_e(\alpha)<\theta_S$). In this case, technocratic delegation is chosen when $\theta_i < \theta_i^\star(\alpha)$, so a higher cutoff expands support. Thus, alignment increases support for technocratic delegation if and only if $\frac{d\theta_i^\star}{d\alpha} > 0$; if $\frac{d\theta_i^\star}{d\alpha} < 0$, alignment contracts support.
+Taken together, these cases imply that alignment increases support for delegation precisely when it moves the delegated policy toward the side of the electorate that already prefers delegation relative to the status quo. When alignment instead pushes policy away from that side, support contracts.
 
-Taken together, these results imply that the effect of alignment on support for technocratic delegation is shaped by both the location of the expert relative to the status quo and the relative strength of efficiency gains versus ideological drift. Alignment promotes technocratic delegation when it sufficiently reduces expected bias relative to the ideological cost of empowering more loyal experts, and undermines technocratic delegation otherwise.
-
-\paragraph{Propositions.}
-
-\begin{enumerate}
-\item \textbf{Losers oppose government-aligned technocracy.} If $\alpha=1$, there exists a cutoff $d_i^\star(B)=\sqrt{B}$ such that voter $i$ supports technocratic delegation iff $d_i<d_i^\star$. Thus, for any fixed $B>0$, support for technocratic delegation is strictly decreasing in $d_i$.
-\item \textbf{Neutral experts attenuate the distance penalty.} If $\alpha<1$ and $\bar\theta$ is closer to $\theta_i$ than $\theta_g$ is, then $L_i(\alpha)<d_i^2$, so the required valence $B_i^\star(\alpha)$ falls relative to the aligned case. Opposition voters may accept technocratic delegation when experts are perceived neutral, holding $B$ fixed.
-\end{enumerate}
-
-%\paragraph{Link to identification} \autoref{eq:aligned} delivers the empirical prediction that, when expert institutions are perceived as government-aligned, \emph{support for technocratic delegation is decreasing in the normalized distance} $d_i$ and increasing in perceived valence $B$, with attenuation when experts are viewed as more neutral ($\alpha<1$). This maps to our econometric specification with \texttt{Government distance} as the main covariate and measures of institutional trust/competence as proxies for $(B,\alpha)$.
+The model yields two broader implications. First, when expert institutions are perceived as highly aligned with the government, support for delegation declines monotonically with ideological distance from the government: the farther a voter is from the government’s position, the less willing she is to delegate. Second, this distance penalty attenuates when experts are perceived as more neutral or closer to voters than to the government, because delegation is then evaluated less as an extension of the governing coalition and more in terms of relative policy proximity to the status quo.
 
 
 \section{Data and Findings}
