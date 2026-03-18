@@ -534,8 +534,10 @@ For exposition we map this to the unit interval and, for estimation, center it a
 \texttt{Align}^{01}_{i,c} \equiv \texttt{Align}^{01}_i - 0.5 \in [-0.5,0.5].
 \]
 
-<<pred.4, fig.width=6, fig.height=4, out.width='\\textwidth', fig.cap='Interactive OLS hypothesis: Technocracy $\\times$ Government distance moderated by Gov-Expert trust gap', fig.pos='H', echo=FALSE, message=FALSE, warning=FALSE>>=
+<<pred.4, fig.width=6, fig.height=4, out.width='0.65\\textwidth', fig.cap='Interactive OLS hypothesis: Technocracy $\\times$ Government distance moderated by Gov-Expert trust gap', fig.pos='H', echo=FALSE, message=FALSE, warning=FALSE>>=
+
 print(pint)
+
 @
 
 By construction, $\texttt{Align}^{01}_{i,c}=0$ indicates approximate indifference ($T_i^G \approx T_i^E$); positive values indicate a government-over-experts premium ($T_i^G>T_i^E$), and negative values indicate an experts-over-government premium ($T_i^E>T_i^G$). Using the gap rather than the levels $T_i^G$ and $T_i^E$ reduces sensitivity to response-style differences (e.g., $(8,7)$ and $(2,1)$ encode the same comparative orientation) and centers the analysis on perceived alignment rather than absolute institutional trust.
