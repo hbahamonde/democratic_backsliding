@@ -126,8 +126,8 @@ dat.t <- dat.t %>%
       levels = c("Less than primary school (grades 1-9)",
                  "Primary school (grades 1-9)",
                  "Professional qualification",
-                 "Matriculation",
-                 "Master's degree or polytechnic degree",
+                 "Matriculation examination",
+                 "Upper secondary school or polytechnic degree",
                  "University degree"),
       ordered = TRUE
     ),
@@ -145,6 +145,10 @@ dat.t <- dat.t %>%
   )
 
 ## Six OLS models
+
+# (Q9_4) Trust in politicians, NA=168 
+# techno_ord (technocracy question): "I don't know" n=118
+
 
 m_w   <- lm(techno5   ~ gov_distance_w_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
 m_u   <- lm(techno5   ~ gov_distance_u_01   + Q8_1 + Q9_4 + educ_ord + age_ord + gender + region, data = dat.t)
@@ -670,4 +674,89 @@ abstract.c.l = sapply(strsplit(abstract.c, " "), length)
 ## ----
 
 
+## ---- missingness ----
+# helper: count missingness for one model-variable set
+make_missingness_summary <- function(data, vars, pretty_names) {
+  miss <- sapply(data[, vars, drop = FALSE], function(x) sum(is.na(x)))
+  excluded <- sum(!complete.cases(data[, vars, drop = FALSE]))
+  
+  miss_df <- data.frame(
+    variable  = unname(pretty_names[names(miss)]),
+    n_missing = as.integer(miss),
+    stringsAsFactors = FALSE
+  )
+  
+  txt <- paste0(
+    paste0(miss_df$variable, " = ", miss_df$n_missing, collapse = "; "),
+    ". Total excluded due to missingness in at least one variable: ",
+    excluded, "."
+  )
+  
+  list(
+    miss = miss,
+    excluded = excluded,
+    txt = txt
+  )
+}
 
+# 1) Main model (seat-weighted)
+vars_main <- c(
+  "techno5",
+  "gov_distance_w_01",
+  "Q8_1",
+  "Q9_4",
+  "educ_ord",
+  "age_ord",
+  "gender",
+  "region"
+)
+
+pretty_names_main <- c(
+  "techno5"           = "Support for technocratic delegation",
+  "gov_distance_w_01" = "Government distance (seat-weighted)",
+  "Q8_1"              = "Democratic satisfaction",
+  "Q9_4"              = "Trust in politicians",
+  "educ_ord"          = "Education",
+  "age_ord"           = "Age",
+  "gender"            = "Gender",
+  "region"            = "Region"
+)
+
+miss_main <- make_missingness_summary(dat.t, vars_main, pretty_names_main)
+
+# 2) Interaction model (seat-weighted spec)
+vars_int <- c(
+  "techno5",
+  "gov_distance_w_01",
+  "Align_01_c",
+  "Trust_sum_c",
+  "Q8_1",
+  "Q9_4",
+  "educ_ord",
+  "age_ord",
+  "gender",
+  "region"
+)
+
+pretty_names_int <- c(
+  "techno5"           = "Support for technocratic delegation",
+  "gov_distance_w_01" = "Government distance (seat-weighted)",
+  "Align_01_c"        = "Gov--Expert trust gap (centered)",
+  "Trust_sum_c"       = "Overall trustfulness (centered)",
+  "Q8_1"              = "Democratic satisfaction",
+  "Q9_4"              = "Trust in politicians",
+  "educ_ord"          = "Education",
+  "age_ord"           = "Age",
+  "gender"            = "Gender",
+  "region"            = "Region"
+)
+
+miss_int <- make_missingness_summary(dat.t, vars_int, pretty_names_int)
+
+# 3) Optional: one-line totals only
+n_excluded_main <- miss_main$excluded
+n_excluded_int  <- miss_int$excluded
+
+txt_missing_main <- miss_main$txt
+txt_missing_int  <- miss_int$txt
+## ----
