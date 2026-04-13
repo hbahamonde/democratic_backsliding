@@ -335,7 +335,7 @@ Delegation is adopted under simple majority rule if and only if
 \end{cases}
 \]
 
-Grafically,
+Graphically,
 
 \begin{itemize}
     \item Case $\theta_S<\theta_e(\alpha)$
@@ -480,15 +480,19 @@ We scale this quantity to $[0,1]$ and define the complementary distance index:
 By construction, larger values of ${\texttt{Government distance}}_i$ indicate greater ideological distance from the governing coalition.
 
 To assess whether the results depend on this particular aggregation rule, we also construct two conceptually adjacent distance measures. First, an \emph{unweighted} coalition proximity gives each governing party equal weight, abstracting from parliamentary strength and reducing dependence on the cabinet's seat distribution. Define
-\[
+
+
+\begin{equation}
 \texttt{Government closeness (UW)}_i \;\equiv\;
 \frac{\sum_{p\in G} C_{ip}\,\mathbbm{1}\!\bigl\{\text{$C_{ip}$ observed}\bigr\}}
      {\sum_{q\in G} \mathbbm{1}\!\bigl\{\text{$C_{iq}$ observed}\bigr\}}
-\;\in\;[0,10],
+\;\in\;[0,10]
 \label{eq:govclose_u}
-\tag{A1}
-\]
+\end{equation},
+
+
 with \texttt{NA} if no governing party was rated. The corresponding distance measure is
+
 \begin{equation}
 \texttt{Government distance (UW)}_i \;\equiv\;
 1 - \frac{\texttt{Government closeness (UW)}_i}{10}
@@ -646,7 +650,7 @@ Taken together, the evidence suggests a broader point about democratic stability
 \begin{center}
 \vspace*{\stretch{1}}
 \dotfill
-\dotfill {\huge {\bf Word count}: 6,655} \dotfill
+\dotfill {\huge {\bf Word count}: 6,656} \dotfill
 \dotfill
 \vspace*{\stretch{1}}
 \end{center}
@@ -715,7 +719,7 @@ Taken together, the evidence suggests a broader point about democratic stability
 \caption{Interactive OLS models: Technocracy $\times$ Government distance moderated by Gov-Expert trust gap}
 \label{tab:interact-models}
 \resizebox{\textwidth}{!}{\input{build/table_models_interact_tabular.tex}}
-\footnotesize\emph{Notes:} Model-based standard errors in parentheses. Cutpoints omitted. Models include education, age, gender, and region fixed effects (omitted for brevity). Missing values are as follows: 598
+\footnotesize\emph{Notes:} Model-based standard errors in parentheses. Cutpoints omitted. Models include education, age, gender, and region fixed effects (omitted for brevity). Missing values are as follows: 598.
 \end{table}
 
 
