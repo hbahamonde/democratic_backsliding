@@ -1,0 +1,19 @@
+Dear Editors,
+
+Please consider our manuscript, “Losers, Delegation, and the Ideological Valence of Expertise: Evidence from Finland,” for publication in Political Behavior.
+
+This article examines when citizens support delegating political authority to unelected experts rather than elected politicians. Research on democratic backsliding has shown that voters often tolerate democratic norm erosion when it benefits their preferred side, but we know much less about a prior and equally consequential question: when citizens are willing to shift authority away from electoral accountability in the first place. We address this question by focusing on technocratic delegation and arguing that support for it is ideologically conditional. Specifically, we suggest that citizens become less willing to delegate authority to experts when those experts are perceived as aligned with the governing coalition and when citizens themselves are ideologically distant from the government.
+
+The manuscript makes both theoretical and empirical contributions. Theoretically, it develops a simple spatial model in which support for technocratic delegation depends on the relative policy proximity of expert rule versus elected-politician control, conditional on perceived government-expert alignment. Empirically, it tests these expectations with original survey data from Finland, a high-capacity multiparty democracy that constitutes a demanding case for our argument. Using an individual-level measure of distance from the governing coalition and a proxy for perceived alignment between the Cabinet and expert institutions, we show that support for technocratic delegation declines with ideological distance from government, and that this relationship is strongest among respondents who infer that experts will follow the government’s lead.
+
+We believe the manuscript is well suited for Political Behavior because it speaks directly to the journal’s core interests in mass political attitudes, democratic norms, institutional legitimacy, and the behavioral foundations of representation and accountability. More specifically, the paper contributes to ongoing debates about democratic backsliding, losers’ consent, affective polarization, and citizen support for unelected authority by identifying a demand-side mechanism through which democratic accountability may be weakened even in a high-trust democracy.
+
+This manuscript is original, is not under review elsewhere, and all authors have approved its submission.
+
+Thank you for your consideration.
+
+Sincerely,
+Hector Bahamonde
+Andrea Canales
+Inga Saikkonen
+Mart Trasberg

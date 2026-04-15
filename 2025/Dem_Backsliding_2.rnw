@@ -112,7 +112,7 @@
 \begingroup
 \renewcommand\thefootnote{}%
 \footnotetext[0]{\textbf{Authors are listed in alphabetical order; all authors contributed equally.}
-We would like to thank Juha Ylisalo and Aki Koivula for their comments and suggestions. All errors are our own. This research was supported by the Research Council of Finland (grant \#316897).}
+We would like to thank Juha Ylisalo and Aki Koivula for their comments and suggestions. All errors are our own. This research was supported by the Research Council of Finland (grant \#316897). The dataset and replication materials are available upon request.}
 \endgroup
 \setcounter{footnote}{0}
 
